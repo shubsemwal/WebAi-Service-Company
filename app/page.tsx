@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants, } from "framer-motion";
 import Link from "next/link";
 
 // ── CSS variable shortcuts ──
@@ -126,12 +126,15 @@ const TRUSTED_BY = [
 // ============================================================
 //  ANIMATION VARIANTS
 // ============================================================
-const fadeUp = {
+const fadeUp: Variants = {
   hidden: { opacity: 0, y: 28 },
   visible: {
     opacity: 1,
     y: 0,
-    transition: { duration: 0.65, ease: [0.22, 1, 0.36, 1] },
+    transition: {
+      duration: 0.65,
+      ease: "easeOut",
+    },
   },
 };
 const stagger = {
