@@ -1,7 +1,7 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
-import { motion, useScroll, useTransform, type Variants, } from "framer-motion";
+import { motion, useScroll, useTransform, type Variants } from "framer-motion";
 import Link from "next/link";
 
 // ── CSS variable shortcuts ──
