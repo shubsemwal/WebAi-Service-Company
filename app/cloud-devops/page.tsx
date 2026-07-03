@@ -22,9 +22,64 @@ import {
   Users,
   MessageCircle,
 } from "lucide-react";
-import { useState } from "react";
+import { useEffect, useState } from "react";
+
+// ─── TYPES ────────────────────────────────────────────────────────────────────
+
+type Theme = "dark" | "light";
+
+// ─── THEME TOKENS (identical to Navbar / PricingPage / AboutPage / web-dev page) ──
+
+const T = {
+  dark: {
+    bg:        "#080B14",
+    bgCard:    "rgba(255,255,255,0.03)",
+    bgSubtle:  "rgba(255,255,255,0.02)",
+    border:    "rgba(255,255,255,0.08)",
+    text:      "#ffffff",
+    textMuted: "#94a3b8",
+    textSub:   "#64748b",
+  },
+  light: {
+    bg:        "#f8fafc",
+    bgCard:    "#ffffff",
+    bgSubtle:  "#f1f5f9",
+    border:    "rgba(0,0,0,0.08)",
+    text:      "#0f172a",
+    textMuted: "#475569",
+    textSub:   "#94a3b8",
+  },
+};
+
+// ─── PAGE ──────────────────────────────────────────────────────────────────────
 
 export default function CloudDevOpsPage() {
+  // Lazy-init from the real DOM state so the very first paint is already
+  // correct, then stay in sync with whatever the navbar toggle sets.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document !== "undefined") {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light" || attr === "dark") return attr;
+    }
+    return "dark";
+  });
+
+  useEffect(() => {
+    const syncTheme = () => {
+      const attr = document.documentElement.getAttribute("data-theme") as Theme | null;
+      if (attr === "light" || attr === "dark") {
+        setTheme((prev) => (prev === attr ? prev : attr));
+      }
+    };
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const tk = T[theme];
+  const isDark = theme === "dark";
+
   const services = [
     {
       icon: <Cloud className="w-7 h-7" />,
@@ -39,7 +94,7 @@ export default function CloudDevOpsPage() {
       title: "Containerization",
       desc: "Docker-based container setups for consistent deployment across environments.",
       benefit: "Deploy consistently across dev, staging, and production — no more 'works on my machine'.",
-      accent: "#34d399",
+      accent: "#636be6",
       glow: "rgba(52,211,153,0.18)",
     },
     {
@@ -55,7 +110,7 @@ export default function CloudDevOpsPage() {
       title: "CI/CD Pipelines",
       desc: "Automated build, test and deployment pipelines with GitHub Actions & Jenkins.",
       benefit: "Ship code 5x faster with automated testing and deployments.",
-      accent: "#22d3ee",
+      accent: "#7951e5",
       glow: "rgba(34,211,238,0.18)",
     },
     {
@@ -138,7 +193,7 @@ export default function CloudDevOpsPage() {
   const useCases = [
     {
       title: "Startups & SaaS",
-      accent: "#22d3ee",
+      accent: "#7951e5",
       glow: "rgba(34,211,238,0.15)",
       points: [
         "MVP infrastructure that scales with growth",
@@ -148,7 +203,7 @@ export default function CloudDevOpsPage() {
     },
     {
       title: "Ecommerce & High-Traffic Sites",
-      accent: "#34d399",
+      accent: "#636be6",
       glow: "rgba(52,211,153,0.15)",
       points: [
         "Auto-scaling during flash sales and promotions",
@@ -191,7 +246,7 @@ export default function CloudDevOpsPage() {
   const techStrengths = [
     {
       title: "High Availability & Reliability",
-      accent: "#22d3ee",
+      accent: "#7951e5",
       points: [
         "99.9%+ uptime with multi-region failover",
         "Automatic recovery from failures",
@@ -200,7 +255,7 @@ export default function CloudDevOpsPage() {
     },
     {
       title: "Cost Optimization",
-      accent: "#34d399",
+      accent: "#636be6",
       points: [
         "Right-sized instances and auto-shutdown policies",
         "Spot instances and reserved capacity savings",
@@ -241,7 +296,7 @@ export default function CloudDevOpsPage() {
     {
       from: "Legacy Apps",
       to: "Modern Architecture",
-      accent: "#34d399",
+      accent: "#636be6",
       points: [
         "Containerize monolithic applications",
         "Break into microservices if needed",
@@ -291,12 +346,13 @@ export default function CloudDevOpsPage() {
 
   return (
     <main
+      className="font-['Space_Grotesk',ui-sans-serif,sans-serif]"
       style={{
         minHeight: "100vh",
         overflow: "hidden",
-        backgroundColor: "var(--bg)",
-        color: "var(--text)",
-        transition: "background-color 0.3s, color 0.3s",
+        backgroundColor: tk.bg,
+        color: tk.text,
+        transition: "background-color 0.2s ease, color 0.2s ease",
       }}
     >
       {/* ── HERO ── */}
@@ -305,26 +361,35 @@ export default function CloudDevOpsPage() {
           position: "relative",
           padding: "10rem 4rem 8rem",
           textAlign: "center",
-          borderBottom: "1px solid var(--border)",
+          borderBottom: `1px solid ${tk.border}`,
           overflow: "hidden",
         }}
       >
         <div style={{ position: "absolute", top: -120, right: -120, width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(56,189,248,0.12) 0%,transparent 70%)" }} />
         <div style={{ position: "absolute", bottom: -120, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle,rgba(52,211,153,0.12) 0%,transparent 70%)" }} />
-        <div style={{ position: "absolute", inset: 0, opacity: 0.04, backgroundImage: "radial-gradient(circle,rgba(56,189,248,1) 1px,transparent 1px)", backgroundSize: "42px 42px" }} />
+        <div style={{ position: "absolute", inset: 0, opacity: isDark ? 0.04 : 0.06, backgroundImage: "radial-gradient(circle,rgba(56,189,248,1) 1px,transparent 1px)", backgroundSize: "42px 42px" }} />
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(34,211,238,0.35)", background: "rgba(34,211,238,0.1)", marginBottom: 36 }}>
-            <Cloud style={{ width: 14, height: 14, color: "#22d3ee" }} />
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#22d3ee" }}>CLOUD & DEVOPS</span>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(121,81,229,0.35)", background: isDark ? "rgba(121,81,229,0.12)" : "rgba(121,81,229,0.08)", marginBottom: 36 }}>
+            <Cloud style={{ width: 14, height: 14, color: "#7951e5" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#7951e5" }}>CLOUD & DEVOPS</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(2.4rem,7vw,4.8rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24 }}>
+          <h1 style={{ fontSize: "clamp(1.4rem,7vw,5.2rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24, fontFamily: '"Space Grotesk", ui-sans-serif' }}>
             Cloud & DevOps That{" "}
-            <span style={{ background: "linear-gradient(135deg,#22d3ee 0%,#38bdf8 50%,#34d399 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span
+              style={{
+                background: "linear-gradient(135deg,#7c3aed 0%,#a855f7 40%,#60a5fa 75%,#2dd4bf 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+                fontFamily: '"Space Grotesk", ui-sans-serif',
+              }}
+            >
               Save Time, Cut Costs
-            </span>
-            {" "}and Scale Automatically
+            </span>{" "}
+            and Scale Automatically
           </h1>
 
           <div style={{ maxWidth: 560, margin: "0 auto 20px", textAlign: "left", display: "inline-block" }}>
@@ -335,21 +400,21 @@ export default function CloudDevOpsPage() {
               "Stays secure and compliant out of the box",
             ].map((point, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                <CheckCircle2 style={{ color: "#34d399", width: 18, flexShrink: 0 }} />
-                <span style={{ color: "var(--text-muted)", fontSize: "1rem" }}>{point}</span>
+                <CheckCircle2 style={{ color: "#636be6", width: 18, flexShrink: 0 }} />
+                <span style={{ color: tk.textMuted, fontSize: "1rem" }}>{point}</span>
               </div>
             ))}
           </div>
 
-          <p style={{ color: "var(--text-muted)", marginBottom: 12, fontSize: "0.9rem" }}>
+          <p style={{ color: tk.textMuted, marginBottom: 12, fontSize: "0.9rem" }}>
             From startups to enterprise — we scale with you.
           </p>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center", marginTop: 32 }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.9rem" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#ffffff", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.9rem" }}>
               Get a Free Infrastructure Audit <ArrowRight className="w-4 h-4" />
             </button>
-            <button style={{ padding: "14px 28px", borderRadius: 16, fontWeight: 700, border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-muted)", cursor: "pointer", fontSize: "0.9rem" }}>
+            <button style={{ padding: "14px 28px", borderRadius: 16, fontWeight: 700, border: `1px solid ${tk.border}`, background: tk.bgCard, color: tk.textMuted, cursor: "pointer", fontSize: "0.9rem" }}>
               See Pricing →
             </button>
           </div>
@@ -361,18 +426,18 @@ export default function CloudDevOpsPage() {
         <div style={{ maxWidth: 1280, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud Services</h2>
-            <p style={{ color: "var(--text-muted)" }}>End-to-end DevOps and cloud engineering solutions.</p>
+            <p style={{ color: tk.textMuted }}>End-to-end DevOps and cloud engineering solutions.</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 20 }}>
             {services.map((s, i) => (
-              <Card key={i} accent={s.accent} glow={s.glow}>
+              <Card key={i} accent={s.accent} glow={s.glow} tk={tk} isDark={isDark}>
                 <div style={{ width: 52, height: 52, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: `${s.accent}1a`, color: s.accent, marginBottom: 20 }}>
                   {s.icon}
                 </div>
                 <h3 style={{ fontWeight: 800, marginBottom: 8 }}>{s.title}</h3>
-                <p style={{ fontSize: "0.875rem", color: "var(--text-muted)", marginBottom: 12 }}>{s.desc}</p>
-                <p style={{ fontSize: "0.8rem", color: s.accent, fontWeight: 600, borderTop: "1px solid var(--border)", paddingTop: 12 }}>
+                <p style={{ fontSize: "0.875rem", color: tk.textMuted, marginBottom: 12 }}>{s.desc}</p>
+                <p style={{ fontSize: "0.8rem", color: s.accent, fontWeight: 600, borderTop: `1px solid ${tk.border}`, paddingTop: 12 }}>
                   ✦ {s.benefit}
                 </p>
               </Card>
@@ -380,7 +445,7 @@ export default function CloudDevOpsPage() {
           </div>
 
           <div style={{ textAlign: "center", marginTop: 40 }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#ffffff", fontWeight: 800, border: "none", cursor: "pointer" }}>
               Book a Cloud Consultation <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -388,14 +453,14 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── PRICING ── */}
-      <section style={{ padding: "6rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
+      <section style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
         <div style={{ maxWidth: 900, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 48 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud & DevOps Pricing</h2>
-            <p style={{ color: "var(--text-muted)" }}>Transparent starting rates — no hidden fees.</p>
+            <p style={{ color: tk.textMuted }}>Transparent starting rates — no hidden fees.</p>
           </div>
 
-          <div style={{ borderRadius: 24, border: "1px solid var(--border)", background: "var(--bg-card)", overflow: "hidden" }}>
+          <div style={{ borderRadius: 24, border: `1px solid ${tk.border}`, background: tk.bgCard, overflow: "hidden", boxShadow: isDark ? "none" : "0 2px 12px rgba(0,0,0,0.06)" }}>
             {pricing.map((item, i) => (
               <div
                 key={i}
@@ -404,29 +469,29 @@ export default function CloudDevOpsPage() {
                   alignItems: "center",
                   justifyContent: "space-between",
                   padding: "20px 28px",
-                  borderBottom: i < pricing.length - 1 ? "1px solid var(--border)" : "none",
+                  borderBottom: i < pricing.length - 1 ? `1px solid ${tk.border}` : "none",
                   gap: 16,
                   flexWrap: "wrap",
                 }}
               >
                 <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{item.service}</span>
                 <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
-                  <span style={{ background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.05rem" }}>
+                  <span style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.05rem" }}>
                     {item.price}
                   </span>
-                  <span style={{ padding: "4px 12px", borderRadius: 999, background: "rgba(34,211,238,0.1)", border: "1px solid rgba(34,211,238,0.25)", color: "#22d3ee", fontSize: "0.78rem", fontWeight: 600 }}>
+                  <span style={{ padding: "4px 12px", borderRadius: 999, background: isDark ? "rgba(121,81,229,0.12)" : "rgba(121,81,229,0.08)", border: "1px solid rgba(121,81,229,0.25)", color: "#7951e5", fontSize: "0.78rem", fontWeight: 600 }}>
                     {item.time}
                   </span>
                 </div>
               </div>
             ))}
           </div>
-          <p style={{ textAlign: "center", color: "var(--text-muted)", marginTop: 16, fontSize: "0.85rem" }}>
+          <p style={{ textAlign: "center", color: tk.textMuted, marginTop: 16, fontSize: "0.85rem" }}>
             All prices are starting rates. Complex migrations and enterprise setups may cost extra.
           </p>
 
           <div style={{ textAlign: "center", marginTop: 32 }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#ffffff", fontWeight: 800, border: "none", cursor: "pointer" }}>
               Get Custom Quote <ArrowRight className="w-4 h-4" />
             </button>
           </div>
@@ -434,11 +499,11 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── MARQUEE STACK ── */}
-      <section style={{ padding: "4rem", borderTop: "1px solid var(--border)", borderBottom: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
+      <section style={{ padding: "4rem", borderTop: `1px solid ${tk.border}`, borderBottom: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
         <div style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
           <div style={{ display: "inline-flex", gap: 14, animation: "scroll 30s linear infinite" }}>
             {[...stack, ...stack].map((t, i) => (
-              <span key={i} style={{ padding: "10px 18px", borderRadius: 12, border: "1px solid var(--border)", background: "var(--bg-card)", fontWeight: 600, fontSize: "0.85rem" }}>
+              <span key={i} style={{ padding: "10px 18px", borderRadius: 12, border: `1px solid ${tk.border}`, background: tk.bgCard, fontWeight: 600, fontSize: "0.85rem" }}>
                 {t}
               </span>
             ))}
@@ -452,25 +517,25 @@ export default function CloudDevOpsPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Real Results We Deliver</h2>
-            <p style={{ color: "var(--text-muted)" }}>Measurable improvements across every engagement.</p>
+            <p style={{ color: tk.textMuted }}>Measurable improvements across every engagement.</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 20 }}>
             {metrics.map((m, i) => (
-              <div key={i} style={{ borderRadius: 20, border: "1px solid var(--border)", background: "var(--bg-card)", padding: 28 }}>
-                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, color: "#22d3ee" }}>
+              <div key={i} style={{ borderRadius: 20, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: 28, boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, color: "#7951e5" }}>
                   {m.icon}
                   <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{m.label}</span>
                 </div>
                 <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
                   <div style={{ flex: 1, textAlign: "center" }}>
                     <div style={{ color: "#f87171", fontWeight: 700, fontSize: "1rem", textDecoration: "line-through", opacity: 0.7 }}>{m.before}</div>
-                    <div style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginTop: 4 }}>Before</div>
+                    <div style={{ color: tk.textMuted, fontSize: "0.75rem", marginTop: 4 }}>Before</div>
                   </div>
-                  <ArrowRight style={{ color: "#34d399", width: 18, flexShrink: 0 }} />
+                  <ArrowRight style={{ color: "#636be6", width: 18, flexShrink: 0 }} />
                   <div style={{ flex: 1, textAlign: "center" }}>
-                    <div style={{ background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1rem" }}>{m.after}</div>
-                    <div style={{ color: "var(--text-muted)", fontSize: "0.75rem", marginTop: 4 }}>After</div>
+                    <div style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1rem" }}>{m.after}</div>
+                    <div style={{ color: tk.textMuted, fontSize: "0.75rem", marginTop: 4 }}>After</div>
                   </div>
                 </div>
               </div>
@@ -480,21 +545,21 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── USE CASES ── */}
-      <section style={{ padding: "6rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
+      <section style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
         <div style={{ maxWidth: 1200, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>DevOps Solutions by Use Case</h2>
-            <p style={{ color: "var(--text-muted)" }}>Built for your industry and scale.</p>
+            <p style={{ color: tk.textMuted }}>Built for your industry and scale.</p>
           </div>
 
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 20 }}>
             {useCases.map((u, i) => (
-              <Card key={i} accent={u.accent} glow={u.glow}>
+              <Card key={i} accent={u.accent} glow={u.glow} tk={tk} isDark={isDark}>
                 <h3 style={{ fontWeight: 800, marginBottom: 16, color: u.accent }}>{u.title}</h3>
                 {u.points.map((p, j) => (
                   <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
                     <CheckCircle2 style={{ color: u.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
-                    <span style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>{p}</span>
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
                   </div>
                 ))}
               </Card>
@@ -502,7 +567,7 @@ export default function CloudDevOpsPage() {
           </div>
 
           <div style={{ textAlign: "center", marginTop: 40 }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#ffffff", fontWeight: 800, border: "none", cursor: "pointer" }}>
               Chat with Us Now <MessageCircle className="w-4 h-4" />
             </button>
           </div>
@@ -514,16 +579,16 @@ export default function CloudDevOpsPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Technical Strengths</h2>
-            <p style={{ color: "var(--text-muted)" }}>Production-grade practices at every layer.</p>
+            <p style={{ color: tk.textMuted }}>Production-grade practices at every layer.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 20 }}>
             {techStrengths.map((t, i) => (
-              <Card key={i} accent={t.accent} glow={`${t.accent}22`}>
+              <Card key={i} accent={t.accent} glow={`${t.accent}22`} tk={tk} isDark={isDark}>
                 <h3 style={{ fontWeight: 800, marginBottom: 16, color: t.accent }}>{t.title}</h3>
                 {t.points.map((p, j) => (
                   <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
                     <CheckCircle2 style={{ color: t.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
-                    <span style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>{p}</span>
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
                   </div>
                 ))}
               </Card>
@@ -533,17 +598,17 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── PROCESS ── */}
-      <section style={{ padding: "6rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
+      <section style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>DevOps Workflow</h2>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
             {process.map((p, i) => (
-              <div key={i} style={{ borderRadius: 20, border: "1px solid var(--border)", background: "var(--bg-card)", padding: 28 }}>
-                <div style={{ fontSize: "3rem", fontWeight: 900, background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{p.step}</div>
+              <div key={i} style={{ borderRadius: 20, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: 28, boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)" }}>
+                <div style={{ fontSize: "3rem", fontWeight: 900, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{p.step}</div>
                 <h3 style={{ fontWeight: 800 }}>{p.title}</h3>
-                <p style={{ color: "var(--text-muted)" }}>{p.desc}</p>
+                <p style={{ color: tk.textMuted }}>{p.desc}</p>
               </div>
             ))}
           </div>
@@ -555,20 +620,20 @@ export default function CloudDevOpsPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud Migration Services</h2>
-            <p style={{ color: "var(--text-muted)" }}>We handle every migration path — safely and without downtime.</p>
+            <p style={{ color: tk.textMuted }}>We handle every migration path — safely and without downtime.</p>
           </div>
           <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
             {migrationPaths.map((m, i) => (
-              <Card key={i} accent={m.accent} glow={`${m.accent}22`}>
+              <Card key={i} accent={m.accent} glow={`${m.accent}22`} tk={tk} isDark={isDark}>
                 <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
-                  <span style={{ fontWeight: 800, color: "var(--text-muted)", fontSize: "0.9rem" }}>{m.from}</span>
+                  <span style={{ fontWeight: 800, color: tk.textMuted, fontSize: "0.9rem" }}>{m.from}</span>
                   <ArrowRight style={{ color: m.accent, width: 18 }} />
                   <span style={{ fontWeight: 800, color: m.accent, fontSize: "0.9rem" }}>{m.to}</span>
                 </div>
                 {m.points.map((p, j) => (
                   <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
                     <CheckCircle2 style={{ color: m.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
-                    <span style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>{p}</span>
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
                   </div>
                 ))}
               </Card>
@@ -578,17 +643,17 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── WHY US ── */}
-      <section style={{ padding: "5rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
+      <section style={{ padding: "5rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
         <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 56 }}>
           <div>
             <h2 style={{ fontSize: "2.4rem", fontWeight: 900 }}>Why Choose DevOps Automation</h2>
-            <p style={{ color: "var(--text-muted)", lineHeight: 1.7 }}>We help teams ship faster with stable, secure and automated cloud systems.</p>
+            <p style={{ color: tk.textMuted, lineHeight: 1.7 }}>We help teams ship faster with stable, secure and automated cloud systems.</p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
             {reasons.map((r, i) => (
               <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
-                <CheckCircle2 style={{ color: "#34d399", width: 20 }} />
-                <span style={{ color: "var(--text-muted)", fontWeight: 600 }}>{r}</span>
+                <CheckCircle2 style={{ color: "#636be6", width: 20 }} />
+                <span style={{ color: tk.textMuted, fontWeight: 600 }}>{r}</span>
               </div>
             ))}
           </div>
@@ -600,23 +665,23 @@ export default function CloudDevOpsPage() {
         <div style={{ maxWidth: 780, margin: "0 auto" }}>
           <div style={{ textAlign: "center", marginBottom: 56 }}>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>FAQ</h2>
-            <p style={{ color: "var(--text-muted)" }}>Common questions about our Cloud & DevOps services.</p>
+            <p style={{ color: tk.textMuted }}>Common questions about our Cloud & DevOps services.</p>
           </div>
           <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
             {faqs.map((faq, i) => (
               <div
                 key={i}
-                style={{ borderRadius: 16, border: "1px solid var(--border)", background: "var(--bg-card)", overflow: "hidden" }}
+                style={{ borderRadius: 16, border: `1px solid ${tk.border}`, background: tk.bgCard, overflow: "hidden", boxShadow: isDark ? "none" : "0 1px 3px rgba(0,0,0,0.04)" }}
               >
                 <button
                   onClick={() => setOpenFaq(openFaq === i ? null : i)}
-                  style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", background: "none", border: "none", cursor: "pointer", color: "var(--text)", fontWeight: 700, fontSize: "0.95rem", textAlign: "left", gap: 12 }}
+                  style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", background: "none", border: "none", cursor: "pointer", color: tk.text, fontWeight: 700, fontSize: "0.95rem", textAlign: "left", gap: 12 }}
                 >
                   {faq.q}
-                  <ChevronDown style={{ width: 18, flexShrink: 0, transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", color: "#22d3ee" }} />
+                  <ChevronDown style={{ width: 18, flexShrink: 0, transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", color: "#7951e5" }} />
                 </button>
                 {openFaq === i && (
-                  <div style={{ padding: "0 24px 20px", color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.7 }}>
+                  <div style={{ padding: "0 24px 20px", color: tk.textMuted, fontSize: "0.9rem", lineHeight: 1.7 }}>
                     {faq.a}
                   </div>
                 )}
@@ -627,23 +692,23 @@ export default function CloudDevOpsPage() {
       </section>
 
       {/* ── CTA ── */}
-      <section style={{ padding: "7rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", borderRadius: 32, border: "1px solid var(--border)", background: "var(--bg-card)", padding: "5rem 3rem" }}>
-          <Terminal style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#22d3ee" }} />
+      <section style={{ padding: "7rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", borderRadius: 32, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: "5rem 3rem", boxShadow: isDark ? "none" : "0 2px 16px rgba(0,0,0,0.06)" }}>
+          <Terminal style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#7951e5" }} />
           <h2 style={{ fontSize: "2.5rem", fontWeight: 900 }}>
             Automate your{" "}
-            <span style={{ background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               cloud infrastructure
             </span>
           </h2>
-          <p style={{ color: "var(--text-muted)", margin: "20px auto 36px" }}>
+          <p style={{ color: tk.textMuted, margin: "20px auto 36px" }}>
             Build reliable, scalable and secure systems with modern DevOps practices.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-            <button style={{ padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", border: "none", fontWeight: 800, color: "#0f172a", cursor: "pointer" }}>
+            <button style={{ padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", border: "none", fontWeight: 800, color: "#ffffff", cursor: "pointer" }}>
               Get Started <ArrowRight className="inline w-4 h-4" />
             </button>
-            <button style={{ padding: "16px 32px", borderRadius: 16, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-muted)", cursor: "pointer" }}>
+            <button style={{ padding: "16px 32px", borderRadius: 16, border: `1px solid ${tk.border}`, background: "transparent", fontWeight: 700, color: tk.textMuted, cursor: "pointer" }}>
               Book a Free Audit
             </button>
           </div>
@@ -657,14 +722,25 @@ function Card({
   children,
   accent,
   glow,
+  tk,
+  isDark,
 }: {
   children: React.ReactNode;
   accent: string;
   glow: string;
+  tk: typeof T["dark"];
+  isDark: boolean;
 }) {
   return (
     <div
-      style={{ borderRadius: 20, border: "1px solid var(--border)", background: "var(--bg-card)", padding: 28, transition: "0.25s" }}
+      style={{
+        borderRadius: 20,
+        border: `1px solid ${tk.border}`,
+        background: tk.bgCard,
+        padding: 28,
+        transition: "transform 0.25s, box-shadow 0.25s, border-color 0.25s",
+        boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)",
+      }}
       onMouseEnter={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(-6px)";
@@ -674,8 +750,8 @@ function Card({
       onMouseLeave={(e) => {
         const el = e.currentTarget as HTMLDivElement;
         el.style.transform = "translateY(0)";
-        el.style.boxShadow = "none";
-        el.style.borderColor = "var(--border)";
+        el.style.boxShadow = isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)";
+        el.style.borderColor = tk.border;
       }}
     >
       {children}

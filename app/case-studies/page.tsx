@@ -25,7 +25,7 @@ const CASE_STUDIES = [
     id: "ai-customer-support",
     category: "AI & Automation",
     industry: "SaaS",
-    accent: "#22d3ee",
+    accent: "#7951e5",
     glow: "rgba(34,211,238,0.15)",
     icon: <Bot className="w-6 h-6" />,
     title: "AI Customer Support Automation",
@@ -53,7 +53,7 @@ const CASE_STUDIES = [
     id: "whatsapp-ecommerce-bot",
     category: "AI & Automation",
     industry: "Ecommerce",
-    accent: "#34d399",
+    accent: "#636be6",
     glow: "rgba(52,211,153,0.15)",
     icon: <Bot className="w-6 h-6" />,
     title: "WhatsApp AI Bot for Ecommerce",
@@ -195,7 +195,7 @@ const CASE_STUDIES = [
     id: "cloud-migration-enterprise",
     category: "Cloud & DevOps",
     industry: "Enterprise",
-    accent: "#22d3ee",
+    accent: "#7951e5",
     glow: "rgba(34,211,238,0.15)",
     icon: <Cloud className="w-6 h-6" />,
     title: "Cloud Infrastructure Migration",
@@ -223,7 +223,7 @@ const CASE_STUDIES = [
     id: "cicd-pipeline-startup",
     category: "Cloud & DevOps",
     industry: "Startup",
-    accent: "#34d399",
+    accent: "#636be6",
     glow: "rgba(52,211,153,0.15)",
     icon: <Cloud className="w-6 h-6" />,
     title: "CI/CD Pipeline Setup for Startup",
@@ -286,8 +286,10 @@ export default function CaseStudiesPage() {
     : CASE_STUDIES.filter(c => c.category === activeFilter);
 
   return (
-    <main style={{ minHeight: "100vh", backgroundColor: "var(--bg)", color: "var(--text)", transition: "background-color 0.3s, color 0.3s", overflow: "hidden" }}>
-
+    <main
+      className="font-['Space_Grotesk',ui-sans-serif,sans-serif]"
+      style={{ minHeight: "100vh", backgroundColor: "var(--bg)", color: "var(--text)", transition: "background-color 0.3s, color 0.3s", overflow: "hidden" }}
+    >
       {/* ── HERO ── */}
       <section style={{ position: "relative", padding: "10rem 4rem 8rem", textAlign: "center", borderBottom: "1px solid var(--border)", overflow: "hidden" }}>
         <div style={{ position: "absolute", top: -120, right: -120, width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(34,211,238,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
@@ -296,13 +298,13 @@ export default function CaseStudiesPage() {
 
         <div style={{ position: "relative", zIndex: 1, maxWidth: 900, margin: "0 auto" }}>
           <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(34,211,238,0.35)", background: "rgba(34,211,238,0.1)", marginBottom: 36 }}>
-            <TrendingUp style={{ width: 14, height: 14, color: "#22d3ee" }} />
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#22d3ee" }}>CASE STUDIES</span>
+            <TrendingUp style={{ width: 14, height: 14, color: "#7951e5" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#7951e5" }}>CASE STUDIES</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(2.4rem,7vw,4.8rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24 }}>
+          <h1 style={{ fontSize: "clamp(2.4rem,7vw,5.2rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24 }}>
             Real Results for{" "}
-            <span style={{ background: "linear-gradient(135deg,#22d3ee 0%,#38bdf8 50%,#34d399 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span style={{ background: "linear-gradient(135deg,#7951e5 0%,#38bdf8 50%,#636be6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               Real Businesses
             </span>
           </h1>
@@ -314,7 +316,7 @@ export default function CaseStudiesPage() {
               "Migrate to cloud with 99.99% uptime and zero downtime",
             ].map((p, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
-                <CheckCircle2 style={{ color: "#34d399", width: 18, flexShrink: 0 }} />
+                <CheckCircle2 style={{ color: "#636be6", width: 18, flexShrink: 0 }} />
                 <span style={{ color: "var(--text-muted)", fontSize: "1rem" }}>{p}</span>
               </div>
             ))}
@@ -323,7 +325,7 @@ export default function CaseStudiesPage() {
           <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: 36 }}>Verified results from real projects.</p>
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.9rem" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.9rem" }}>
               Start Your Project <ArrowRight className="w-4 h-4" />
             </button>
             <button style={{ padding: "14px 28px", borderRadius: 16, fontWeight: 700, border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-muted)", cursor: "pointer", fontSize: "0.9rem" }}>
@@ -338,8 +340,8 @@ export default function CaseStudiesPage() {
         <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 20 }}>
           {GLOBAL_STATS.map((s, i) => (
             <div key={i} style={{ textAlign: "center", padding: "20px 12px", borderRadius: 16, border: "1px solid var(--border)", background: "var(--bg-card)" }}>
-              <div style={{ color: "#22d3ee", display: "flex", justifyContent: "center", marginBottom: 10 }}>{s.icon}</div>
-              <div style={{ fontSize: "1.6rem", fontWeight: 900, background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{s.value}</div>
+              <div style={{ color: "#7951e5", display: "flex", justifyContent: "center", marginBottom: 10 }}>{s.icon}</div>
+              <div style={{ fontSize: "1.6rem", fontWeight: 900, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{s.value}</div>
               <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600, marginTop: 4 }}>{s.label}</div>
             </div>
           ))}
@@ -361,9 +363,9 @@ export default function CaseStudiesPage() {
                 border: "1px solid",
                 cursor: "pointer",
                 transition: "all 0.2s",
-                borderColor: activeFilter === f ? "#22d3ee" : "var(--border)",
+                borderColor: activeFilter === f ? "#7951e5" : "var(--border)",
                 background: activeFilter === f ? "rgba(34,211,238,0.12)" : "var(--bg-card)",
-                color: activeFilter === f ? "#22d3ee" : "var(--text-muted)",
+                color: activeFilter === f ? "#7951e5" : "var(--text-muted)",
               }}
             >
               {f}
@@ -387,7 +389,7 @@ export default function CaseStudiesPage() {
                     <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>We can build the same solutions tailored to your needs.</p>
                   </div>
                   <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 14, background: `linear-gradient(135deg,${cs.accent},#34d399)`, color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.85rem" }}>
+                    <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 14, background: `linear-gradient(135deg,${cs.accent},#636be6)`, color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.85rem" }}>
                       Start Your Project <ArrowRight className="w-4 h-4" />
                     </button>
                     <button style={{ padding: "12px 24px", borderRadius: 14, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-muted)", cursor: "pointer", fontSize: "0.85rem", display: "inline-flex", alignItems: "center", gap: 8 }}>
@@ -404,10 +406,10 @@ export default function CaseStudiesPage() {
       {/* ── FINAL CTA ── */}
       <section style={{ padding: "7rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
         <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", borderRadius: 32, border: "1px solid var(--border)", background: "var(--bg-card)", padding: "5rem 3rem" }}>
-          <TrendingUp style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#22d3ee" }} />
+          <TrendingUp style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#7951e5" }} />
           <h2 style={{ fontSize: "clamp(1.8rem,4vw,2.6rem)", fontWeight: 900, marginBottom: 16 }}>
             Ready to be our next{" "}
-            <span style={{ background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+            <span style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
               success story?
             </span>
           </h2>
@@ -415,7 +417,7 @@ export default function CaseStudiesPage() {
             From AI automation to web platforms and cloud infrastructure — we deliver results that matter to your business.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#22d3ee,#34d399)", border: "none", fontWeight: 800, color: "#0f172a", cursor: "pointer" }}>
+            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", border: "none", fontWeight: 800, color: "#0f172a", cursor: "pointer" }}>
               Start Your Project <ArrowRight className="w-4 h-4" />
             </button>
             <button style={{ padding: "16px 32px", borderRadius: 16, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-muted)", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}>
@@ -428,7 +430,6 @@ export default function CaseStudiesPage() {
   );
 }
 
-/* ── CASE STUDY CARD ── */
 function CaseStudyCard({ cs, expanded, onToggle }: { cs: typeof CASE_STUDIES[0]; expanded: boolean; onToggle: () => void }) {
   return (
     <div style={{ borderRadius: 24, border: `1px solid ${expanded ? cs.accent + "55" : "var(--border)"}`, background: "var(--bg-card)", overflow: "hidden", transition: "border-color 0.3s, box-shadow 0.3s", boxShadow: expanded ? `0 0 48px ${cs.glow}` : "none" }}>
@@ -490,15 +491,15 @@ function CaseStudyCard({ cs, expanded, onToggle }: { cs: typeof CASE_STUDIES[0];
 
             {/* Metrics */}
             <div>
-              <h4 style={{ fontWeight: 800, color: "#34d399", marginBottom: 14, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Before → After Results</h4>
+              <h4 style={{ fontWeight: 800, color: "#636be6", marginBottom: 14, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Before → After Results</h4>
               <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
                 {cs.metrics.map((m, i) => (
                   <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderRadius: 12, background: "var(--bg-subtle)", border: "1px solid var(--border)", gap: 12, flexWrap: "wrap" }}>
                     <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text)" }}>{m.label}</span>
                     <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
                       <span style={{ fontSize: "0.82rem", color: "#f87171", textDecoration: "line-through", opacity: 0.8 }}>{m.before}</span>
-                      <ArrowRight style={{ width: 14, color: "#34d399" }} />
-                      <span style={{ fontSize: "0.85rem", fontWeight: 800, background: "linear-gradient(135deg,#22d3ee,#34d399)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{m.after}</span>
+                      <ArrowRight style={{ width: 14, color: "#636be6" }} />
+                      <span style={{ fontSize: "0.85rem", fontWeight: 800, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{m.after}</span>
                     </div>
                   </div>
                 ))}

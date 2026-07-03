@@ -17,95 +17,110 @@ import {
   Mail,
   Rocket,
   Phone,
+  ArrowRight,
 } from "lucide-react";
-
-// ─── DATA ────────────────────────────────────────────────────────────────────
 
 const services = [
   {
-    icon: <Code2 className="w-6 h-6" />,
+    icon: <Code2 style={{ width: 28, height: 28 }} />,
     title: "Frontend Development",
     desc: "Modern UI using React.js, Next.js, Angular and Tailwind CSS.",
     benefit: "Converts visitors into customers",
+    accent: "#38bdf8",
+    glow: "rgba(56,189,248,0.18)",
   },
   {
-    icon: <Server className="w-6 h-6" />,
+    icon: <Server style={{ width: 28, height: 28 }} />,
     title: "Backend Development",
     desc: "Scalable backend systems using Node.js, Express and Python.",
     benefit: "Handles thousands of users reliably",
+    accent: "#636be6",
+    glow: "rgba(52,211,153,0.18)",
   },
   {
-    icon: <BrainCircuit className="w-6 h-6" />,
+    icon: <BrainCircuit style={{ width: 28, height: 28 }} />,
     title: "AI & Automation",
     desc: "AI agents, chatbots, WhatsApp bots and automation systems.",
     benefit: "Saves 10+ hours of work per week",
+    accent: "#a78bfa",
+    glow: "rgba(167,139,250,0.18)",
   },
   {
-    icon: <Cloud className="w-6 h-6" />,
+    icon: <Cloud style={{ width: 28, height: 28 }} />,
     title: "Cloud & DevOps",
     desc: "AWS deployment, CI/CD pipelines and cloud infrastructure.",
     benefit: "99.9% uptime, zero downtime deploys",
+    accent: "#fbbf24",
+    glow: "rgba(251,191,36,0.18)",
   },
   {
-    icon: <Database className="w-6 h-6" />,
+    icon: <Database style={{ width: 28, height: 28 }} />,
     title: "Database Systems",
     desc: "MongoDB, PostgreSQL, MySQL and optimised database design.",
     benefit: "Fast queries at any scale",
+    accent: "#f472b6",
+    glow: "rgba(244,114,182,0.18)",
   },
   {
-    icon: <Globe className="w-6 h-6" />,
+    icon: <Globe style={{ width: 28, height: 28 }} />,
     title: "SEO & Web Solutions",
     desc: "SEO optimisation, domains, hosting and web management.",
     benefit: "More organic traffic, higher rankings",
+    accent: "#7951e5",
+    glow: "rgba(34,211,238,0.18)",
   },
   {
-    icon: <ShieldCheck className="w-6 h-6" />,
+    icon: <ShieldCheck style={{ width: 28, height: 28 }} />,
     title: "Cyber Security",
     desc: "Secure APIs, authentication systems and server protection.",
     benefit: "Your data stays fully protected",
+    accent: "#f87171",
+    glow: "rgba(248,113,113,0.18)",
   },
   {
-    icon: <Smartphone className="w-6 h-6" />,
+    icon: <Smartphone style={{ width: 28, height: 28 }} />,
     title: "Responsive Design",
     desc: "Mobile-first responsive websites and UX-focused design.",
     benefit: "Great experience on every device",
+    accent: "#fb923c",
+    glow: "rgba(251,146,60,0.18)",
   },
 ];
 
 const pricing = [
-  { name: "Landing Page",         price: "₹8,000",  delivery: "1–3 Days" },
-  { name: "Frontend Development", price: "₹15,000", delivery: "3–7 Days" },
-  { name: "Fullstack Application",price: "₹35,000", delivery: "7–20 Days" },
-  { name: "AI Agent",             price: "₹20,000", delivery: "5–15 Days" },
-  { name: "WhatsApp AI Bot",      price: "₹18,000", delivery: "4–10 Days" },
-  { name: "Ecommerce Website",    price: "₹30,000", delivery: "7–15 Days" },
-  { name: "SaaS Platform",        price: "₹60,000", delivery: "15–45 Days" },
-  { name: "Maintenance Support",  price: "₹5,000",  delivery: "Ongoing", perMonth: true },
+  { name: "Landing Page", price: 8000, delivery: "1–3 Days", perMonth: false },
+  { name: "Frontend Development", price: 15000, delivery: "3–7 Days", perMonth: false },
+  { name: "Fullstack Application", price: 35000, delivery: "7–20 Days", perMonth: false },
+  { name: "AI Agent", price: 20000, delivery: "5–15 Days", perMonth: false },
+  { name: "WhatsApp AI Bot", price: 18000, delivery: "4–10 Days", perMonth: false },
+  { name: "Ecommerce Website", price: 30000, delivery: "7–15 Days", perMonth: false },
+  { name: "SaaS Platform", price: 60000, delivery: "15–45 Days", perMonth: false },
+  { name: "Maintenance Support", price: 5000, delivery: "Ongoing", perMonth: true },
 ];
 
 const steps = [
   {
-    num: "1",
+    num: "01",
     title: "Discovery Call",
     desc: "We understand your goals, requirements, and budget. Free, no commitment, 30 minutes.",
   },
   {
-    num: "2",
+    num: "02",
     title: "Build & Test",
     desc: "We develop your solution, keep you updated, and test everything thoroughly before delivery.",
   },
   {
-    num: "3",
+    num: "03",
     title: "Launch & Support",
     desc: "We deploy your project live and provide ongoing support so nothing breaks after launch.",
   },
 ];
 
 const stats = [
-  { value: "10+",   label: "Projects delivered" },
-  { value: "100%",  label: "On-time delivery" },
-  { value: "5★",    label: "Client rating" },
-  { value: "Free",  label: "Initial consultation" },
+  { value: "10+", label: "Projects delivered" },
+  { value: "100%", label: "On-time delivery" },
+  { value: "5★", label: "Client rating" },
+  { value: "Free", label: "Initial consultation" },
 ];
 
 const testimonials = [
@@ -113,26 +128,28 @@ const testimonials = [
     initials: "SK",
     name: "Shiv K.",
     project: "Portfolio Website",
-    color: "sky",
-    quote:
-      "Delivered exactly what I wanted, fast and professional. The design looked better than I imagined.",
+    projectLink: null as string | null,
+    accent: "#38bdf8",
+    glow: "rgba(56,189,248,0.15)",
+    quote: "Delivered exactly what I wanted, fast and professional. The design looked better than I imagined.",
   },
   {
     initials: "MK",
     name: "Mr. Karan",
     project: "AI for Computer Centre",
-    color: "violet",
-    quote:
-      "The AI handles all our inquiries automatically now. Saves us hours every day. Highly recommended.",
+    projectLink: null as string | null,
+    accent: "#a78bfa",
+    glow: "rgba(167,139,250,0.15)",
+    quote: "The AI handles all our inquiries automatically now. Saves us hours every day. Highly recommended.",
   },
   {
     initials: "ME",
     name: "MACHMA Expo Team",
     project: "Exhibition Website",
     projectLink: "https://machmaexpo.com",
-    color: "indigo",
-    quote:
-      "Full website built and deployed in days. Clean, fast, and works perfectly on all devices. Exactly what our expo needed.",
+    accent: "#818cf8",
+    glow: "rgba(129,140,248,0.15)",
+    quote: "Full website built and deployed in days. Clean, fast, and works perfectly on all devices.",
   },
 ];
 
@@ -163,375 +180,703 @@ const faqs = [
   },
 ];
 
-// ─── COLOUR HELPERS ───────────────────────────────────────────────────────────
-
-const avatarColor: Record<string, string> = {
-  sky:    "bg-sky-400/10 text-sky-400",
-  violet: "bg-violet-400/10 text-violet-400",
-  indigo: "bg-indigo-400/10 text-indigo-400",
-};
-
-// ─── SUB-COMPONENTS ──────────────────────────────────────────────────────────
-
-function SectionBadge({ children }: { children: React.ReactNode }) {
+function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <span className="inline-block px-4 py-1.5 text-xs tracking-widest rounded-full border border-sky-400/30 bg-sky-400/10 text-sky-400 mb-4">
-      {children}
-    </span>
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
+      <span
+        style={{
+          fontSize: 11,
+          fontWeight: 800,
+          letterSpacing: "0.2em",
+          textTransform: "uppercase",
+          padding: "6px 16px",
+          borderRadius: 999,
+          border: "1px solid var(--section-border)",
+          background: "var(--section-bg)",
+          color: "var(--section-text)",
+        }}
+      >
+        {children}
+      </span>
+    </div>
   );
 }
 
-function GradientText({ children }: { children: React.ReactNode }) {
+function ServiceCard({ s }: { s: (typeof services)[0] }) {
   return (
-    <span className="bg-gradient-to-r from-sky-400 via-cyan-300 to-violet-400 bg-clip-text text-transparent">
-      {children}
-    </span>
-  );
-}
-
-function CTAButton({
-  href,
-  variant = "primary",
-  icon,
-  children,
-}: {
-  href: string;
-  variant?: "primary" | "outline";
-  icon: React.ReactNode;
-  children: React.ReactNode;
-}) {
-  const base =
-    "inline-flex items-center gap-2 px-6 py-3 rounded-xl text-sm font-medium transition-all duration-200 hover:-translate-y-0.5 active:scale-95";
-  const styles =
-    variant === "primary"
-      ? "bg-gradient-to-r from-sky-400 to-violet-500 text-white hover:opacity-90 shadow-lg shadow-sky-400/20"
-      : "border border-sky-400/40 text-sky-400 hover:bg-sky-400/10";
-
-  return (
-    <a href={href} className={`${base} ${styles}`} target="_blank" rel="noreferrer">
-      {icon}
-      {children}
-    </a>
+    <div
+      style={{
+        position: "relative",
+        borderRadius: 20,
+        border: "1px solid var(--border)",
+        backgroundColor: "var(--bg-card)",
+        backdropFilter: "blur(12px)",
+        padding: 28,
+        transition: "transform 0.25s, box-shadow 0.25s, border-color 0.25s",
+        cursor: "default",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-6px)";
+        el.style.boxShadow = `0 0 40px ${s.glow}`;
+        el.style.borderColor = `${s.accent}55`;
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(0)";
+        el.style.boxShadow = "none";
+        el.style.borderColor = "var(--border)";
+      }}
+    >
+      <div
+        style={{
+          width: 52,
+          height: 52,
+          borderRadius: 14,
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          background: `${s.accent}1a`,
+          color: s.accent,
+          marginBottom: 20,
+        }}
+      >
+        {s.icon}
+      </div>
+      <h3 style={{ fontSize: "1rem", fontWeight: 900, marginBottom: 8, color: "var(--text-high)" }}>{s.title}</h3>
+      <p style={{ fontSize: "0.875rem", color: "var(--text-mid)", lineHeight: 1.65, marginBottom: 12 }}>{s.desc}</p>
+      <p
+        style={{
+          fontSize: "0.78rem",
+          color: s.accent,
+          fontWeight: 700,
+          borderTop: "1px solid var(--border)",
+          paddingTop: 12,
+          display: "flex",
+          alignItems: "center",
+          gap: 6,
+        }}
+      >
+        <Check style={{ width: 14, height: 14 }} />
+        {s.benefit}
+      </p>
+    </div>
   );
 }
 
 function FaqItem({ q, a }: { q: string; a: string }) {
   const [open, setOpen] = useState(false);
+
   return (
-    <div className="border-b border-[var(--border)] py-5">
+    <div style={{ borderRadius: 16, border: "1px solid var(--border)", background: "var(--bg-card)", overflow: "hidden" }}>
       <button
         onClick={() => setOpen(!open)}
-        className="w-full flex items-center justify-between text-left gap-4 group"
+        style={{
+          width: "100%",
+          display: "flex",
+          justifyContent: "space-between",
+          alignItems: "center",
+          padding: "20px 24px",
+          background: "none",
+          border: "none",
+          cursor: "pointer",
+          color: "var(--text-high)",
+          fontWeight: 700,
+          fontSize: "0.9rem",
+          textAlign: "left",
+          gap: 12,
+          fontFamily: "'Space Grotesk', ui-sans-serif",
+        }}
       >
-        <span className="text-base font-medium group-hover:text-sky-400 transition-colors">
-          {q}
-        </span>
+        {q}
         <ChevronDown
-          className={`w-4 h-4 text-[var(--muted)] shrink-0 transition-transform duration-200 ${
-            open ? "rotate-180" : ""
-          }`}
+          style={{
+            width: 18,
+            flexShrink: 0,
+            transform: open ? "rotate(180deg)" : "rotate(0deg)",
+            transition: "transform 0.2s",
+            color: "var(--accent)",
+          }}
         />
       </button>
       {open && (
-        <p className="mt-3 text-sm text-[var(--muted)] leading-relaxed pr-8">
+        <div
+          style={{
+            padding: "0 24px 20px",
+            color: "var(--text-mid)",
+            fontSize: "0.875rem",
+            lineHeight: 1.7,
+            borderTop: "1px solid var(--border)",
+            paddingTop: 16,
+          }}
+        >
           {a}
-        </p>
+        </div>
       )}
     </div>
   );
 }
 
-// ─── PAGE ─────────────────────────────────────────────────────────────────────
-
 export default function ServicesPage() {
+  const dividerStyle = { borderTop: "1px solid var(--border)" };
+
   return (
-    <main className="min-h-screen transition-colors duration-300 overflow-hidden">
+    <main
+      style={{
+        minHeight: "100vh",
+        backgroundColor: "var(--bg)",
+        color: "var(--text-high)",
+        fontFamily: "'Space Grotesk', ui-sans-serif",
+        transition: "background-color 0.3s, color 0.3s",
+      }}
+    >
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
+        <div style={{ position: "absolute", top: 0, left: "25%", width: 600, height: 600, borderRadius: "50%", background: "var(--ambient-a)", filter: "blur(120px)" }} />
+        <div style={{ position: "absolute", bottom: "33%", right: "25%", width: 500, height: 500, borderRadius: "50%", background: "var(--ambient-b)", filter: "blur(100px)" }} />
+        <div style={{ position: "absolute", top: "50%", left: 0, width: 300, height: 300, borderRadius: "50%", background: "var(--ambient-c)", filter: "blur(80px)" }} />
+        <div
+          style={{
+            position: "absolute",
+            inset: 0,
+            opacity: 0.03,
+            backgroundImage:
+              "repeating-linear-gradient(0deg,transparent,transparent 39px,var(--grid-color) 39px,var(--grid-color) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,var(--grid-color) 39px,var(--grid-color) 40px)",
+          }}
+        />
+      </div>
 
-      {/* ── HERO ── */}
-      <section className="relative px-6 md:px-16 py-28 text-center border-b border-[var(--border)] overflow-hidden">
-        <div className="absolute top-0 left-0 w-[400px] h-[400px] bg-sky-400/20 blur-3xl rounded-full pointer-events-none" />
-        <div className="absolute bottom-0 right-0 w-[400px] h-[400px] bg-violet-400/20 blur-3xl rounded-full pointer-events-none" />
+      <div style={{ position: "relative", zIndex: 1 }}>
+        <section
+          style={{
+            position: "relative",
+            padding: "9rem 4rem 7rem",
+            textAlign: "center",
+            borderBottom: "1px solid var(--border)",
+            overflow: "hidden",
+          }}
+        >
+          <div style={{ position: "absolute", top: -80, right: -80, width: 500, height: 500, borderRadius: "50%", background: "var(--ambient-a)", filter: "blur(100px)", pointerEvents: "none" }} />
+          <div style={{ position: "absolute", bottom: -60, left: -60, width: 400, height: 400, borderRadius: "50%", background: "var(--ambient-c)", filter: "blur(80px)", pointerEvents: "none" }} />
 
-        <SectionBadge>PREMIUM SERVICES</SectionBadge>
+          <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto" }}>
+            <SectionLabel>Premium Services</SectionLabel>
 
-        <h1 className="text-5xl md:text-7xl font-black leading-tight">
-          We build{" "}
-          <GradientText>websites, AI systems</GradientText>
-          <br />
-          that grow your business
-        </h1>
-
-        <p className="mt-6 max-w-2xl mx-auto text-lg text-[var(--muted)]">
-          From landing pages to fullstack SaaS — fast delivery, honest pricing,
-          and real support after launch.
-        </p>
-
-        <div className="mt-10 flex flex-wrap gap-4 justify-center">
-          <CTAButton
-            href="https://wa.me/919876543210"
-            variant="primary"
-            icon={<MessageCircle className="w-4 h-4" />}
-          >
-            Chat on WhatsApp
-          </CTAButton>
-          <CTAButton
-            href="tel:+919876543210"
-            variant="outline"
-            icon={<Phone className="w-4 h-4" />}
-          >
-            Book a Free Call
-          </CTAButton>
-          <CTAButton
-            href="mailto:hello@yourdomain.com"
-            variant="outline"
-            icon={<Mail className="w-4 h-4" />}
-          >
-            Send an Email
-          </CTAButton>
-        </div>
-      </section>
-
-      {/* ── SERVICES GRID ── */}
-      <section className="px-6 md:px-16 py-24">
-        <div className="max-w-7xl mx-auto">
-          <SectionBadge>WHAT WE BUILD</SectionBadge>
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
-            Services built <GradientText>for results</GradientText>
-          </h2>
-          <p className="text-[var(--muted)] mb-14 max-w-xl">
-            Every service is focused on one thing — growing your business faster.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-2 xl:grid-cols-4 gap-6">
-            {services.map((s, i) => (
-              <div
-                key={i}
-                className="group rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 transition-all duration-300 hover:-translate-y-2 hover:border-sky-400/40 hover:shadow-[0_0_40px_rgba(56,189,248,0.12)]"
+            <h1
+              style={{
+                fontSize: "clamp(2.8rem,8vw,5.2rem)",
+                fontWeight: 900,
+                lineHeight: 0.95,
+                marginBottom: 24,
+                letterSpacing: "-0.02em",
+              }}
+            >
+              We build{" "}
+              <span
+                style={{
+                  background: "linear-gradient(135deg,#38bdf8 0%,#67e8f9 45%,#a78bfa 100%)",
+                  WebkitBackgroundClip: "text",
+                  WebkitTextFillColor: "transparent",
+                  backgroundClip: "text",
+                }}
               >
-                <div className="w-14 h-14 flex items-center justify-center rounded-2xl bg-sky-400/10 text-sky-400 mb-5 group-hover:scale-110 transition-transform">
-                  {s.icon}
+                websites & AI systems
+              </span>
+              <br />
+              that grow your business
+            </h1>
+
+            <div style={{ maxWidth: 420, margin: "0 auto 20px", textAlign: "left", display: "inline-block" }}>
+              {["Fast delivery, honest pricing", "From landing pages to fullstack SaaS", "Real support after launch"].map((point, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
+                  <Check style={{ width: 18, color: "var(--accent)", flexShrink: 0 }} />
+                  <span style={{ color: "var(--text-mid)", fontSize: "1rem" }}>{point}</span>
                 </div>
-                <h3 className="text-lg font-bold mb-2">{s.title}</h3>
-                <p className="text-[var(--muted)] text-sm leading-relaxed mb-4">
-                  {s.desc}
-                </p>
-                <p className="text-sky-400 text-xs flex items-center gap-1.5">
-                  <Check className="w-3.5 h-3.5 shrink-0" />
-                  {s.benefit}
-                </p>
-              </div>
-            ))}
+              ))}
+            </div>
+
+            <p style={{ color: "var(--text-low)", marginBottom: 32, fontSize: "0.9rem" }}>
+              Free consultation. Transparent pricing. No surprises.
+            </p>
+
+            <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
+              <a
+                href="https://wa.me/919876543210"
+                target="_blank"
+                rel="noreferrer"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                  color: "#fff",
+                  fontWeight: 800,
+                  fontSize: 14,
+                  padding: "14px 28px",
+                  borderRadius: 18,
+                  border: "none",
+                  cursor: "pointer",
+                  textDecoration: "none",
+                  boxShadow: "0 4px 20px rgba(56,189,248,0.25)",
+                }}
+              >
+                <MessageCircle style={{ width: 16, height: 16 }} />
+                Chat on WhatsApp
+              </a>
+              <a
+                href="tel:+919876543210"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  border: "1px solid var(--border)",
+                  background: "transparent",
+                  color: "var(--text-mid)",
+                  fontWeight: 700,
+                  fontSize: 14,
+                  padding: "14px 28px",
+                  borderRadius: 18,
+                  cursor: "pointer",
+                  textDecoration: "none",
+                }}
+              >
+                <Phone style={{ width: 16, height: 16 }} />
+                Book a Free Call
+              </a>
+              <a
+                href="mailto:hello@yourdomain.com"
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  border: "1px solid var(--border)",
+                  background: "transparent",
+                  color: "var(--text-mid)",
+                  fontWeight: 700,
+                  fontSize: 14,
+                  padding: "14px 28px",
+                  borderRadius: 18,
+                  cursor: "pointer",
+                  textDecoration: "none",
+                }}
+              >
+                <Mail style={{ width: 16, height: 16 }} />
+                Send an Email
+              </a>
+            </div>
           </div>
-        </div>
-      </section>
+        </section>
 
-      {/* ── PRICING ── */}
-      <section className="px-6 md:px-16 py-24 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <SectionBadge>TRANSPARENT PRICING</SectionBadge>
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
-            Starting prices,{" "}
-            <GradientText>no surprises</GradientText>
-          </h2>
-          <p className="text-[var(--muted)] mb-14 max-w-xl">
-            All prices are starting rates. Advanced features are scoped and
-            quoted honestly before we begin.
-          </p>
-
-          <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
-            {pricing.map((p, i) => (
-              <div
-                key={i}
-                className="flex flex-col justify-between rounded-2xl border border-[var(--border)] bg-[var(--card)] p-6 hover:border-sky-400/40 transition-colors"
-              >
-                <div>
-                  <p className="text-base font-semibold mb-1">{p.name}</p>
-                  <p className="flex items-center gap-1.5 text-xs text-[var(--muted)] mb-4">
-                    <Clock className="w-3.5 h-3.5 shrink-0" />
-                    {p.delivery}
-                  </p>
-                </div>
-                <div>
-                  <p className="text-2xl font-black bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent">
-                    {p.price}
-                  </p>
-                  <p className="text-xs text-[var(--muted)]">
-                    {p.perMonth ? "/month" : "starting from"}
-                  </p>
-                </div>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── HOW IT WORKS ── */}
-      <section className="px-6 md:px-16 py-24 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <SectionBadge>HOW IT WORKS</SectionBadge>
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
-            From idea to launch{" "}
-            <GradientText>in 3 steps</GradientText>
-          </h2>
-          <p className="text-[var(--muted)] mb-14 max-w-xl">
-            Simple, transparent process — you always know exactly what happens
-            next.
-          </p>
-
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {steps.map((s, i) => (
-              <div
-                key={i}
-                className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-8 relative overflow-hidden group hover:border-sky-400/40 transition-colors"
-              >
-                {/* large background number */}
-                <span className="absolute -top-4 -right-2 text-[120px] font-black text-sky-400/5 select-none pointer-events-none group-hover:text-sky-400/10 transition-colors">
-                  {s.num}
+        <section style={{ padding: "6rem 4rem" }}>
+          <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <SectionLabel>What We Build</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                Services built{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  for results
                 </span>
-                <div className="w-10 h-10 rounded-full bg-sky-400/10 text-sky-400 flex items-center justify-center text-sm font-bold mb-5">
-                  {s.num}
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>Every service is focused on one thing — growing your business faster.</p>
+            </div>
+
+            <div
+              style={{
+                display: "grid",
+                gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))",
+                gap: 20,
+              }}
+            >
+              {services.map((s, i) => (
+                <ServiceCard key={i} s={s} />
+              ))}
+            </div>
+
+            <div style={{ textAlign: "center", marginTop: 40 }}>
+              <button
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                  color: "#fff",
+                  fontWeight: 800,
+                  padding: "14px 32px",
+                  borderRadius: 18,
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "'Space Grotesk', ui-sans-serif",
+                }}
+              >
+                Book a Free Consultation <ArrowRight style={{ width: 16 }} />
+              </button>
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "6rem 4rem", ...dividerStyle, backgroundColor: "var(--bg-subtle)" }}>
+          <div style={{ maxWidth: 900, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 40 }}>
+              <SectionLabel>Transparent Pricing</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                Starting prices,{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  no surprises
+                </span>
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>
+                All prices are starting rates. Advanced features are scoped and quoted honestly before we begin.
+              </p>
+            </div>
+
+            <div
+              style={{
+                borderRadius: 24,
+                border: "1px solid var(--border)",
+                background: "var(--bg-card)",
+                overflow: "hidden",
+              }}
+            >
+              <div
+                style={{
+                  display: "grid",
+                  gridTemplateColumns: "1fr auto auto",
+                  background: "var(--table-head)",
+                  borderBottom: "1px solid var(--border)",
+                  padding: "16px 28px",
+                  gap: 16,
+                }}
+              >
+                <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.2em", color: "var(--text-low)", textTransform: "uppercase" }}>Service</span>
+                <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.2em", color: "var(--text-low)", textTransform: "uppercase", textAlign: "center", minWidth: 120 }}>Starting Price</span>
+                <span style={{ fontSize: 11, fontWeight: 800, letterSpacing: "0.2em", color: "var(--text-low)", textTransform: "uppercase", textAlign: "right", minWidth: 100 }}>Delivery</span>
+              </div>
+
+              {pricing.map((item, i) => (
+                <div
+                  key={i}
+                  style={{
+                    display: "grid",
+                    gridTemplateColumns: "1fr auto auto",
+                    alignItems: "center",
+                    padding: "20px 28px",
+                    gap: 16,
+                    borderBottom: i < pricing.length - 1 ? "1px solid var(--border)" : "none",
+                    background: i % 2 !== 0 ? "var(--row-alt)" : "transparent",
+                  }}
+                >
+                  <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{item.name}</span>
+                  <div style={{ textAlign: "center", minWidth: 120 }}>
+                    <span
+                      style={{
+                        background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                        WebkitBackgroundClip: "text",
+                        WebkitTextFillColor: "transparent",
+                        fontWeight: 900,
+                        fontSize: "1.15rem",
+                      }}
+                    >
+                      ₹{item.price.toLocaleString()}
+                    </span>
+                    <span style={{ color: "var(--text-low)", fontSize: "0.75rem", marginLeft: 4 }}>
+                      {item.perMonth ? "/mo" : ""}
+                    </span>
+                  </div>
+                  <div style={{ textAlign: "right", minWidth: 100 }}>
+                    <span
+                      style={{
+                        display: "inline-flex",
+                        alignItems: "center",
+                        gap: 5,
+                        padding: "4px 12px",
+                        borderRadius: 999,
+                        fontSize: "0.75rem",
+                        fontWeight: 700,
+                        background: "rgba(56,189,248,0.10)",
+                        border: "1px solid rgba(56,189,248,0.20)",
+                        color: "var(--accent)",
+                      }}
+                    >
+                      <Clock style={{ width: 11, height: 11 }} />
+                      {item.delivery}
+                    </span>
+                  </div>
                 </div>
-                <h3 className="text-xl font-bold mb-3">{s.title}</h3>
-                <p className="text-[var(--muted)] text-sm leading-relaxed">
-                  {s.desc}
-                </p>
-              </div>
-            ))}
-          </div>
-        </div>
-      </section>
+              ))}
+            </div>
 
-      {/* ── PROOF ── */}
-      <section className="px-6 md:px-16 py-24 border-t border-[var(--border)]">
-        <div className="max-w-7xl mx-auto">
-          <SectionBadge>PROOF</SectionBadge>
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
-            Real projects,{" "}
-            <GradientText>real results</GradientText>
-          </h2>
-          <p className="text-[var(--muted)] mb-14 max-w-xl">
-            Numbers and words from clients we've worked with.
-          </p>
+            <p style={{ textAlign: "center", color: "var(--text-low)", marginTop: 14, fontSize: "0.82rem" }}>
+              Advanced features and custom projects are scoped and quoted transparently before we begin.
+            </p>
 
-          {/* Stats */}
-          <div className="grid grid-cols-2 md:grid-cols-4 gap-4 mb-10">
-            {stats.map((s, i) => (
-              <div
-                key={i}
-                className="rounded-2xl bg-[var(--card)] border border-[var(--border)] p-6 text-center"
+            <div style={{ textAlign: "center", marginTop: 32 }}>
+              <button
+                style={{
+                  display: "inline-flex",
+                  alignItems: "center",
+                  gap: 8,
+                  background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                  color: "#fff",
+                  fontWeight: 800,
+                  padding: "14px 32px",
+                  borderRadius: 18,
+                  border: "none",
+                  cursor: "pointer",
+                  fontFamily: "'Space Grotesk', ui-sans-serif",
+                }}
               >
-                <p className="text-3xl font-black bg-gradient-to-r from-sky-400 to-violet-400 bg-clip-text text-transparent mb-1">
-                  {s.value}
-                </p>
-                <p className="text-xs text-[var(--muted)]">{s.label}</p>
-              </div>
-            ))}
+                Get a Custom Quote <ArrowRight style={{ width: 16 }} />
+              </button>
+            </div>
           </div>
+        </section>
 
-          {/* Testimonials */}
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            {testimonials.map((t, i) => (
-              <div
-                key={i}
-                className="rounded-3xl border border-[var(--border)] bg-[var(--card)] p-7 flex flex-col gap-4 hover:border-sky-400/30 transition-colors"
-              >
-                <div className="flex items-center gap-3">
-                  <div
-                    className={`w-10 h-10 rounded-full flex items-center justify-center text-sm font-bold ${avatarColor[t.color]}`}
+        <section style={{ padding: "6rem 4rem", ...dividerStyle }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <SectionLabel>How It Works</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                From idea to launch{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  in 3 steps
+                </span>
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>Simple, transparent process so you always know exactly what happens next.</p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
+              {steps.map((s, i) => (
+                <div
+                  key={i}
+                  style={{
+                    borderRadius: 20,
+                    border: "1px solid var(--border)",
+                    background: "var(--bg-card)",
+                    padding: 28,
+                    position: "relative",
+                    overflow: "hidden",
+                  }}
+                >
+                  <span
+                    style={{
+                      position: "absolute",
+                      top: -10,
+                      right: -5,
+                      fontSize: "7rem",
+                      fontWeight: 900,
+                      lineHeight: 1,
+                      background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                      opacity: 0.07,
+                      pointerEvents: "none",
+                      userSelect: "none",
+                    }}
                   >
-                    {t.initials}
+                    {s.num}
+                  </span>
+                  <div style={{ width: 40, height: 40, borderRadius: "50%", background: "rgba(56,189,248,0.10)", color: "var(--accent)", display: "flex", alignItems: "center", justifyContent: "center", fontWeight: 900, fontSize: "0.9rem", marginBottom: 20 }}>
+                    {s.num}
                   </div>
-                  <div>
-                    <p className="text-sm font-semibold">{t.name}</p>
-                    <p className="text-xs text-[var(--muted)]">
-                      {t.projectLink ? (
-                        <a
-                          href={t.projectLink}
-                          target="_blank"
-                          rel="noreferrer"
-                          className="text-sky-400 hover:underline"
-                        >
-                          {t.project} ↗
-                        </a>
-                      ) : (
-                        t.project
-                      )}
-                    </p>
-                  </div>
-                  <span className="ml-auto text-amber-400 text-sm">★★★★★</span>
+                  <h3 style={{ fontSize: "1.05rem", fontWeight: 900, marginBottom: 10 }}>{s.title}</h3>
+                  <p style={{ fontSize: "0.875rem", color: "var(--text-mid)", lineHeight: 1.65 }}>{s.desc}</p>
                 </div>
-                <p className="text-sm text-[var(--muted)] leading-relaxed">
-                  "{t.quote}"
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "6rem 4rem", ...dividerStyle, backgroundColor: "var(--bg-subtle)" }}>
+          <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <SectionLabel>Proof & Stats</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                Real projects,{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  real results
+                </span>
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>Numbers and words from clients we’ve worked with.</p>
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, marginBottom: 32 }}>
+              {stats.map((s, i) => (
+                <div
+                  key={i}
+                  style={{
+                    borderRadius: 20,
+                    border: "1px solid var(--border)",
+                    background: "var(--bg-card)",
+                    padding: "28px 20px",
+                    textAlign: "center",
+                  }}
+                >
+                  <p style={{ fontSize: "2rem", fontWeight: 900, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", marginBottom: 4 }}>
+                    {s.value}
+                  </p>
+                  <p style={{ fontSize: "0.8rem", color: "var(--text-low)" }}>{s.label}</p>
+                </div>
+              ))}
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 20 }}>
+              {testimonials.map((t, i) => (
+                <div
+                  key={i}
+                  style={{
+                    borderRadius: 20,
+                    border: "1px solid var(--border)",
+                    background: "var(--bg-card)",
+                    padding: 28,
+                    display: "flex",
+                    flexDirection: "column",
+                    gap: 16,
+                  }}
+                >
+                  <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                    <div
+                      style={{
+                        width: 40,
+                        height: 40,
+                        borderRadius: "50%",
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        fontSize: "0.8rem",
+                        fontWeight: 900,
+                        background: `${t.accent}1a`,
+                        color: t.accent,
+                        flexShrink: 0,
+                      }}
+                    >
+                      {t.initials}
+                    </div>
+                    <div style={{ flex: 1 }}>
+                      <p style={{ fontSize: "0.9rem", fontWeight: 700 }}>{t.name}</p>
+                      <p style={{ fontSize: "0.75rem", color: "var(--text-low)" }}>{t.project}</p>
+                      {t.projectLink ? (
+                        <a href={t.projectLink} target="_blank" rel="noreferrer" style={{ color: t.accent, textDecoration: "none" }}>
+                          Visit project
+                        </a>
+                      ) : null}
+                    </div>
+                  </div>
+                  <div style={{ color: "#fbbf24", fontSize: "0.85rem" }}>★★★★★</div>
+                  <p style={{ fontSize: "0.875rem", color: "var(--text-mid)", lineHeight: 1.7 }}>{t.quote}</p>
+                </div>
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "6rem 4rem" }}>
+          <div style={{ maxWidth: 780, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 56 }}>
+              <SectionLabel>FAQ</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                Common questions{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  answered
+                </span>
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>Still have questions? Just message us — we reply fast.</p>
+            </div>
+
+            <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
+              {faqs.map((f, i) => (
+                <FaqItem key={i} q={f.q} a={f.a} />
+              ))}
+            </div>
+          </div>
+        </section>
+
+        <section style={{ padding: "7rem 4rem", ...dividerStyle, backgroundColor: "var(--bg-subtle)" }}>
+          <div style={{ maxWidth: 800, margin: "0 auto" }}>
+            <div
+              style={{
+                position: "relative",
+                borderRadius: 32,
+                border: "1px solid rgba(56,189,248,0.20)",
+                background: "linear-gradient(135deg,rgba(56,189,248,0.06),rgba(167,139,250,0.04),var(--bg-card))",
+                padding: "5rem 3rem",
+                textAlign: "center",
+                overflow: "hidden",
+              }}
+            >
+              <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: "radial-gradient(ellipse,rgba(56,189,248,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
+              <div style={{ position: "relative", zIndex: 1 }}>
+                <Rocket style={{ width: 36, height: 36, color: "var(--accent)", margin: "0 auto 24px", display: "block" }} />
+                <SectionLabel>Start Today</SectionLabel>
+                <h2 style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, lineHeight: 1.15, marginBottom: 20, marginTop: 8 }}>
+                  Let’s build your next{" "}
+                  <span
+                    style={{
+                      background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                      WebkitBackgroundClip: "text",
+                      WebkitTextFillColor: "transparent",
+                      backgroundClip: "text",
+                    }}
+                  >
+                    big project together
+                  </span>
+                </h2>
+                <p style={{ color: "var(--text-mid)", maxWidth: 480, margin: "0 auto 36px", lineHeight: 1.7 }}>
+                  Free consultation. Honest pricing. Fast delivery. No surprises.
                 </p>
+                <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
+                  <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "16px 32px", borderRadius: 18, border: "none", cursor: "pointer", textDecoration: "none", boxShadow: "0 4px 20px rgba(56,189,248,0.30)" }}>
+                    <MessageCircle style={{ width: 18, height: 18 }} />
+                    Chat on WhatsApp
+                  </a>
+                  <a href="mailto:hello@yourdomain.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
+                    <Mail style={{ width: 18, height: 18 }} />
+                    Send an Email
+                  </a>
+                  <a href="/contact" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
+                    <Rocket style={{ width: 18, height: 18 }} />
+                    Start Your Project
+                  </a>
+                </div>
               </div>
-            ))}
+            </div>
           </div>
-        </div>
-      </section>
-
-      {/* ── FAQ ── */}
-      <section className="px-6 md:px-16 py-24 border-t border-[var(--border)]">
-        <div className="max-w-3xl mx-auto">
-          <SectionBadge>FAQ</SectionBadge>
-          <h2 className="text-4xl md:text-5xl font-black mb-4">
-            Common questions{" "}
-            <GradientText>answered</GradientText>
-          </h2>
-          <p className="text-[var(--muted)] mb-10">
-            Still have questions? Just message us — we reply fast.
-          </p>
-          <div>
-            {faqs.map((f, i) => (
-              <FaqItem key={i} q={f.q} a={f.a} />
-            ))}
-          </div>
-        </div>
-      </section>
-
-      {/* ── FINAL CTA ── */}
-      <section className="px-6 md:px-16 py-24">
-        <div className="max-w-5xl mx-auto text-center p-14 md:p-20 rounded-[40px] border border-[var(--border)] bg-gradient-to-br from-sky-400/10 to-violet-400/10 backdrop-blur-xl relative overflow-hidden">
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[600px] h-[300px] bg-sky-400/10 blur-3xl rounded-full pointer-events-none" />
-
-          <SectionBadge>START TODAY</SectionBadge>
-
-          <h2 className="text-4xl md:text-6xl font-black leading-tight mt-2 mb-6">
-            Let's build your next
-            <span className="block">
-              <GradientText>big project together</GradientText>
-            </span>
-          </h2>
-
-          <p className="text-[var(--muted)] max-w-xl mx-auto mb-10">
-            Free consultation. Honest pricing. Fast delivery. No surprises.
-          </p>
-
-          <div className="flex flex-wrap gap-4 justify-center">
-            <CTAButton
-              href="https://wa.me/919876543210"
-              variant="primary"
-              icon={<MessageCircle className="w-4 h-4" />}
-            >
-              Chat on WhatsApp
-            </CTAButton>
-            <CTAButton
-              href="mailto:hello@yourdomain.com"
-              variant="outline"
-              icon={<Mail className="w-4 h-4" />}
-            >
-              Send an Email
-            </CTAButton>
-            <CTAButton
-              href="#"
-              variant="outline"
-              icon={<Rocket className="w-4 h-4" />}
-            >
-              Start Your Project
-            </CTAButton>
-          </div>
-        </div>
-      </section>
-
+        </section>
+      </div>
     </main>
   );
 }

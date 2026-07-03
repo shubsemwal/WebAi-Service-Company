@@ -198,7 +198,7 @@ export default function PricingPage() {
   return (
     <main
       className="min-h-screen bg-[#080B14] text-white"
-      style={{ fontFamily: "'DM Sans', 'Sora', sans-serif" }}
+      style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}
     >
       {/* ── Ambient background ─────────────────────────────────────── */}
       <div className="fixed inset-0 pointer-events-none overflow-hidden">
@@ -221,8 +221,8 @@ export default function PricingPage() {
           <SectionLabel>Transparent Pricing</SectionLabel>
 
           <h1
-            className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.95] tracking-tight"
-            style={{ fontFamily: "'Sora', sans-serif" }}
+            className="text-5xl md:text-7xl lg:text-8x font-black mb-6 leading-[0.95] tracking-tight"
+            style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}
           >
             Honest Prices.
             <br />
@@ -284,7 +284,7 @@ export default function PricingPage() {
         {/* ── 2. SERVICE PRICING TABLE ─────────────────────────────── */}
         <section className="mb-32">
           <SectionLabel>Individual Services</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             Service Pricing
           </h2>
           <p className="text-slate-400 text-center mb-10 max-w-xl mx-auto">
@@ -347,7 +347,7 @@ export default function PricingPage() {
         {/* ── 3. WHAT'S INCLUDED ───────────────────────────────────── */}
         <section className="mb-32">
           <SectionLabel>Deliverables</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             What's Included
           </h2>
           <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
@@ -452,7 +452,7 @@ export default function PricingPage() {
         {/* ── 4. PACKAGES ──────────────────────────────────────────── */}
         <section id="packages" className="mb-32">
           <SectionLabel>Package Plans</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             Pick Your Plan
           </h2>
           <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
@@ -514,7 +514,7 @@ export default function PricingPage() {
         {/* ── 5. COMPARISON TABLE ──────────────────────────────────── */}
         <section className="mb-32">
           <SectionLabel>Compare Plans</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             Side-by-Side Comparison
           </h2>
           <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
@@ -560,7 +560,7 @@ export default function PricingPage() {
         {/* ── 6. WHAT AFFECTS PRICE ────────────────────────────────── */}
         <section className="mb-32">
           <SectionLabel>Pricing Explained</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             What Affects Your Price
           </h2>
           <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
@@ -586,7 +586,7 @@ export default function PricingPage() {
         {/* ── 7. FAQ ───────────────────────────────────────────────── */}
         <section className="mb-32">
           <SectionLabel>FAQ</SectionLabel>
-          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Sora', sans-serif" }}>
+          <h2 className="text-4xl md:text-5xl font-black text-center mb-4" style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}>
             Pricing Questions
           </h2>
           <p className="text-slate-400 text-center mb-14 max-w-xl mx-auto">
@@ -637,7 +637,7 @@ export default function PricingPage() {
                 <SectionLabel>Free Estimate</SectionLabel>
                 <h2
                   className="text-4xl md:text-5xl font-black mb-5 leading-tight"
-                  style={{ fontFamily: "'Sora', sans-serif" }}
+                  style={{ fontFamily: "'Space Grotesk', ui-sans-serif" }}
                 >
                   Get Your
                   <br />

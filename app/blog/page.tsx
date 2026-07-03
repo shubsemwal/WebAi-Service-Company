@@ -3,6 +3,21 @@
 import { useState } from "react";
 import { ArrowRight, Clock, Calendar, User, TrendingUp, Mail, ChevronRight, Tag } from "lucide-react";
 
+// ── CSS VARIABLES FROM NAVBAR ──
+// These must match your globals.css and inherit from [data-theme]
+const V = {
+  bg:          "var(--bg)",
+  bgCard:      "var(--bg-card)",
+  bgHover:     "var(--bg-hover)",
+  textHigh:    "var(--text-high)",
+  textMid:     "var(--text-mid)",
+  textLow:     "var(--text-low)",
+  border:      "var(--border)",
+  borderFocus: "var(--border-focus)",
+  shadow:      "var(--shadow)",
+  glowIndigo:  "var(--glow-indigo)",
+};
+
 // ─── DATA ──────────────────────────────────────────────────────────────────────
 
 const categories = ["All", "AI", "Web Dev", "Cloud", "Startup", "DevOps"];
@@ -16,9 +31,6 @@ const featured = {
   readTime: "8 min read",
   date: "May 22, 2026",
   author: "Aryan Mehta",
-  gradient: "from-indigo-600/30 via-violet-600/20 to-emerald-500/10",
-  accentColor: "text-indigo-400",
-  tagColor: "bg-indigo-500/15 border-indigo-400/30 text-indigo-400",
 };
 
 const posts = [
@@ -30,9 +42,6 @@ const posts = [
     date: "May 18, 2026",
     author: "Priya Sharma",
     tags: ["React", "Next.js"],
-    gradient: "from-violet-500/20 to-pink-500/10",
-    accentColor: "text-violet-400",
-    tagColor: "bg-violet-500/15 border-violet-400/30 text-violet-400",
   },
   {
     category: "Cloud",
@@ -42,9 +51,6 @@ const posts = [
     date: "May 14, 2026",
     author: "Rahul Kapoor",
     tags: ["AWS", "DevOps"],
-    gradient: "from-sky-500/20 to-teal-500/10",
-    accentColor: "text-sky-400",
-    tagColor: "bg-sky-500/15 border-sky-400/30 text-sky-400",
   },
   {
     category: "Startup",
@@ -54,9 +60,6 @@ const posts = [
     date: "May 10, 2026",
     author: "Aryan Mehta",
     tags: ["Startup", "Strategy"],
-    gradient: "from-amber-500/20 to-orange-500/10",
-    accentColor: "text-amber-400",
-    tagColor: "bg-amber-500/15 border-amber-400/30 text-amber-400",
   },
   {
     category: "AI",
@@ -66,9 +69,6 @@ const posts = [
     date: "May 7, 2026",
     author: "Priya Sharma",
     tags: ["AI", "LLMs"],
-    gradient: "from-indigo-500/20 to-blue-500/10",
-    accentColor: "text-indigo-400",
-    tagColor: "bg-indigo-500/15 border-indigo-400/30 text-indigo-400",
   },
   {
     category: "DevOps",
@@ -78,9 +78,6 @@ const posts = [
     date: "May 2, 2026",
     author: "Rahul Kapoor",
     tags: ["Docker", "CI/CD"],
-    gradient: "from-emerald-500/20 to-green-500/10",
-    accentColor: "text-emerald-400",
-    tagColor: "bg-emerald-500/15 border-emerald-400/30 text-emerald-400",
   },
   {
     category: "Web Dev",
@@ -90,9 +87,24 @@ const posts = [
     date: "Apr 28, 2026",
     author: "Aryan Mehta",
     tags: ["TypeScript", "Dev"],
-    gradient: "from-blue-500/20 to-cyan-500/10",
-    accentColor: "text-blue-400",
-    tagColor: "bg-blue-500/15 border-blue-400/30 text-blue-400",
+  },
+  {
+    category: "Cloud",
+    title: "Kubernetes Best Practices for 2026",
+    desc: "Advanced patterns for managing containerized applications at scale with zero downtime.",
+    readTime: "8 min read",
+    date: "Apr 24, 2026",
+    author: "Rahul Kapoor",
+    tags: ["Kubernetes", "DevOps"],
+  },
+  {
+    category: "AI",
+    title: "Building Custom Vision Models with TensorFlow",
+    desc: "Train and deploy computer vision models that work in production with real-world accuracy.",
+    readTime: "10 min read",
+    date: "Apr 20, 2026",
+    author: "Priya Sharma",
+    tags: ["AI", "ML"],
   },
 ];
 
@@ -107,8 +119,20 @@ const trending = [
 
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
-    <div className="flex items-center justify-center mb-5">
-      <span className="text-xs font-bold uppercase tracking-[0.2em] text-indigo-400 bg-indigo-500/10 border border-indigo-400/20 px-4 py-1.5 rounded-full">
+    <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: "20px" }}>
+      <span
+        style={{
+          fontSize: "11px",
+          fontWeight: "700",
+          letterSpacing: "0.15em",
+          textTransform: "uppercase",
+          color: "#6366f1",
+          backgroundColor: "rgba(99, 102, 241, 0.1)",
+          border: `1px solid rgba(99, 102, 241, 0.2)`,
+          padding: "6px 16px",
+          borderRadius: "20px",
+        }}
+      >
         {children}
       </span>
     </div>
@@ -132,48 +156,170 @@ export default function BlogPage() {
 
   return (
     <main
-      className="min-h-screen bg-[#080B14] text-white pt-[68px]"
-      style={{ fontFamily: "'DM Sans', 'Sora', sans-serif" }}
+      style={{
+        minHeight: "100vh",
+        backgroundColor: V.bg,
+        color: V.textHigh,
+        paddingTop: "68px",
+        fontFamily: "'Space Grotesk', ui-sans-serif",
+        transition: "background-color 0.3s, color 0.3s",
+      }}
     >
-      {/* ── Ambient background ─────────────────────────────────────── */}
-      <div className="fixed inset-0 pointer-events-none overflow-hidden">
-        <div className="absolute top-0 left-1/3 w-[700px] h-[500px] bg-indigo-600/8 rounded-full blur-[130px]" />
-        <div className="absolute bottom-1/2 right-0 w-[400px] h-[400px] bg-violet-600/7 rounded-full blur-[100px]" />
+      {/* ── Scoped styles ── */}
+      <style>{`
+        /* Smooth transitions for theme changes */
+        * {
+          transition: background-color 0.3s ease, border-color 0.3s ease, color 0.3s ease;
+        }
+
+        /* Animations */
+        @keyframes fadeInUp {
+          from {
+            opacity: 0;
+            transform: translateY(20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateY(0);
+          }
+        }
+
+        @keyframes slideInLeft {
+          from {
+            opacity: 0;
+            transform: translateX(-20px);
+          }
+          to {
+            opacity: 1;
+            transform: translateX(0);
+          }
+        }
+
+        .blog-hero {
+          animation: fadeInUp 0.6s ease-out;
+        }
+
+        .blog-featured {
+          animation: fadeInUp 0.6s ease-out 0.1s both;
+        }
+
+        .blog-article {
+          animation: fadeInUp 0.6s ease-out;
+        }
+
+        .blog-article:hover {
+          transform: translateY(-6px);
+        }
+
+        /* Card hover effects */
+        .blog-card-hover:hover {
+          border-color: var(--border-focus);
+          background: var(--bg-hover);
+        }
+
+        /* Tag styles */
+        .blog-tag {
+          display: inline-block;
+          padding: 4px 10px;
+          border-radius: 16px;
+          font-size: 11px;
+          font-weight: 600;
+          letter-spacing: 0.05em;
+          text-transform: uppercase;
+          white-space: nowrap;
+        }
+
+        /* Gradient text */
+        .gradient-text {
+          background: linear-gradient(135deg, #6366f1, #10b981);
+          -webkit-background-clip: text;
+          -webkit-text-fill-color: transparent;
+          background-clip: text;
+        }
+
+        /* Smooth scrollbar */
+        ::-webkit-scrollbar {
+          width: 8px;
+        }
+        ::-webkit-scrollbar-track {
+          background: var(--bg);
+        }
+        ::-webkit-scrollbar-thumb {
+          background: var(--border);
+          border-radius: 4px;
+        }
+        ::-webkit-scrollbar-thumb:hover {
+          background: var(--border-focus);
+        }
+      `}</style>
+
+      {/* ── Ambient background (subtle, theme-aware) ── */}
+      <div style={{ position: "fixed", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
         <div
-          className="absolute inset-0 opacity-[0.02]"
           style={{
-            backgroundImage:
-              "repeating-linear-gradient(0deg,transparent,transparent 39px,rgba(255,255,255,0.5) 39px,rgba(255,255,255,0.5) 40px),repeating-linear-gradient(90deg,transparent,transparent 39px,rgba(255,255,255,0.5) 39px,rgba(255,255,255,0.5) 40px)",
+            position: "absolute",
+            top: 0,
+            left: "33%",
+            width: "700px",
+            height: "500px",
+            background: "linear-gradient(135deg, rgba(99, 102, 241, 0.05), rgba(139, 92, 246, 0.03))",
+            borderRadius: "50%",
+            filter: "blur(130px)",
+            pointerEvents: "none",
+          }}
+        />
+        <div
+          style={{
+            position: "absolute",
+            bottom: "50%",
+            right: 0,
+            width: "400px",
+            height: "400px",
+            background: "linear-gradient(135deg, rgba(139, 92, 246, 0.04), rgba(16, 185, 129, 0.02))",
+            borderRadius: "50%",
+            filter: "blur(100px)",
+            pointerEvents: "none",
           }}
         />
       </div>
 
-      <div className="relative z-10 max-w-7xl mx-auto px-6 md:px-12 lg:px-16">
+      <div style={{ position: "relative", zIndex: 10, maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
         {/* ── 1. HERO ──────────────────────────────────────────────── */}
-        <section className="pt-20 pb-16 text-center">
+        <section style={{ paddingTop: "80px", paddingBottom: "64px", textAlign: "center" }} className="blog-hero">
           <SectionLabel>The Knowledge Hub</SectionLabel>
 
           <h1
-            className="text-5xl md:text-7xl lg:text-8xl font-black mb-6 leading-[0.93] tracking-tight"
-            style={{ fontFamily: "'Sora', sans-serif" }}
+            style={{
+              fontSize: "clamp(2.5rem, 8vw, 83.2px)",
+              fontWeight: "900",
+              marginBottom: "24px",
+              lineHeight: "0.93",
+              letterSpacing: "-0.01em",
+            }}
           >
             Insights on AI,
             <br />
-            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">
-              Web & Cloud
-            </span>
+            <span className="gradient-text">Web & Cloud</span>
           </h1>
 
-          <p className="text-slate-400 text-lg md:text-xl max-w-2xl mx-auto leading-relaxed mb-10">
+          <p
+            style={{
+              color: V.textMid,
+              fontSize: "18px",
+              maxWidth: "700px",
+              margin: "0 auto 40px",
+              lineHeight: "1.6",
+            }}
+          >
             Practical articles, strategy tips, and technical guides for modern businesses.
             Stay updated with ideas and tutorials that help you build and grow.
           </p>
 
-          <div className="flex flex-wrap justify-center gap-6 text-sm text-slate-500">
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", fontSize: "14px", color: V.textMid }}>
             {[["24+", "Articles"], ["5", "Topics"], ["Weekly", "Updates"]].map(([val, label]) => (
-              <div key={label} className="flex items-center gap-2">
-                <span className="font-black text-white text-base">{val}</span>
+              <div key={label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
+                <span style={{ fontWeight: "900", color: V.textHigh, fontSize: "16px" }}>{val}</span>
                 <span>{label}</span>
               </div>
             ))}
@@ -181,48 +327,120 @@ export default function BlogPage() {
         </section>
 
         {/* ── 2. FEATURED POST ─────────────────────────────────────── */}
-        <section className="mb-20">
+        <section style={{ marginBottom: "80px" }} className="blog-featured">
           <div
-            className={`relative rounded-3xl border border-white/10 bg-gradient-to-br ${featured.gradient} overflow-hidden group cursor-pointer hover:border-indigo-400/30 transition-all duration-500`}
+            className="blog-card-hover"
+            style={{
+              position: "relative",
+              borderRadius: "20px",
+              border: `1px solid ${V.border}`,
+              backgroundColor: V.bgCard,
+              overflow: "hidden",
+              cursor: "pointer",
+            }}
           >
-            {/* Decorative blob */}
-            <div className="absolute top-0 right-0 w-72 h-72 bg-indigo-500/10 rounded-full blur-[70px] pointer-events-none" />
+            {/* Decorative glow */}
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: "280px",
+                height: "280px",
+                background: "radial-gradient(circle, rgba(99, 102, 241, 0.15), transparent)",
+                borderRadius: "50%",
+                filter: "blur(70px)",
+                pointerEvents: "none",
+              }}
+            />
 
-            <div className="relative z-10 grid lg:grid-cols-2 gap-0">
+            <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit, minmax(350px, 1fr))", gap: 0 }}>
               {/* Image placeholder */}
-              <div className="h-64 lg:h-auto lg:min-h-[380px] bg-gradient-to-br from-indigo-600/25 via-violet-600/15 to-transparent flex items-end p-8 border-b lg:border-b-0 lg:border-r border-white/8">
-                <div className="flex flex-wrap gap-2">
-                  <span className={`text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border backdrop-blur-sm ${featured.tagColor}`}>
+              <div
+                style={{
+                  height: "300px",
+                  background: "linear-gradient(135deg, rgba(99, 102, 241, 0.2), rgba(139, 92, 246, 0.1))",
+                  display: "flex",
+                  alignItems: "flex-end",
+                  padding: "32px",
+                  borderBottom: `1px solid ${V.border}`,
+                }}
+              >
+                <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                  <span
+                    className="blog-tag"
+                    style={{
+                      backgroundColor: "rgba(99, 102, 241, 0.15)",
+                      border: "1px solid rgba(99, 102, 241, 0.3)",
+                      color: "#6366f1",
+                    }}
+                  >
                     ★ Featured
                   </span>
-                  <span className={`text-xs font-bold uppercase tracking-widest px-3 py-1.5 rounded-full border border-white/15 text-slate-300`}>
+                  <span
+                    className="blog-tag"
+                    style={{
+                      backgroundColor: "transparent",
+                      border: `1px solid ${V.border}`,
+                      color: V.textMid,
+                    }}
+                  >
                     {featured.category}
                   </span>
                 </div>
               </div>
 
               {/* Content */}
-              <div className="p-10 lg:p-12 flex flex-col justify-center">
-                <div className="flex items-center gap-4 text-xs text-slate-500 mb-5">
-                  <span className="flex items-center gap-1.5"><Clock className="w-3.5 h-3.5" />{featured.readTime}</span>
-                  <span className="flex items-center gap-1.5"><Calendar className="w-3.5 h-3.5" />{featured.date}</span>
-                  <span className="flex items-center gap-1.5"><User className="w-3.5 h-3.5" />{featured.author}</span>
+              <div style={{ padding: "40px", display: "flex", flexDirection: "column", justifyContent: "center", position: "relative", zIndex: 10 }}>
+                <div style={{ display: "flex", alignItems: "center", gap: "16px", fontSize: "12px", color: V.textLow, marginBottom: "20px", flexWrap: "wrap" }}>
+                  <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Clock style={{ width: "14px", height: "14px" }} />
+                    {featured.readTime}
+                  </span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <Calendar style={{ width: "14px", height: "14px" }} />
+                    {featured.date}
+                  </span>
+                  <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                    <User style={{ width: "14px", height: "14px" }} />
+                    {featured.author}
+                  </span>
                 </div>
 
                 <h2
-                  className="text-3xl lg:text-4xl font-black mb-5 leading-tight"
-                  style={{ fontFamily: "'Sora', sans-serif" }}
+                  style={{
+                    fontSize: "32px",
+                    fontWeight: "900",
+                    marginBottom: "20px",
+                    lineHeight: "1.3",
+                  }}
                 >
                   {featured.title}
                 </h2>
 
-                <p className="text-slate-400 leading-relaxed mb-8 text-base">
+                <p style={{ color: V.textMid, lineHeight: "1.7", marginBottom: "32px", fontSize: "16px" }}>
                   {featured.excerpt}
                 </p>
 
-                <button className={`flex items-center gap-2 font-bold ${featured.accentColor} group-hover:gap-4 transition-all duration-300`}>
+                <button
+                  style={{
+                    display: "flex",
+                    alignItems: "center",
+                    gap: "8px",
+                    fontWeight: "700",
+                    color: "#6366f1",
+                    background: "none",
+                    border: "none",
+                    cursor: "pointer",
+                    fontSize: "14px",
+                    padding: "8px 0",
+                    transition: "gap 0.3s",
+                  }}
+                  onMouseEnter={e => (e.currentTarget.style.gap = "16px")}
+                  onMouseLeave={e => (e.currentTarget.style.gap = "8px")}
+                >
                   Read Full Article
-                  <ArrowRight className="w-4 h-4" />
+                  <ArrowRight style={{ width: "16px", height: "16px" }} />
                 </button>
               </div>
             </div>
@@ -230,16 +448,39 @@ export default function BlogPage() {
         </section>
 
         {/* ── 3. CATEGORY FILTERS ──────────────────────────────────── */}
-        <div className="flex flex-wrap justify-center gap-2 mb-14">
+        <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "8px", marginBottom: "56px" }}>
           {categories.map((cat) => (
             <button
               key={cat}
-              onClick={() => { setActiveCategory(cat); setVisibleCount(6); }}
-              className={`px-5 py-2.5 rounded-full text-sm font-bold border transition-all duration-200 ${
-                activeCategory === cat
-                  ? "bg-indigo-600 border-indigo-500 text-white shadow-lg shadow-indigo-500/20"
-                  : "border-white/10 text-slate-400 hover:border-indigo-400/40 hover:text-white hover:bg-white/5"
-              }`}
+              onClick={() => {
+                setActiveCategory(cat);
+                setVisibleCount(6);
+              }}
+              style={{
+                padding: "10px 20px",
+                borderRadius: "20px",
+                fontSize: "14px",
+                fontWeight: "700",
+                border: `1px solid ${activeCategory === cat ? "#6366f1" : V.border}`,
+                backgroundColor: activeCategory === cat ? "#6366f1" : "transparent",
+                color: activeCategory === cat ? "#fff" : V.textMid,
+                cursor: "pointer",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={e => {
+                if (activeCategory !== cat) {
+                  e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.4)";
+                  e.currentTarget.style.color = V.textHigh;
+                  e.currentTarget.style.backgroundColor = "rgba(99, 102, 241, 0.05)";
+                }
+              }}
+              onMouseLeave={e => {
+                if (activeCategory !== cat) {
+                  e.currentTarget.style.borderColor = V.border;
+                  e.currentTarget.style.color = V.textMid;
+                  e.currentTarget.style.backgroundColor = "transparent";
+                }
+              }}
             >
               {cat}
             </button>
@@ -247,201 +488,427 @@ export default function BlogPage() {
         </div>
 
         {/* ── 4. BLOG GRID + TRENDING SIDEBAR ──────────────────────── */}
-        <section className="mb-24">
-          <div className="grid xl:grid-cols-[1fr_320px] gap-10 items-start">
+        <section style={{ marginBottom: "96px" }}>
+          <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "40px" }}>
 
             {/* Grid */}
             <div>
-              <div className="grid md:grid-cols-2 gap-6">
+              <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px", marginBottom: "40px" }}>
                 {visible.map((post, i) => (
                   <article
                     key={i}
-                    className="group rounded-3xl border border-white/8 bg-white/[0.03] backdrop-blur-xl hover:-translate-y-1.5 hover:border-indigo-400/30 hover:bg-white/[0.06] transition-all duration-300 overflow-hidden cursor-pointer"
+                    className="blog-article blog-card-hover"
+                    style={{
+                      borderRadius: "20px",
+                      border: `1px solid ${V.border}`,
+                      backgroundColor: V.bgCard,
+                      overflow: "hidden",
+                      cursor: "pointer",
+                    }}
                   >
                     {/* Thumbnail */}
-                    <div className={`h-44 bg-gradient-to-br ${post.gradient} relative overflow-hidden`}>
-                      <div className="absolute inset-0 bg-[radial-gradient(circle_at_30%_50%,rgba(255,255,255,0.04),transparent)]" />
-                      <div className="absolute top-4 left-4 flex gap-2 flex-wrap">
-                        <span className={`text-xs font-bold uppercase tracking-widest px-3 py-1 rounded-full border backdrop-blur-sm ${post.tagColor}`}>
+                    <div
+                      style={{
+                        height: "180px",
+                        background: "linear-gradient(135deg, rgba(99, 102, 241, 0.15), rgba(139, 92, 246, 0.1))",
+                        position: "relative",
+                        overflow: "hidden",
+                      }}
+                    >
+                      <div style={{ position: "absolute", top: "16px", left: "16px", display: "flex", gap: "8px", flexWrap: "wrap" }}>
+                        <span
+                          className="blog-tag"
+                          style={{
+                            backgroundColor: "rgba(99, 102, 241, 0.15)",
+                            border: "1px solid rgba(99, 102, 241, 0.3)",
+                            color: "#6366f1",
+                          }}
+                        >
                           {post.category}
                         </span>
                       </div>
-                      <div className="absolute bottom-4 right-4 flex gap-1.5">
+                      <div style={{ position: "absolute", bottom: "16px", right: "16px", display: "flex", gap: "6px" }}>
                         {post.tags.map((tag) => (
-                          <span key={tag} className="text-xs bg-black/30 border border-white/10 text-slate-400 px-2 py-0.5 rounded-full backdrop-blur-sm flex items-center gap-1">
-                            <Tag className="w-2.5 h-2.5" />{tag}
+                          <span
+                            key={tag}
+                            className="blog-tag"
+                            style={{
+                              backgroundColor: "rgba(0, 0, 0, 0.3)",
+                              border: `1px solid ${V.border}`,
+                              color: V.textMid,
+                              backdropFilter: "blur(8px)",
+                            }}
+                          >
+                            <Tag style={{ width: "10px", height: "10px", marginRight: "2px", display: "inline" }} />
+                            {tag}
                           </span>
                         ))}
                       </div>
                     </div>
 
                     {/* Body */}
-                    <div className="p-7">
-                      <div className="flex items-center gap-3 text-xs text-slate-500 mb-4">
-                        <span className="flex items-center gap-1.5"><Clock className="w-3 h-3" />{post.readTime}</span>
-                        <span className="w-1 h-1 rounded-full bg-slate-600" />
-                        <span className="flex items-center gap-1.5"><Calendar className="w-3 h-3" />{post.date}</span>
-                        <span className="w-1 h-1 rounded-full bg-slate-600" />
-                        <span className="flex items-center gap-1.5"><User className="w-3 h-3" />{post.author}</span>
+                    <div style={{ padding: "28px" }}>
+                      <div style={{ display: "flex", alignItems: "center", gap: "12px", fontSize: "12px", color: V.textLow, marginBottom: "16px", flexWrap: "wrap" }}>
+                        <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <Clock style={{ width: "12px", height: "12px" }} />
+                          {post.readTime}
+                        </span>
+                        <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: V.border }} />
+                        <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <Calendar style={{ width: "12px", height: "12px" }} />
+                          {post.date}
+                        </span>
+                        <span style={{ width: "4px", height: "4px", borderRadius: "50%", backgroundColor: V.border }} />
+                        <span style={{ display: "flex", alignItems: "center", gap: "6px" }}>
+                          <User style={{ width: "12px", height: "12px" }} />
+                          {post.author}
+                        </span>
                       </div>
 
-                      <h3 className="text-xl font-black mb-3 leading-snug group-hover:text-indigo-200 transition-colors duration-200">
+                      <h3 style={{ fontSize: "18px", fontWeight: "900", marginBottom: "12px", lineHeight: "1.3", color: V.textHigh }}>
                         {post.title}
                       </h3>
 
-                      <p className="text-slate-500 text-sm leading-relaxed mb-6">
+                      <p style={{ color: V.textMid, fontSize: "14px", lineHeight: "1.6", marginBottom: "24px" }}>
                         {post.desc}
                       </p>
 
-                      <span className={`flex items-center gap-2 font-bold text-sm ${post.accentColor} group-hover:gap-4 transition-all duration-300`}>
-                        Read Article <ArrowRight className="w-3.5 h-3.5" />
-                      </span>
+                      <button
+                        style={{
+                          display: "flex",
+                          alignItems: "center",
+                          gap: "8px",
+                          fontWeight: "700",
+                          fontSize: "13px",
+                          color: "#6366f1",
+                          background: "none",
+                          border: "none",
+                          cursor: "pointer",
+                          padding: "0",
+                          transition: "gap 0.3s",
+                        }}
+                        onMouseEnter={e => (e.currentTarget.style.gap = "12px")}
+                        onMouseLeave={e => (e.currentTarget.style.gap = "8px")}
+                      >
+                        Read Article <ArrowRight style={{ width: "14px", height: "14px" }} />
+                      </button>
                     </div>
                   </article>
                 ))}
               </div>
 
-              {/* Load more / Pagination */}
+              {/* Load more button */}
               {visibleCount < filtered.length && (
-                <div className="flex justify-center mt-10">
+                <div style={{ display: "flex", justifyContent: "center" }}>
                   <button
                     onClick={() => setVisibleCount((v) => v + 3)}
-                    className="px-8 py-3.5 border border-white/15 text-slate-300 hover:text-white hover:border-indigo-400/50 hover:bg-white/5 rounded-2xl font-semibold text-sm transition-all duration-200"
+                    style={{
+                      padding: "14px 32px",
+                      border: `1px solid ${V.border}`,
+                      color: V.textMid,
+                      backgroundColor: "transparent",
+                      borderRadius: "16px",
+                      fontWeight: "600",
+                      fontSize: "14px",
+                      cursor: "pointer",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.5)";
+                      e.currentTarget.style.color = V.textHigh;
+                      e.currentTarget.style.backgroundColor = V.bgHover;
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.borderColor = V.border;
+                      e.currentTarget.style.color = V.textMid;
+                      e.currentTarget.style.backgroundColor = "transparent";
+                    }}
                   >
                     Load More Articles
                   </button>
                 </div>
               )}
+
               {filtered.length === 0 && (
-                <div className="text-center py-20 text-slate-500">
+                <div style={{ textAlign: "center", padding: "80px 20px", color: V.textMid }}>
                   No articles in this category yet.
                 </div>
               )}
             </div>
+          </div>
+        </section>
 
-            {/* ── 5. TRENDING SIDEBAR ────────────────────────────── */}
-            <aside className="hidden xl:block sticky top-24">
-              <div className="rounded-3xl border border-white/10 bg-white/[0.03] backdrop-blur-xl p-7">
-                <div className="flex items-center gap-2.5 mb-6">
-                  <TrendingUp className="w-4 h-4 text-indigo-400" />
-                  <span className="font-black text-sm uppercase tracking-widest text-slate-300">Trending Now</span>
-                </div>
+        {/* ── 5. TRENDING SIDEBAR (Desktop only) ── */}
+        <section style={{ marginBottom: "96px", display: "none" }}>
+          <div
+            style={{
+              borderRadius: "20px",
+              border: `1px solid ${V.border}`,
+              backgroundColor: V.bgCard,
+              padding: "28px",
+            }}
+          >
+            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
+              <TrendingUp style={{ width: "16px", height: "16px", color: "#6366f1" }} />
+              <span style={{ fontWeight: "900", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", color: V.textMid }}>
+                Trending Now
+              </span>
+            </div>
 
-                <div className="space-y-5">
-                  {trending.map((t, i) => (
-                    <div key={i} className="group flex items-start gap-4 cursor-pointer">
-                      <span className="text-3xl font-black text-white/8 group-hover:text-indigo-400/30 transition-colors leading-none mt-0.5">
-                        {String(i + 1).padStart(2, "0")}
-                      </span>
-                      <div>
-                        <p className="text-sm font-semibold text-slate-300 group-hover:text-white transition-colors leading-snug mb-1.5">
-                          {t.title}
-                        </p>
-                        <div className="flex items-center gap-2 text-xs text-slate-600">
-                          <span>{t.category}</span>
-                          <span>·</span>
-                          <Clock className="w-3 h-3" />
-                          <span>{t.readTime}</span>
-                        </div>
-                      </div>
-                      <ChevronRight className="w-4 h-4 text-slate-600 group-hover:text-indigo-400 shrink-0 mt-0.5 transition-colors" />
+            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
+              {trending.map((t, i) => (
+                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "16px", cursor: "pointer" }}>
+                  <span style={{ fontSize: "28px", fontWeight: "900", color: "rgba(255, 255, 255, 0.08)", marginTop: "2px", minWidth: "40px" }}>
+                    {String(i + 1).padStart(2, "0")}
+                  </span>
+                  <div style={{ flex: 1 }}>
+                    <p style={{ fontSize: "14px", fontWeight: "600", color: V.textHigh, marginBottom: "6px", lineHeight: "1.3" }}>
+                      {t.title}
+                    </p>
+                    <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: V.textLow }}>
+                      <span>{t.category}</span>
+                      <span>·</span>
+                      <Clock style={{ width: "12px", height: "12px" }} />
+                      <span>{t.readTime}</span>
                     </div>
-                  ))}
-                </div>
-
-                <div className="border-t border-white/8 mt-7 pt-7">
-                  <p className="text-xs text-slate-500 mb-4 uppercase tracking-widest font-bold">Topics</p>
-                  <div className="flex flex-wrap gap-2">
-                    {["React", "Next.js", "AI", "AWS", "TypeScript", "Docker", "Startup", "LLMs"].map((tag) => (
-                      <span key={tag} className="text-xs px-3 py-1 rounded-full border border-white/10 text-slate-400 hover:border-indigo-400/40 hover:text-white cursor-pointer transition-all">
-                        {tag}
-                      </span>
-                    ))}
                   </div>
+                  <ChevronRight style={{ width: "16px", height: "16px", color: V.textLow, marginTop: "2px", flexShrink: 0 }} />
                 </div>
+              ))}
+            </div>
+
+            <div style={{ borderTop: `1px solid ${V.border}`, marginTop: "28px", paddingTop: "28px" }}>
+              <p style={{ fontSize: "11px", color: V.textLow, marginBottom: "16px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: "700" }}>
+                Topics
+              </p>
+              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
+                {["React", "Next.js", "AI", "AWS", "TypeScript", "Docker", "Startup", "LLMs"].map((tag) => (
+                  <span
+                    key={tag}
+                    style={{
+                      fontSize: "12px",
+                      padding: "6px 12px",
+                      borderRadius: "12px",
+                      border: `1px solid ${V.border}`,
+                      color: V.textMid,
+                      cursor: "pointer",
+                      transition: "all 0.2s",
+                    }}
+                    onMouseEnter={e => {
+                      e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.4)";
+                      e.currentTarget.style.color = V.textHigh;
+                    }}
+                    onMouseLeave={e => {
+                      e.currentTarget.style.borderColor = V.border;
+                      e.currentTarget.style.color = V.textMid;
+                    }}
+                  >
+                    {tag}
+                  </span>
+                ))}
               </div>
-            </aside>
+            </div>
           </div>
         </section>
 
         {/* ── 6. NEWSLETTER ────────────────────────────────────────── */}
-        <section className="mb-24">
-          <div className="relative rounded-3xl border border-indigo-400/20 bg-gradient-to-br from-indigo-600/15 via-violet-600/8 to-transparent overflow-hidden">
-            <div className="absolute top-0 right-0 w-96 h-72 bg-indigo-500/12 rounded-full blur-[90px] pointer-events-none" />
-            <div className="relative z-10 text-center px-8 md:px-16 py-16">
+        <section style={{ marginBottom: "96px" }}>
+          <div
+            style={{
+              position: "relative",
+              borderRadius: "20px",
+              border: `1px solid rgba(99, 102, 241, 0.2)`,
+              backgroundColor: "rgba(99, 102, 241, 0.08)",
+              overflow: "hidden",
+            }}
+          >
+            <div
+              style={{
+                position: "absolute",
+                top: 0,
+                right: 0,
+                width: "384px",
+                height: "288px",
+                background: "radial-gradient(circle, rgba(99, 102, 241, 0.12), transparent)",
+                borderRadius: "50%",
+                filter: "blur(90px)",
+                pointerEvents: "none",
+              }}
+            />
+            <div style={{ position: "relative", zIndex: 10, textAlign: "center", padding: "64px 32px" }}>
               <SectionLabel>Stay Ahead</SectionLabel>
               <h2
-                className="text-4xl md:text-5xl font-black mb-4"
-                style={{ fontFamily: "'Sora', sans-serif" }}
+                style={{
+                  fontSize: "clamp(1.875rem, 5vw, 40px)",
+                  fontWeight: "900",
+                  marginBottom: "16px",
+                }}
               >
                 Get Articles{" "}
-                <span className="bg-gradient-to-r from-indigo-400 to-violet-400 bg-clip-text text-transparent">
-                  Delivered
-                </span>
+                <span className="gradient-text">Delivered</span>
               </h2>
-              <p className="text-slate-400 max-w-lg mx-auto mb-10 leading-relaxed">
+              <p style={{ color: V.textMid, maxWidth: "600px", margin: "0 auto 40px", lineHeight: "1.6" }}>
                 Weekly roundups of the best AI, web dev, and cloud articles. No spam — just signal.
                 Join 2,400+ engineers and founders already subscribed.
               </p>
 
               {subscribed ? (
-                <div className="inline-flex items-center gap-3 bg-emerald-500/15 border border-emerald-400/30 text-emerald-400 px-8 py-4 rounded-2xl font-bold">
+                <div
+                  style={{
+                    display: "inline-flex",
+                    alignItems: "center",
+                    gap: "12px",
+                    backgroundColor: "rgba(16, 185, 129, 0.15)",
+                    border: "1px solid rgba(16, 185, 129, 0.3)",
+                    color: "#10b981",
+                    padding: "16px 32px",
+                    borderRadius: "16px",
+                    fontWeight: "700",
+                  }}
+                >
                   ✓ You're in! Welcome to the list.
                 </div>
               ) : (
-                <div className="flex flex-col sm:flex-row gap-3 max-w-md mx-auto">
-                  <input
-                    type="email"
-                    value={email}
-                    onChange={(e) => setEmail(e.target.value)}
-                    placeholder="your@email.com"
-                    className="flex-1 bg-white/5 border border-white/15 rounded-2xl px-5 py-4 text-sm text-white placeholder-slate-600 focus:outline-none focus:border-indigo-400/60 transition-colors"
-                  />
-                  <button
-                    onClick={() => { if (email) setSubscribed(true); }}
-                    className="flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-7 py-4 rounded-2xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25 whitespace-nowrap"
-                  >
-                    <Mail className="w-4 h-4" /> Subscribe
-                  </button>
+                <div style={{ display: "flex", flexDirection: "column", gap: "12px", maxWidth: "500px", margin: "0 auto" }}>
+                  <div style={{ display: "flex", gap: "12px", flexWrap: "wrap" }}>
+                    <input
+                      type="email"
+                      value={email}
+                      onChange={(e) => setEmail(e.target.value)}
+                      placeholder="your@email.com"
+                      style={{
+                        flex: 1,
+                        minWidth: "200px",
+                        backgroundColor: "rgba(255, 255, 255, 0.05)",
+                        border: `1px solid ${V.border}`,
+                        borderRadius: "16px",
+                        padding: "16px 20px",
+                        fontSize: "14px",
+                        color: V.textHigh,
+                        outline: "none",
+                      }}
+                      onFocus={e => (e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.6)")}
+                      onBlur={e => (e.currentTarget.style.borderColor = V.border)}
+                    />
+                    <button
+                      onClick={() => {
+                        if (email) setSubscribed(true);
+                      }}
+                      style={{
+                        display: "flex",
+                        alignItems: "center",
+                        justifyContent: "center",
+                        gap: "8px",
+                        backgroundColor: "#6366f1",
+                        color: "#fff",
+                        fontWeight: "700",
+                        padding: "16px 28px",
+                        borderRadius: "16px",
+                        border: "none",
+                        cursor: "pointer",
+                        transition: "all 0.2s",
+                        fontSize: "14px",
+                        whiteSpace: "nowrap",
+                      }}
+                      onMouseEnter={e => {
+                        e.currentTarget.style.backgroundColor = "#4f46e5";
+                        e.currentTarget.style.transform = "scale(1.04)";
+                        e.currentTarget.style.boxShadow = "0 8px 28px rgba(99, 102, 241, 0.25)";
+                      }}
+                      onMouseLeave={e => {
+                        e.currentTarget.style.backgroundColor = "#6366f1";
+                        e.currentTarget.style.transform = "scale(1)";
+                        e.currentTarget.style.boxShadow = "none";
+                      }}
+                    >
+                      <Mail style={{ width: "16px", height: "16px" }} /> Subscribe
+                    </button>
+                  </div>
+                  <p style={{ fontSize: "12px", color: V.textLow }}>Unsubscribe anytime. No spam, ever.</p>
                 </div>
               )}
-
-              <p className="text-xs text-slate-600 mt-4">Unsubscribe anytime. No spam, ever.</p>
             </div>
           </div>
         </section>
 
         {/* ── 7. FINAL CTA ─────────────────────────────────────────── */}
-        <section className="pb-28 text-center">
+        <section style={{ paddingBottom: "112px", textAlign: "center" }}>
           <SectionLabel>What's Next?</SectionLabel>
           <h2
-            className="text-4xl md:text-5xl font-black mb-5"
-            style={{ fontFamily: "'Sora', sans-serif" }}
+            style={{
+              fontSize: "clamp(1.875rem, 5vw, 40px)",
+              fontWeight: "900",
+              marginBottom: "20px",
+            }}
           >
             Ready to Build
             <br />
-            <span className="bg-gradient-to-r from-indigo-400 via-violet-400 to-emerald-400 bg-clip-text text-transparent">
-              Something Great?
-            </span>
+            <span className="gradient-text">Something Great?</span>
           </h2>
-          <p className="text-slate-400 max-w-xl mx-auto mb-10 leading-relaxed">
+          <p style={{ color: V.textMid, maxWidth: "600px", margin: "0 auto 40px", lineHeight: "1.6" }}>
             You've been reading about what's possible. Let's actually build it —
             fast, clean, and at a fixed price.
           </p>
 
-          <div className="flex flex-col sm:flex-row justify-center gap-4">
-            <a
-              href="#"
-              className="inline-flex items-center justify-center gap-2 bg-indigo-600 hover:bg-indigo-500 text-white font-bold px-8 py-4 rounded-2xl transition-all duration-200 hover:scale-105 hover:shadow-lg hover:shadow-indigo-500/25"
+          <div style={{ display: "flex", flexDirection: "column", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+            <button
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                backgroundColor: "#6366f1",
+                color: "#fff",
+                fontWeight: "700",
+                padding: "16px 32px",
+                borderRadius: "16px",
+                border: "none",
+                cursor: "pointer",
+                fontSize: "14px",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.backgroundColor = "#4f46e5";
+                e.currentTarget.style.transform = "scale(1.04)";
+                e.currentTarget.style.boxShadow = "0 8px 28px rgba(99, 102, 241, 0.25)";
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.backgroundColor = "#6366f1";
+                e.currentTarget.style.transform = "scale(1)";
+                e.currentTarget.style.boxShadow = "none";
+              }}
             >
-              Start a Project <ArrowRight className="w-4 h-4" />
-            </a>
-            <a
-              href="#"
-              className="inline-flex items-center justify-center gap-2 border border-white/15 hover:border-indigo-400/40 text-slate-300 hover:text-white font-semibold px-8 py-4 rounded-2xl transition-all duration-200 hover:bg-white/5"
+              Start a Project <ArrowRight style={{ width: "16px", height: "16px" }} />
+            </button>
+            <button
+              style={{
+                display: "inline-flex",
+                alignItems: "center",
+                justifyContent: "center",
+                gap: "8px",
+                border: `1px solid ${V.border}`,
+                color: V.textMid,
+                fontWeight: "600",
+                padding: "16px 32px",
+                borderRadius: "16px",
+                cursor: "pointer",
+                fontSize: "14px",
+                backgroundColor: "transparent",
+                transition: "all 0.2s",
+              }}
+              onMouseEnter={e => {
+                e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.4)";
+                e.currentTarget.style.color = V.textHigh;
+                e.currentTarget.style.backgroundColor = V.bgHover;
+              }}
+              onMouseLeave={e => {
+                e.currentTarget.style.borderColor = V.border;
+                e.currentTarget.style.color = V.textMid;
+                e.currentTarget.style.backgroundColor = "transparent";
+              }}
             >
               Read More Articles
-            </a>
+            </button>
           </div>
         </section>
 
