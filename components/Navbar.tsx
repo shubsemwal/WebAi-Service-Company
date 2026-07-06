@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useState } from "react";
 import Link from "next/link";
+import ContactModal from "./ContactModal";
 
 // ── CSS variable shortcuts (must match globals.css) ──
 const V = {
@@ -100,6 +101,46 @@ function Hamburger({ open, onClick }: { open: boolean; onClick: () => void }) {
   );
 }
 
+// ── "Get Started" CTA button ──
+// Used for both the desktop nav and the mobile menu.
+// It no longer links to /contact — it opens the ContactModal instead.
+function GetStartedButton({
+  onClick,
+  fullWidth = false,
+}: {
+  onClick: () => void;
+  fullWidth?: boolean;
+}) {
+  return (
+    <button
+      onClick={onClick}
+      style={{
+        width: fullWidth ? "100%" : "auto",
+        background: V.indigo,
+        border: "none",
+        borderRadius: "10px",
+        color: "#fff",
+        padding: fullWidth ? "12px 22px" : "10px 22px",
+        fontSize: fullWidth ? "14px" : "13px",
+        fontWeight: "600",
+        cursor: "pointer",
+        letterSpacing: "0.2px",
+        transition: "transform 0.2s, box-shadow 0.2s, opacity 0.2s",
+      }}
+      onMouseEnter={e => {
+        e.currentTarget.style.transform = "scale(1.04)";
+        e.currentTarget.style.boxShadow = `0 8px 28px ${V.glowIndigo}`;
+      }}
+      onMouseLeave={e => {
+        e.currentTarget.style.transform = "scale(1)";
+        e.currentTarget.style.boxShadow = "none";
+      }}
+    >
+      Get Started →
+    </button>
+  );
+}
+
 // ============================================================
 //  NAVBAR COMPONENT
 //  Place this in your layout.tsx so it appears on every page.
@@ -111,6 +152,7 @@ export default function Navbar() {
   const [theme, setTheme] = useState<"dark" | "light">("light");
   const [scrolled, setScrolled] = useState(false);
   const [mobileOpen, setMobileOpen] = useState(false);
+  const [contactOpen, setContactOpen] = useState(false); // controls the popup form
 
   // Apply theme to <html>
   useEffect(() => {
@@ -135,6 +177,12 @@ export default function Navbar() {
     };
     window.addEventListener("resize", onResize);
     return () => window.removeEventListener("resize", onResize);
+  }, []);
+
+  // Opens the contact form and makes sure the mobile menu closes first
+  const openContactForm = useCallback(() => {
+    setMobileOpen(false);
+    setContactOpen(true);
   }, []);
 
   return (
@@ -256,33 +304,8 @@ export default function Navbar() {
         <div style={{ display: "flex", alignItems: "center", gap: "12px", flexShrink: 0 }}>
           <ThemeToggle theme={theme} toggle={toggleTheme} />
 
-          {/* CTA — hidden on very small screens */}
-          <Link href="/contact" style={{ textDecoration: "none" }}>
-            <button
-              style={{
-                background: V.indigo,
-                border: "none",
-                borderRadius: "10px",
-                color: "#fff",
-                padding: "10px 22px",
-                fontSize: "13px",
-                fontWeight: "600",
-                cursor: "pointer",
-                letterSpacing: "0.2px",
-                transition: "transform 0.2s, box-shadow 0.2s, opacity 0.2s",
-              }}
-              onMouseEnter={e => {
-                e.currentTarget.style.transform = "scale(1.04)";
-                e.currentTarget.style.boxShadow = `0 8px 28px ${V.glowIndigo}`;
-              }}
-              onMouseLeave={e => {
-                e.currentTarget.style.transform = "scale(1)";
-                e.currentTarget.style.boxShadow = "none";
-              }}
-            >
-              Get Started →
-            </button>
-          </Link>
+          {/* CTA — opens the contact form popup */}
+          <GetStartedButton onClick={openContactForm} />
 
           <Hamburger open={mobileOpen} onClick={() => setMobileOpen(o => !o)} />
         </div>
@@ -318,28 +341,14 @@ export default function Navbar() {
           </Link>
         ))}
 
-        {/* Mobile CTA */}
-        <Link href="/contact" onClick={() => setMobileOpen(false)} style={{ textDecoration: "none", marginTop: "8px" }}>
-          <button
-            style={{
-              width: "100%",
-              background: V.indigo,
-              border: "none",
-              borderRadius: "10px",
-              color: "#fff",
-              padding: "12px 22px",
-              fontSize: "14px",
-              fontWeight: "600",
-              cursor: "pointer",
-              transition: "opacity 0.2s",
-            }}
-            onMouseEnter={e => (e.currentTarget.style.opacity = "0.88")}
-            onMouseLeave={e => (e.currentTarget.style.opacity = "1")}
-          >
-            Get Started →
-          </button>
-        </Link>
+        {/* Mobile CTA — same popup, full width */}
+        <div style={{ marginTop: "8px" }}>
+          <GetStartedButton onClick={openContactForm} fullWidth />
+        </div>
       </div>
+
+      {/* ── Contact / lead-capture popup ── */}
+      <ContactModal open={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
 }
