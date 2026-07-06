@@ -1217,7 +1217,7 @@ export default function HomePage() {
               backgroundClip: "text",
             }}
           >
-            NEXUS
+            SEMSER
           </span>
 
           <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>

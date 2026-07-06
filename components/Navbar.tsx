@@ -256,7 +256,7 @@ export default function Navbar() {
               backgroundClip: "text",
             }}
           >
-            NEXUS
+            SEMSER
           </span>
         </Link>
 
