@@ -25,17 +25,27 @@ export default function RootLayout({
   children: React.ReactNode;
 }) {
   return (
+    // No hardcoded data-theme here — Navbar owns theme state (dark by
+    // default, persisted in localStorage) and sets this attribute itself
+    // on mount. Hardcoding "light" here forced every page to flash light
+    // then flip to dark a moment later.
     <html
       lang="en"
       suppressHydrationWarning
       className={`${geistSans.variable} ${geistMono.variable}`}
-      data-theme="light"
     >
-      <body className="bg-white text-slate-900 dark:bg-[#020617] dark:text-white transition-colors duration-300">
-        
-           <Navbar />
-          {children}
-          <N8NChat />
+      {/* Removed the Tailwind `dark:` classes — they rely on Tailwind's
+          class strategy (<html class="dark">), which nothing in this app
+          ever sets. Navbar's CSS-variable theme (--bg, --text-high, etc.)
+          is the single source of truth for colors now, so body just
+          reads those variables instead of fighting them. */}
+      <body
+        style={{ background: "var(--bg)", color: "var(--text-high)" }}
+        className="transition-colors duration-300"
+      >
+        <Navbar />
+        {children}
+        <N8NChat />
       </body>
     </html>
   );

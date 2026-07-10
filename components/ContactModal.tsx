@@ -261,10 +261,9 @@ export default function ContactModal({ open, onClose }: Props) {
                     Full name
                   </label>
                   <input
-                    className="modal-input"
+                    className="modal-input bg-white !text-black dark:bg-gray-900 dark:!text-white ..."
                     type="text"
                     placeholder="e.g. Priya Sharma"
-                     className="modal-input bg-white !text-black dark:bg-gray-900 dark:!text-white"
                     value={form.name}
                     onChange={e => updateField("name", e.target.value)}
                   />
