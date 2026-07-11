@@ -400,7 +400,7 @@ export default function ServicesPage() {
 
             <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
               <a
-                href="https://wa.me/919876543210"
+                href="https://wa.me/9877873188"
                 target="_blank"
                 rel="noreferrer"
                 style={{
@@ -423,7 +423,7 @@ export default function ServicesPage() {
                 Chat on WhatsApp
               </a>
               <a
-                href="tel:+919876543210"
+                href="tel:+919877873188"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -443,7 +443,7 @@ export default function ServicesPage() {
                 Book a Free Call
               </a>
               <a
-                href="mailto:hello@yourdomain.com"
+                href="mailto:shubsem34@gmail.com"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -859,15 +859,15 @@ export default function ServicesPage() {
                   Free consultation. Honest pricing. Fast delivery. No surprises.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-                  <a href="https://wa.me/919876543210" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "16px 32px", borderRadius: 18, border: "none", cursor: "pointer", textDecoration: "none", boxShadow: "0 4px 20px rgba(56,189,248,0.30)" }}>
+                  <a href="https://wa.me/9877873188" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "16px 32px", borderRadius: 18, border: "none", cursor: "pointer", textDecoration: "none", boxShadow: "0 4px 20px rgba(56,189,248,0.30)" }}>
                     <MessageCircle style={{ width: 18, height: 18 }} />
                     Chat on WhatsApp
                   </a>
-                  <a href="mailto:hello@yourdomain.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
+                  <a href="mailto:shubsem34@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
                     <Mail style={{ width: 18, height: 18 }} />
                     Send an Email
                   </a>
-                  <a href="/contact" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
+                  <a href="/" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
                     <Rocket style={{ width: 18, height: 18 }} />
                     Start Your Project
                   </a>
