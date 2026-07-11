@@ -1,10 +1,9 @@
 "use client";
 
 import { useState } from "react";
-import { ArrowRight, Clock, Calendar, User, TrendingUp, Mail, ChevronRight, Tag } from "lucide-react";
+import { ArrowRight, Clock, Calendar, User, TrendingUp, Mail, ChevronRight, Tag, Terminal, Cloud, Phone, Building2, ChevronDown } from "lucide-react";
 
 // ── CSS VARIABLES FROM NAVBAR ──
-// These must match your globals.css and inherit from [data-theme]
 const V = {
   bg:          "var(--bg)",
   bgCard:      "var(--bg-card)",
@@ -17,6 +16,32 @@ const V = {
   shadow:      "var(--shadow)",
   glowIndigo:  "var(--glow-indigo)",
 };
+
+// Fixed light, pink-violet palette for consultation form
+const FORM = {
+  bg:        "#ffffff",
+  panelBg:   "linear-gradient(135deg,#faf5ff 0%,#fdf2f8 100%)",
+  border:    "rgba(121,81,229,0.18)",
+  inputBg:   "#ffffff",
+  inputBorder: "rgba(121,81,229,0.20)",
+  text:      "#1e1b4b",
+  textMuted: "#6b5b95",
+  label:     "#7c3aed",
+};
+
+const CONSULT_WHATSAPP = "9877873188";
+const serviceOptions = [
+  "Cloud Infrastructure",
+  "Containerization",
+  "Kubernetes Orchestration",
+  "CI/CD Pipelines",
+  "Monitoring & Logging",
+  "DevSecOps",
+  "Database Scaling",
+  "Serverless Deployments",
+  "Cloud Migration",
+  "Not sure yet",
+];
 
 // ─── DATA ──────────────────────────────────────────────────────────────────────
 
@@ -285,8 +310,21 @@ export default function BlogPage() {
 
       <div style={{ position: "relative", zIndex: 10, maxWidth: "1280px", margin: "0 auto", padding: "0 24px" }}>
 
-        {/* ── 1. HERO ──────────────────────────────────────────────── */}
-        <section style={{ paddingTop: "80px", paddingBottom: "64px", textAlign: "center" }} className="blog-hero">
+        {/* ── 1. HERO (LIGHT PINK-VIOLET) ──────────────────────────── */}
+        <section
+          style={{
+            paddingTop: "80px",
+            paddingBottom: "64px",
+            textAlign: "center",
+            marginLeft: "-24px",
+            marginRight: "-24px",
+            paddingLeft: "24px",
+            paddingRight: "24px",
+            background: "linear-gradient(99, 102, 241, 0.07)",
+            borderBottom: "1px solid rgba(5, 3, 10, 0.25)",
+          }}
+          className="blog-hero"
+        >
           <SectionLabel>The Knowledge Hub</SectionLabel>
 
           <h1
@@ -296,6 +334,7 @@ export default function BlogPage() {
               marginBottom: "24px",
               lineHeight: "0.93",
               letterSpacing: "-0.01em",
+              color: "#1e1b4b",
             }}
           >
             Insights on AI,
@@ -305,7 +344,7 @@ export default function BlogPage() {
 
           <p
             style={{
-              color: V.textMid,
+              color: "#6b5b95",
               fontSize: "18px",
               maxWidth: "700px",
               margin: "0 auto 40px",
@@ -316,10 +355,10 @@ export default function BlogPage() {
             Stay updated with ideas and tutorials that help you build and grow.
           </p>
 
-          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", fontSize: "14px", color: V.textMid }}>
+          <div style={{ display: "flex", flexWrap: "wrap", justifyContent: "center", gap: "24px", fontSize: "14px", color: "#6b5b95" }}>
             {[["24+", "Articles"], ["5", "Topics"], ["Weekly", "Updates"]].map(([val, label]) => (
               <div key={label} style={{ display: "flex", alignItems: "center", gap: "8px" }}>
-                <span style={{ fontWeight: "900", color: V.textHigh, fontSize: "16px" }}>{val}</span>
+                <span style={{ fontWeight: "900", color: "#1e1b4b", fontSize: "16px" }}>{val}</span>
                 <span>{label}</span>
               </div>
             ))}
@@ -327,7 +366,7 @@ export default function BlogPage() {
         </section>
 
         {/* ── 2. FEATURED POST ─────────────────────────────────────── */}
-        <section style={{ marginBottom: "80px" }} className="blog-featured">
+        <section style={{ marginBottom: "80px", marginTop: "80px" }} className="blog-featured">
           <div
             className="blog-card-hover"
             style={{
@@ -487,10 +526,9 @@ export default function BlogPage() {
           ))}
         </div>
 
-        {/* ── 4. BLOG GRID + TRENDING SIDEBAR ──────────────────────── */}
+        {/* ── 4. BLOG GRID ──────────────────────────────────────────── */}
         <section style={{ marginBottom: "96px" }}>
           <div style={{ display: "grid", gridTemplateColumns: "1fr", gap: "40px" }}>
-
             {/* Grid */}
             <div>
               <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill, minmax(320px, 1fr))", gap: "24px", marginBottom: "40px" }}>
@@ -638,80 +676,7 @@ export default function BlogPage() {
           </div>
         </section>
 
-        {/* ── 5. TRENDING SIDEBAR (Desktop only) ── */}
-        <section style={{ marginBottom: "96px", display: "none" }}>
-          <div
-            style={{
-              borderRadius: "20px",
-              border: `1px solid ${V.border}`,
-              backgroundColor: V.bgCard,
-              padding: "28px",
-            }}
-          >
-            <div style={{ display: "flex", alignItems: "center", gap: "10px", marginBottom: "24px" }}>
-              <TrendingUp style={{ width: "16px", height: "16px", color: "#6366f1" }} />
-              <span style={{ fontWeight: "900", fontSize: "12px", letterSpacing: "0.1em", textTransform: "uppercase", color: V.textMid }}>
-                Trending Now
-              </span>
-            </div>
-
-            <div style={{ display: "flex", flexDirection: "column", gap: "20px" }}>
-              {trending.map((t, i) => (
-                <div key={i} style={{ display: "flex", alignItems: "flex-start", gap: "16px", cursor: "pointer" }}>
-                  <span style={{ fontSize: "28px", fontWeight: "900", color: "rgba(255, 255, 255, 0.08)", marginTop: "2px", minWidth: "40px" }}>
-                    {String(i + 1).padStart(2, "0")}
-                  </span>
-                  <div style={{ flex: 1 }}>
-                    <p style={{ fontSize: "14px", fontWeight: "600", color: V.textHigh, marginBottom: "6px", lineHeight: "1.3" }}>
-                      {t.title}
-                    </p>
-                    <div style={{ display: "flex", alignItems: "center", gap: "8px", fontSize: "12px", color: V.textLow }}>
-                      <span>{t.category}</span>
-                      <span>·</span>
-                      <Clock style={{ width: "12px", height: "12px" }} />
-                      <span>{t.readTime}</span>
-                    </div>
-                  </div>
-                  <ChevronRight style={{ width: "16px", height: "16px", color: V.textLow, marginTop: "2px", flexShrink: 0 }} />
-                </div>
-              ))}
-            </div>
-
-            <div style={{ borderTop: `1px solid ${V.border}`, marginTop: "28px", paddingTop: "28px" }}>
-              <p style={{ fontSize: "11px", color: V.textLow, marginBottom: "16px", letterSpacing: "0.1em", textTransform: "uppercase", fontWeight: "700" }}>
-                Topics
-              </p>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: "8px" }}>
-                {["React", "Next.js", "AI", "AWS", "TypeScript", "Docker", "Startup", "LLMs"].map((tag) => (
-                  <span
-                    key={tag}
-                    style={{
-                      fontSize: "12px",
-                      padding: "6px 12px",
-                      borderRadius: "12px",
-                      border: `1px solid ${V.border}`,
-                      color: V.textMid,
-                      cursor: "pointer",
-                      transition: "all 0.2s",
-                    }}
-                    onMouseEnter={e => {
-                      e.currentTarget.style.borderColor = "rgba(99, 102, 241, 0.4)";
-                      e.currentTarget.style.color = V.textHigh;
-                    }}
-                    onMouseLeave={e => {
-                      e.currentTarget.style.borderColor = V.border;
-                      e.currentTarget.style.color = V.textMid;
-                    }}
-                  >
-                    {tag}
-                  </span>
-                ))}
-              </div>
-            </div>
-          </div>
-        </section>
-
-        {/* ── 6. NEWSLETTER ────────────────────────────────────────── */}
+        {/* ── 5. NEWSLETTER ────────────────────────────────────────── */}
         <section style={{ marginBottom: "96px" }}>
           <div
             style={{
@@ -831,6 +796,30 @@ export default function BlogPage() {
           </div>
         </section>
 
+        {/* ── 6. CONSULTATION FORM ── */}
+        <section id="consultation" style={{ padding: "6rem 0", borderTop: `1px solid ${V.border}`, position: "relative", overflow: "hidden", scrollMarginTop: "2rem", marginBottom: "96px" }}>
+          <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse,rgba(236,72,153,0.10) 0%,rgba(121,81,229,0.10) 45%,transparent 75%)", pointerEvents: "none" }} />
+          <div style={{ maxWidth: 820, margin: "0 auto", position: "relative", zIndex: 1 }}>
+            <div style={{ textAlign: "center", marginBottom: 48 }}>
+              <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(236,72,153,0.30)", background: "rgba(236,72,153,0.08)", marginBottom: 20 }}>
+                <Terminal style={{ width: 14, height: 14, color: "#db2777" }} />
+                <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#db2777", textTransform: "uppercase" }}>FREE CONSULTATION</span>
+              </div>
+              <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>
+                Ready to Build{" "}
+                <span style={{ background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                  Your Next Project?
+                </span>
+              </h2>
+              <p style={{ color: V.textMid, marginTop: 8 }}>
+                Tell us about your idea — we'll reply on WhatsApp with recommendations and a clear quote.
+              </p>
+            </div>
+
+            <ConsultationForm />
+          </div>
+        </section>
+
         {/* ── 7. FINAL CTA ─────────────────────────────────────────── */}
         <section style={{ paddingBottom: "112px", textAlign: "center" }}>
           <SectionLabel>What's Next?</SectionLabel>
@@ -850,8 +839,9 @@ export default function BlogPage() {
             fast, clean, and at a fixed price.
           </p>
 
-          <div style={{ display: "flex", flexDirection: "column", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
-            <button
+          <div style={{ display: "flex", flexDirection: "row", gap: "16px", justifyContent: "center", flexWrap: "wrap" }}>
+            <a
+              href="#consultation"
               style={{
                 display: "inline-flex",
                 alignItems: "center",
@@ -866,6 +856,7 @@ export default function BlogPage() {
                 cursor: "pointer",
                 fontSize: "14px",
                 transition: "all 0.2s",
+                textDecoration: "none",
               }}
               onMouseEnter={e => {
                 e.currentTarget.style.backgroundColor = "#4f46e5";
@@ -879,7 +870,7 @@ export default function BlogPage() {
               }}
             >
               Start a Project <ArrowRight style={{ width: "16px", height: "16px" }} />
-            </button>
+            </a>
             <button
               style={{
                 display: "inline-flex",
@@ -914,5 +905,216 @@ export default function BlogPage() {
 
       </div>
     </main>
+  );
+}
+
+// ─── CONSULTATION FORM ──
+
+function ConsultationForm() {
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [service, setService] = useState(serviceOptions[0]);
+  const [details, setDetails] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: 11,
+    fontWeight: 800,
+    textTransform: "uppercase",
+    letterSpacing: "0.15em",
+    color: FORM.label,
+    marginBottom: 8,
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: FORM.inputBg,
+    border: `1px solid ${FORM.inputBorder}`,
+    borderRadius: 12,
+    padding: "12px 16px 12px 40px",
+    fontSize: "0.875rem",
+    color: FORM.text,
+    outline: "none",
+    fontFamily: "'Space Grotesk', ui-sans-serif",
+  };
+
+  const iconStyle: React.CSSProperties = {
+    position: "absolute",
+    left: 14,
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: 15,
+    height: 15,
+    color: "#a855f7",
+    pointerEvents: "none",
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    const message = [
+      `Hi, I'd like a free consultation from the blog.`,
+      `Name: ${name}`,
+      company ? `Company: ${company}` : null,
+      email ? `Email: ${email}` : null,
+      `Phone: ${phone}`,
+      `Interested in: ${service}`,
+      details ? `Details: ${details}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const whatsappUrl = `https://wa.me/${CONSULT_WHATSAPP}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noreferrer");
+    setSubmitted(true);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        position: "relative",
+        borderRadius: 28,
+        padding: 2,
+        background: "linear-gradient(135deg,#a855f7 0%,#ec4899 55%,#7951e5 100%)",
+        boxShadow: "0 20px 60px rgba(168,85,247,0.25)",
+      }}
+    >
+      <div
+        style={{
+          borderRadius: 26,
+          background: FORM.panelBg,
+          padding: "2.5rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: 20,
+        }}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          <div>
+            <label style={labelStyle}>Your Name</label>
+            <div style={{ position: "relative" }}>
+              <User style={iconStyle} />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Jane Doe"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Company (optional)</label>
+            <div style={{ position: "relative" }}>
+              <Building2 style={iconStyle} />
+              <input
+                type="text"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="Acme Inc."
+                style={inputStyle}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          <div>
+            <label style={labelStyle}>Email (optional)</label>
+            <div style={{ position: "relative" }}>
+              <Mail style={iconStyle} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="jane@company.com"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Phone / WhatsApp</label>
+            <div style={{ position: "relative" }}>
+              <Phone style={iconStyle} />
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 98778 73188"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Area of Interest</label>
+          <div style={{ position: "relative" }}>
+            <Cloud style={iconStyle} />
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              style={{ ...inputStyle, paddingRight: 38, appearance: "none", cursor: "pointer" }}
+            >
+              {serviceOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <ChevronDown style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "#a855f7", pointerEvents: "none" }} />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Project Details</label>
+          <textarea
+            rows={5}
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Tell us about your project idea, requirements, and timeline."
+            style={{ ...inputStyle, paddingLeft: 16, resize: "none" }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)",
+            color: "#fff",
+            fontWeight: 800,
+            padding: "16px 0",
+            borderRadius: 14,
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "'Space Grotesk', ui-sans-serif",
+            boxShadow: "0 8px 24px rgba(236,72,153,0.35)",
+          }}
+        >
+          Get Your Free Quote
+          <ArrowRight style={{ width: 16, height: 16 }} />
+        </button>
+
+        {submitted && (
+          <p style={{ textAlign: "center", fontSize: "0.8rem", color: "#a855f7", fontWeight: 600 }}>
+            Opening WhatsApp with your details — we usually reply within a few hours.
+          </p>
+        )}
+      </div>
+    </form>
   );
 }

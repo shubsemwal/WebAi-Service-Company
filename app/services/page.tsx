@@ -18,6 +18,8 @@ import {
   Rocket,
   Phone,
   ArrowRight,
+  User,
+  Briefcase,
 } from "lucide-react";
 
 const services = [
@@ -180,6 +182,18 @@ const faqs = [
   },
 ];
 
+const serviceOptions = [
+  "Frontend Development",
+  "Backend Development",
+  "AI & Automation",
+  "Cloud & DevOps",
+  "Database Systems",
+  "SEO & Web Solutions",
+  "Cyber Security",
+  "Responsive Design",
+  "Not sure yet",
+];
+
 function SectionLabel({ children }: { children: React.ReactNode }) {
   return (
     <div style={{ display: "flex", alignItems: "center", justifyContent: "center", marginBottom: 20 }}>
@@ -317,8 +331,212 @@ function FaqItem({ q, a }: { q: string; a: string }) {
   );
 }
 
+function ConsultationForm() {
+  const [name, setName] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [service, setService] = useState(serviceOptions[0]);
+  const [budget, setBudget] = useState("");
+  const [details, setDetails] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: 11,
+    fontWeight: 700,
+    textTransform: "uppercase",
+    letterSpacing: "0.15em",
+    color: "var(--text-low)",
+    marginBottom: 8,
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: "var(--bg-subtle)",
+    border: "1px solid var(--border)",
+    borderRadius: 12,
+    padding: "12px 16px",
+    fontSize: "0.875rem",
+    color: "var(--text-high)",
+    outline: "none",
+    fontFamily: "'Space Grotesk', ui-sans-serif",
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+
+    if (!name || !phone) {
+      return;
+    }
+
+    const message = [
+      `Hi, I'd like a free consultation.`,
+      `Name: ${name}`,
+      email ? `Email: ${email}` : null,
+      `Phone: ${phone}`,
+      `Interested in: ${service}`,
+      budget ? `Budget: ${budget}` : null,
+      details ? `Details: ${details}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const whatsappUrl = `https://wa.me/9877873188?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noreferrer");
+    setSubmitted(true);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        borderRadius: 24,
+        border: "1px solid var(--border)",
+        background: "var(--bg-card)",
+        padding: "2.5rem",
+        display: "flex",
+        flexDirection: "column",
+        gap: 20,
+      }}
+    >
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+        <div>
+          <label style={labelStyle}>Your Name</label>
+          <div style={{ position: "relative" }}>
+            <User style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-low)" }} />
+            <input
+              type="text"
+              required
+              value={name}
+              onChange={(e) => setName(e.target.value)}
+              placeholder="Jane Doe"
+              style={{ ...inputStyle, paddingLeft: 38 }}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Phone / WhatsApp</label>
+          <div style={{ position: "relative" }}>
+            <Phone style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-low)" }} />
+            <input
+              type="tel"
+              required
+              value={phone}
+              onChange={(e) => setPhone(e.target.value)}
+              placeholder="+91 98778 73188"
+              style={{ ...inputStyle, paddingLeft: 38 }}
+            />
+          </div>
+        </div>
+      </div>
+
+      <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+        <div>
+          <label style={labelStyle}>Email (optional)</label>
+          <div style={{ position: "relative" }}>
+            <Mail style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-low)" }} />
+            <input
+              type="email"
+              value={email}
+              onChange={(e) => setEmail(e.target.value)}
+              placeholder="jane@company.com"
+              style={{ ...inputStyle, paddingLeft: 38 }}
+            />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Service Interested In</label>
+          <div style={{ position: "relative" }}>
+            <Briefcase style={{ position: "absolute", left: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-low)", pointerEvents: "none" }} />
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              style={{ ...inputStyle, paddingLeft: 38, appearance: "none", cursor: "pointer" }}
+            >
+              {serviceOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <ChevronDown style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "var(--text-low)", pointerEvents: "none" }} />
+          </div>
+        </div>
+      </div>
+
+      <div>
+        <label style={labelStyle}>Estimated Budget (optional)</label>
+        <input
+          type="text"
+          value={budget}
+          onChange={(e) => setBudget(e.target.value)}
+          placeholder="e.g. ₹15,000 – ₹30,000"
+          style={inputStyle}
+        />
+      </div>
+
+      <div>
+        <label style={labelStyle}>Project Details</label>
+        <textarea
+          rows={5}
+          value={details}
+          onChange={(e) => setDetails(e.target.value)}
+          placeholder="Describe your business, current workflow, challenges, and the solution you're looking for."
+          style={{ ...inputStyle, resize: "none" }}
+        />
+      </div>
+
+      <button
+        type="submit"
+        style={{
+          width: "100%",
+          display: "flex",
+          alignItems: "center",
+          justifyContent: "center",
+          gap: 8,
+          background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+          color: "#fff",
+          fontWeight: 800,
+          padding: "16px 0",
+          borderRadius: 14,
+          border: "none",
+          cursor: "pointer",
+          fontFamily: "'Space Grotesk', ui-sans-serif",
+          boxShadow: "0 4px 20px rgba(56,189,248,0.30)",
+        }}
+      >
+        Get My Free Consultation
+        <ArrowRight style={{ width: 16, height: 16 }} />
+      </button>
+
+      {submitted && (
+        <p style={{ textAlign: "center", fontSize: "0.8rem", color: "var(--accent)" }}>
+          Opening WhatsApp with your details — we usually reply within a few hours.
+        </p>
+      )}
+    </form>
+  );
+}
+
 export default function ServicesPage() {
   const dividerStyle = { borderTop: "1px solid var(--border)" };
+
+  const ctaButtonStyle: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+    color: "#fff",
+    fontWeight: 800,
+    padding: "14px 32px",
+    borderRadius: 18,
+    border: "none",
+    cursor: "pointer",
+    textDecoration: "none",
+    fontFamily: "'Space Grotesk', ui-sans-serif",
+  };
 
   return (
     <main
@@ -328,6 +546,7 @@ export default function ServicesPage() {
         color: "var(--text-high)",
         fontFamily: "'Space Grotesk', ui-sans-serif",
         transition: "background-color 0.3s, color 0.3s",
+        scrollBehavior: "smooth",
       }}
     >
       <div style={{ position: "fixed", inset: 0, pointerEvents: "none", overflow: "hidden", zIndex: 0 }}>
@@ -423,7 +642,7 @@ export default function ServicesPage() {
                 Chat on WhatsApp
               </a>
               <a
-                href="tel:+919877873188"
+                href="#consultation"
                 style={{
                   display: "inline-flex",
                   alignItems: "center",
@@ -499,23 +718,9 @@ export default function ServicesPage() {
             </div>
 
             <div style={{ textAlign: "center", marginTop: 40 }}>
-              <button
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
-                  color: "#fff",
-                  fontWeight: 800,
-                  padding: "14px 32px",
-                  borderRadius: 18,
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "'Space Grotesk', ui-sans-serif",
-                }}
-              >
+              <a href="#consultation" style={ctaButtonStyle}>
                 Book a Free Consultation <ArrowRight style={{ width: 16 }} />
-              </button>
+              </a>
             </div>
           </div>
         </section>
@@ -605,7 +810,7 @@ export default function ServicesPage() {
                         borderRadius: 999,
                         fontSize: "0.75rem",
                         fontWeight: 700,
-                        background: "rgba(56,189,248,0.10)",
+                        background: "rgba(99, 102, 241, 0.07))",
                         border: "1px solid rgba(56,189,248,0.20)",
                         color: "var(--accent)",
                       }}
@@ -623,24 +828,36 @@ export default function ServicesPage() {
             </p>
 
             <div style={{ textAlign: "center", marginTop: 32 }}>
-              <button
-                style={{
-                  display: "inline-flex",
-                  alignItems: "center",
-                  gap: 8,
-                  background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
-                  color: "#fff",
-                  fontWeight: 800,
-                  padding: "14px 32px",
-                  borderRadius: 18,
-                  border: "none",
-                  cursor: "pointer",
-                  fontFamily: "'Space Grotesk', ui-sans-serif",
-                }}
-              >
+              <a href="#consultation" style={ctaButtonStyle}>
                 Get a Custom Quote <ArrowRight style={{ width: 16 }} />
-              </button>
+              </a>
             </div>
+          </div>
+        </section>
+
+        <section id="consultation" style={{ padding: "6rem 4rem", ...dividerStyle, scrollMarginTop: "2rem" }}>
+          <div style={{ maxWidth: 720, margin: "0 auto" }}>
+            <div style={{ textAlign: "center", marginBottom: 40 }}>
+              <SectionLabel>Free Consultation</SectionLabel>
+              <h2 style={{ fontSize: "clamp(2rem,5vw,3rem)", fontWeight: 900, marginBottom: 12 }}>
+                Tell us about{" "}
+                <span
+                  style={{
+                    background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
+                    WebkitBackgroundClip: "text",
+                    WebkitTextFillColor: "transparent",
+                    backgroundClip: "text",
+                  }}
+                >
+                  your project
+                </span>
+              </h2>
+              <p style={{ color: "var(--text-mid)" }}>
+                Fill this out and we'll reach you on WhatsApp with a plan and a clear quote — usually within a few hours.
+              </p>
+            </div>
+
+            <ConsultationForm />
           </div>
         </section>
 
@@ -724,7 +941,7 @@ export default function ServicesPage() {
                   real results
                 </span>
               </h2>
-              <p style={{ color: "var(--text-mid)" }}>Numbers and words from clients we’ve worked with.</p>
+              <p style={{ color: "var(--text-mid)" }}>Numbers and words from clients we've worked with.</p>
             </div>
 
             <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(180px,1fr))", gap: 16, marginBottom: 32 }}>
@@ -838,12 +1055,12 @@ export default function ServicesPage() {
                 overflow: "hidden",
               }}
             >
-              <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: "radial-gradient(ellipse,rgba(56,189,248,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
+              <div style={{ position: "absolute", top: 0, left: "50%", transform: "translateX(-50%)", width: 400, height: 200, background: "radial-gradient(ellipse,rgba(99, 102, 241, 0.07) 0%,transparent 70%)", pointerEvents: "none" }} />
               <div style={{ position: "relative", zIndex: 1 }}>
                 <Rocket style={{ width: 36, height: 36, color: "var(--accent)", margin: "0 auto 24px", display: "block" }} />
                 <SectionLabel>Start Today</SectionLabel>
                 <h2 style={{ fontSize: "clamp(1.8rem,4vw,2.8rem)", fontWeight: 900, lineHeight: 1.15, marginBottom: 20, marginTop: 8 }}>
-                  Let’s build your next{" "}
+                  Let's build your next{" "}
                   <span
                     style={{
                       background: "linear-gradient(135deg,#38bdf8,#a78bfa)",
@@ -859,9 +1076,9 @@ export default function ServicesPage() {
                   Free consultation. Honest pricing. Fast delivery. No surprises.
                 </p>
                 <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-                  <a href="https://wa.me/9877873188" target="_blank" rel="noreferrer" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "16px 32px", borderRadius: 18, border: "none", cursor: "pointer", textDecoration: "none", boxShadow: "0 4px 20px rgba(56,189,248,0.30)" }}>
+                  <a href="#consultation" style={{ display: "inline-flex", alignItems: "center", gap: 8, background: "linear-gradient(135deg,#38bdf8,#a78bfa)", color: "#fff", fontWeight: 800, fontSize: 15, padding: "16px 32px", borderRadius: 18, border: "none", cursor: "pointer", textDecoration: "none", boxShadow: "0 4px 20px rgba(56,189,248,0.30)" }}>
                     <MessageCircle style={{ width: 18, height: 18 }} />
-                    Chat on WhatsApp
+                    Get Free Consultation
                   </a>
                   <a href="mailto:shubsem34@gmail.com" style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 18, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-mid)", cursor: "pointer", textDecoration: "none" }}>
                     <Mail style={{ width: 18, height: 18 }} />

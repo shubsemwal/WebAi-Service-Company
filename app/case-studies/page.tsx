@@ -1,428 +1,806 @@
 "use client";
 
 import {
-  ArrowRight, CheckCircle2, ChevronDown, MessageCircle,
-  Bot, Globe, Cloud, TrendingUp, Users, Clock, DollarSign,
-  Activity, Zap, Shield, Star, ExternalLink,
+  Cloud,
+  Server,
+  Shield,
+  GitBranch,
+  Layers,
+  Database,
+  Terminal,
+  Activity,
+  Zap,
+  Lock,
+  Monitor,
+  ArrowRight,
+  CheckCircle2,
+  Container,
+  ChevronDown,
+  TrendingDown,
+  Clock,
+  DollarSign,
+  Users,
+  MessageCircle,
+  User,
+  Mail,
+  Phone,
+  Building2,
 } from "lucide-react";
-import { useState } from "react";
-import Link from "next/link";
+import { useEffect, useState } from "react";
 
-const FILTERS = ["All", "AI & Automation", "Web Development", "Cloud & DevOps"];
+// ─── TYPES ────────────────────────────────────────────────────────────────────
 
-const GLOBAL_STATS = [
-  { label: "Projects Completed", value: "200+", icon: <CheckCircle2 className="w-5 h-5" /> },
-  { label: "Cost Saved for Clients", value: "₹50L+", icon: <DollarSign className="w-5 h-5" /> },
-  { label: "Time Saved / Month", value: "5,000+ hrs", icon: <Clock className="w-5 h-5" /> },
-  { label: "Average Client ROI", value: "3–5×", icon: <TrendingUp className="w-5 h-5" /> },
-  { label: "Customer Satisfaction", value: "98%", icon: <Star className="w-5 h-5" /> },
-  { label: "On-Time Delivery", value: "95%", icon: <Activity className="w-5 h-5" /> },
+type Theme = "dark" | "light";
+
+// ─── THEME TOKENS (identical to Navbar / PricingPage / AboutPage / web-dev page) ──
+
+const T = {
+  dark: {
+    bg:        "#080B14",
+    bgCard:    "rgba(255,255,255,0.03)",
+    bgSubtle:  "rgba(255,255,255,0.02)",
+    border:    "rgba(255,255,255,0.08)",
+    text:      "#ffffff",
+    textMuted: "#94a3b8",
+    textSub:   "#64748b",
+  },
+  light: {
+    bg:        "#f8fafc",
+    bgCard:    "#ffffff",
+    bgSubtle:  "#f1f5f9",
+    border:    "rgba(0,0,0,0.08)",
+    text:      "#0f172a",
+    textMuted: "#475569",
+    textSub:   "#94a3b8",
+  },
+};
+
+// Fixed light, pink-violet palette used only by the consultation form —
+// stays consistent regardless of the site-wide dark/light toggle.
+const FORM = {
+  bg:        "#ffffff",
+  panelBg:   "linear-gradient(135deg,#faf5ff 0%,#fdf2f8 100%)",
+  border:    "rgba(121,81,229,0.18)",
+  inputBg:   "#ffffff",
+  inputBorder: "rgba(121,81,229,0.20)",
+  text:      "#1e1b4b",
+  textMuted: "#6b5b95",
+  label:     "#7c3aed",
+};
+
+const CONSULT_WHATSAPP = "9877873188";
+const serviceOptions = [
+  "Cloud Infrastructure",
+  "Containerization",
+  "Kubernetes Orchestration",
+  "CI/CD Pipelines",
+  "Monitoring & Logging",
+  "DevSecOps",
+  "Database Scaling",
+  "Serverless Deployments",
+  "Cloud Migration",
+  "Not sure yet",
 ];
 
-const CASE_STUDIES = [
-  /* ── AI ── */
-  {
-    id: "ai-customer-support",
-    category: "AI & Automation",
-    industry: "SaaS",
-    accent: "#7951e5",
-    glow: "rgba(34,211,238,0.15)",
-    icon: <Bot className="w-6 h-6" />,
-    title: "AI Customer Support Automation",
-    tagline: "70% reduction in support workload for a SaaS platform.",
-    client: "SaaS Platform (5,000+ monthly users)",
-    challenge: "Support team was overwhelmed with 1,000+ repeated queries/month, causing slow response times and customer churn.",
-    solution: "Built an AI chatbot deployed on website + WhatsApp with 24/7 automated responses, ticket routing, and escalation logic.",
-    stack: ["AI Agent", "WhatsApp API", "Node.js", "MongoDB"],
-    timeline: "12 days",
-    budget: "₹18,000",
-    metrics: [
-      { label: "Support Tickets", before: "1,000/mo", after: "300/mo" },
-      { label: "Response Time", before: "2 hours", after: "<1 second" },
-      { label: "Team Size Needed", before: "5 people", after: "2 people" },
-      { label: "Customer Satisfaction", before: "75%", after: "98%" },
-      { label: "Manual Work", before: "30h/week", after: "8h/week" },
-    ],
-    testimonial: {
-      quote: "The AI chatbot reduced our support workload by 70% and our customers love the instant responses. Best investment we've made this year.",
-      name: "Rahul Sharma",
-      role: "CTO, SaaS Platform",
-    },
-  },
-  {
-    id: "whatsapp-ecommerce-bot",
-    category: "AI & Automation",
-    industry: "Ecommerce",
-    accent: "#636be6",
-    glow: "rgba(52,211,153,0.15)",
-    icon: <Bot className="w-6 h-6" />,
-    title: "WhatsApp AI Bot for Ecommerce",
-    tagline: "Automated order tracking, returns, and product discovery on WhatsApp.",
-    client: "Fashion Retail Brand (10,000+ orders/month)",
-    challenge: "Customer queries about order status and returns were flooding the support inbox, with a 4-hour average response time.",
-    solution: "WhatsApp AI bot integrated with the order management system, giving real-time tracking, return initiation, and product recommendations.",
-    stack: ["WhatsApp Business API", "OpenAI", "Node.js", "MySQL"],
-    timeline: "10 days",
-    budget: "₹15,000",
-    metrics: [
-      { label: "Avg Response Time", before: "4 hours", after: "Instant" },
-      { label: "Support Emails/day", before: "200", after: "30" },
-      { label: "Return Processing", before: "3 days", after: "Same day" },
-      { label: "Customer Rating", before: "3.2 / 5", after: "4.8 / 5" },
-      { label: "Repeat Purchase Rate", before: "22%", after: "41%" },
-    ],
-    testimonial: {
-      quote: "Customers now get instant order updates on WhatsApp. Support load dropped overnight and repeat sales jumped.",
-      name: "Priya Mehta",
-      role: "Operations Head, Fashion Brand",
-    },
-  },
-  {
-    id: "ai-voice-clinic",
-    category: "AI & Automation",
-    industry: "Healthcare",
-    accent: "#f87171",
-    glow: "rgba(248,113,113,0.15)",
-    icon: <Bot className="w-6 h-6" />,
-    title: "AI Voice Booking Bot for Clinic",
-    tagline: "Automated appointment booking and reminders, cutting no-shows by 60%.",
-    client: "Multi-specialty Clinic (300+ appointments/month)",
-    challenge: "Receptionist spent 5+ hours/day on phone bookings. No-show rate was 35%, costing ₹80,000/month in lost revenue.",
-    solution: "AI voice bot for appointment booking via phone + WhatsApp, automated SMS/WhatsApp reminders 24h and 1h before appointments.",
-    stack: ["Twilio Voice", "OpenAI Whisper", "Node.js", "PostgreSQL"],
-    timeline: "14 days",
-    budget: "₹20,000",
-    metrics: [
-      { label: "No-Show Rate", before: "35%", after: "14%" },
-      { label: "Receptionist Hours/day", before: "5 hours", after: "1 hour" },
-      { label: "Booking Errors", before: "15/month", after: "0/month" },
-      { label: "Revenue Lost to No-Shows", before: "₹80k/mo", after: "₹30k/mo" },
-      { label: "Patient Satisfaction", before: "72%", after: "94%" },
-    ],
-    testimonial: {
-      quote: "The bot handles 90% of our bookings now. No-shows dropped dramatically and our receptionist finally has time to focus on patients.",
-      name: "Dr. Ankit Verma",
-      role: "Director, Multi-specialty Clinic",
-    },
-  },
-  /* ── WEB ── */
-  {
-    id: "scalable-web-platform",
-    category: "Web Development",
-    industry: "SaaS",
-    accent: "#38bdf8",
-    glow: "rgba(56,189,248,0.15)",
-    icon: <Globe className="w-6 h-6" />,
-    title: "Scalable Web Platform",
-    tagline: "From 200K to 1M+ monthly visitors with zero downtime.",
-    client: "B2B SaaS Platform (Next.js, TypeScript)",
-    challenge: "Legacy React app was slow, crashing under load spikes, and had a PageSpeed score of 45. Losing users to competitors.",
-    solution: "Full rebuild with Next.js App Router, server components, edge caching, and a redesigned PostgreSQL schema with indexed queries.",
-    stack: ["Next.js", "TypeScript", "PostgreSQL", "Vercel Edge", "Redis"],
-    timeline: "21 days",
-    budget: "₹45,000",
-    metrics: [
-      { label: "Load Time", before: "4.2s", after: "0.7s" },
-      { label: "Monthly Visitors", before: "200K", after: "1M+" },
-      { label: "Bounce Rate", before: "65%", after: "28%" },
-      { label: "Google PageSpeed", before: "45", after: "92" },
-      { label: "Conversion Rate", before: "1.2%", after: "3.8%" },
-    ],
-    testimonial: {
-      quote: "Our platform is unrecognizable. Load times went from painful to instant, and we're handling 5× more traffic without breaking a sweat.",
-      name: "Vikram Nair",
-      role: "Founder, B2B SaaS Platform",
-    },
-  },
-  {
-    id: "ecommerce-fashion",
-    category: "Web Development",
-    industry: "Ecommerce",
-    accent: "#f472b6",
-    glow: "rgba(244,114,182,0.15)",
-    icon: <Globe className="w-6 h-6" />,
-    title: "Ecommerce Store for Fashion Brand",
-    tagline: "Custom Shopify + headless CMS with 40% higher conversion.",
-    client: "D2C Fashion Brand (5,000+ SKUs)",
-    challenge: "Default Shopify theme was slow, not mobile-optimised, and had a clunky checkout losing 70% of mobile users at cart.",
-    solution: "Headless Shopify with Next.js frontend, custom product recommendation engine, streamlined 2-step mobile checkout.",
-    stack: ["Next.js", "Shopify Storefront API", "Sanity CMS", "Stripe"],
-    timeline: "18 days",
-    budget: "₹38,000",
-    metrics: [
-      { label: "Mobile Bounce Rate", before: "68%", after: "29%" },
-      { label: "Checkout Completion", before: "22%", after: "61%" },
-      { label: "Avg Order Value", before: "₹1,200", after: "₹1,850" },
-      { label: "Page Load (Mobile)", before: "5.1s", after: "1.1s" },
-      { label: "Monthly Revenue", before: "₹4.2L", after: "₹7.8L" },
-    ],
-    testimonial: {
-      quote: "Sales nearly doubled after launch. The mobile checkout is silky smooth and customers actually complete their purchases now.",
-      name: "Sneha Kapoor",
-      role: "Founder, Fashion Brand",
-    },
-  },
-  {
-    id: "crm-dashboard-bpo",
-    category: "Web Development",
-    industry: "BPO",
-    accent: "#a78bfa",
-    glow: "rgba(167,139,250,0.15)",
-    icon: <Globe className="w-6 h-6" />,
-    title: "CRM Dashboard for BPO Company",
-    tagline: "Saved 15+ hours/week with a real-time React + TypeScript dashboard.",
-    client: "BPO Company (200+ agents, 3 departments)",
-    challenge: "Managers pulled data from 4 separate Excel sheets to compile weekly reports — 15+ hours of manual work every week.",
-    solution: "Centralised React + TypeScript dashboard with live agent metrics, role-based access, and automated PDF report generation.",
-    stack: ["React", "TypeScript", "Node.js", "PostgreSQL", "Chart.js"],
-    timeline: "16 days",
-    budget: "₹32,000",
-    metrics: [
-      { label: "Manual Reporting Hours", before: "15h/week", after: "0h/week" },
-      { label: "Report Generation Time", before: "3 hours", after: "1 click" },
-      { label: "Data Accuracy", before: "84%", after: "100%" },
-      { label: "Manager Satisfaction", before: "61%", after: "96%" },
-      { label: "Escalation Response Time", before: "45 min", after: "8 min" },
-    ],
-    testimonial: {
-      quote: "We got back 15 hours a week immediately. The dashboard is exactly what we needed — live data, clean design, and no more spreadsheet nightmares.",
-      name: "Amit Desai",
-      role: "Operations Manager, BPO Company",
-    },
-  },
-  /* ── CLOUD ── */
-  {
-    id: "cloud-migration-enterprise",
-    category: "Cloud & DevOps",
-    industry: "Enterprise",
-    accent: "#7951e5",
-    glow: "rgba(34,211,238,0.15)",
-    icon: <Cloud className="w-6 h-6" />,
-    title: "Cloud Infrastructure Migration",
-    tagline: "Zero-downtime migration from on-prem to AWS, cutting infra costs by 50%.",
-    client: "Enterprise Client (50+ servers, 3 offices)",
-    challenge: "On-prem servers required expensive maintenance, had 5+ hours downtime/month, and couldn't scale during traffic peaks.",
-    solution: "Phased migration to AWS (EC2, RDS, S3, CloudFront), with Terraform IaC, auto-scaling groups, and multi-AZ setup.",
-    stack: ["AWS", "Terraform", "Docker", "GitHub Actions", "Datadog"],
-    timeline: "30 days",
-    budget: "₹60,000",
-    metrics: [
-      { label: "Monthly Downtime", before: "5 hrs", after: "0 hrs" },
-      { label: "Infrastructure Cost", before: "₹80k/mo", after: "₹40k/mo" },
-      { label: "Deployment Time", before: "3 hours", after: "8 minutes" },
-      { label: "Traffic Capacity", before: "10K users", after: "100K users" },
-      { label: "Mean Recovery Time", before: "45 min", after: "Auto-heal" },
-    ],
-    testimonial: {
-      quote: "Moving to AWS with their help was seamless. Zero downtime and our costs dropped by 50%. We wish we'd done it sooner.",
-      name: "Priya Mehta",
-      role: "Operations Lead, Enterprise Client",
-    },
-  },
-  {
-    id: "cicd-pipeline-startup",
-    category: "Cloud & DevOps",
-    industry: "Startup",
-    accent: "#636be6",
-    glow: "rgba(52,211,153,0.15)",
-    icon: <Cloud className="w-6 h-6" />,
-    title: "CI/CD Pipeline Setup for Startup",
-    tagline: "Deployments went from 2 hours of manual work to 8 minutes, fully automated.",
-    client: "Early-stage SaaS Startup (8-person team)",
-    challenge: "Deployments were manual, error-prone, and took the CTO 2+ hours. Production bugs from untested code were costing clients.",
-    solution: "Full CI/CD pipeline with GitHub Actions: automated testing, Docker builds, staging environment, and one-click production deploys.",
-    stack: ["GitHub Actions", "Docker", "AWS ECS", "Jest", "Slack Alerts"],
-    timeline: "7 days",
-    budget: "₹15,000",
-    metrics: [
-      { label: "Deployment Time", before: "2 hours", after: "8 minutes" },
-      { label: "Manual Steps", before: "22 steps", after: "0 steps" },
-      { label: "Production Bugs/month", before: "12", after: "2" },
-      { label: "CTO Time on Deploys", before: "10h/week", after: "0h/week" },
-      { label: "Deploy Frequency", before: "1×/week", after: "5×/week" },
-    ],
-    testimonial: {
-      quote: "I went from dreading every deployment to not even thinking about it. The pipeline just works, and our bug rate dropped instantly.",
-      name: "Karthik Rao",
-      role: "CTO, SaaS Startup",
-    },
-  },
-  {
-    id: "kubernetes-high-traffic",
-    category: "Cloud & DevOps",
-    industry: "Ecommerce",
-    accent: "#a78bfa",
-    glow: "rgba(167,139,250,0.15)",
-    icon: <Cloud className="w-6 h-6" />,
-    title: "Kubernetes for High-Traffic App",
-    tagline: "Auto-scaling setup that handled a 10× traffic spike without intervention.",
-    client: "Flash-sale Ecommerce Platform (500K daily users at peak)",
-    challenge: "Manual server scaling during sales events caused crashes. A major flash sale resulted in 3 hours of downtime and ₹12L lost revenue.",
-    solution: "Kubernetes cluster on AWS EKS with HPA (Horizontal Pod Autoscaler), custom metrics scaling, and PodDisruptionBudgets for zero-downtime.",
-    stack: ["Kubernetes", "AWS EKS", "Helm", "Prometheus", "Grafana"],
-    timeline: "20 days",
-    budget: "₹50,000",
-    metrics: [
-      { label: "Peak Traffic Handled", before: "50K users", after: "500K users" },
-      { label: "Scale-up Time", before: "25 min manual", after: "90 sec auto" },
-      { label: "Last Flash Sale Downtime", before: "3 hours", after: "0 minutes" },
-      { label: "Infra Cost During Sale", before: "₹40k", after: "₹18k" },
-      { label: "Ops Team Intervention", before: "Required", after: "Not needed" },
-    ],
-    testimonial: {
-      quote: "Our last sale had 10× our normal traffic and the system just scaled up automatically. Zero downtime, zero stress. Incredible.",
-      name: "Rohan Gupta",
-      role: "Head of Engineering, Ecommerce Platform",
-    },
-  },
-];
+// ─── PAGE ──────────────────────────────────────────────────────────────────────
 
-export default function CaseStudiesPage() {
-  const [activeFilter, setActiveFilter] = useState("All");
-  const [expandedId, setExpandedId] = useState<string | null>(null);
+export default function CloudDevOpsPage() {
+  // Lazy-init from the real DOM state so the very first paint is already
+  // correct, then stay in sync with whatever the navbar toggle sets.
+  const [theme, setTheme] = useState<Theme>(() => {
+    if (typeof document !== "undefined") {
+      const attr = document.documentElement.getAttribute("data-theme");
+      if (attr === "light" || attr === "dark") return attr;
+    }
+    return "dark";
+  });
 
-  const filtered = activeFilter === "All"
-    ? CASE_STUDIES
-    : CASE_STUDIES.filter(c => c.category === activeFilter);
+  useEffect(() => {
+    const syncTheme = () => {
+      const attr = document.documentElement.getAttribute("data-theme") as Theme | null;
+      if (attr === "light" || attr === "dark") {
+        setTheme((prev) => (prev === attr ? prev : attr));
+      }
+    };
+    syncTheme();
+    const observer = new MutationObserver(syncTheme);
+    observer.observe(document.documentElement, { attributes: true, attributeFilter: ["data-theme"] });
+    return () => observer.disconnect();
+  }, []);
+
+  const tk = T[theme];
+  const isDark = theme === "dark";
+
+  const services = [
+    {
+      icon: <Cloud className="w-7 h-7" />,
+      title: "Cloud Infrastructure",
+      desc: "Scalable cloud architecture on AWS, Azure and GCP with high availability.",
+      benefit: "Reduce infrastructure costs while handling 10x more traffic.",
+      accent: "#38bdf8",
+      glow: "rgba(56,189,248,0.18)",
+    },
+    {
+      icon: <Container className="w-7 h-7" />,
+      title: "Containerization",
+      desc: "Docker-based container setups for consistent deployment across environments.",
+      benefit: "Deploy consistently across dev, staging, and production — no more 'works on my machine'.",
+      accent: "#636be6",
+      glow: "rgba(52,211,153,0.18)",
+    },
+    {
+      icon: <Layers className="w-7 h-7" />,
+      title: "Kubernetes Orchestration",
+      desc: "Automated scaling, load balancing and container orchestration using K8s.",
+      benefit: "Auto-scale your applications during traffic spikes without manual intervention.",
+      accent: "#a78bfa",
+      glow: "rgba(167,139,250,0.18)",
+    },
+    {
+      icon: <GitBranch className="w-7 h-7" />,
+      title: "CI/CD Pipelines",
+      desc: "Automated build, test and deployment pipelines with GitHub Actions & Jenkins.",
+      benefit: "Ship code 5x faster with automated testing and deployments.",
+      accent: "#7951e5",
+      glow: "rgba(34,211,238,0.18)",
+    },
+    {
+      icon: <Activity className="w-7 h-7" />,
+      title: "Monitoring & Logging",
+      desc: "Real-time observability using Prometheus, Grafana and ELK stack.",
+      benefit: "Catch issues before they affect users with real-time alerts and dashboards.",
+      accent: "#fbbf24",
+      glow: "rgba(251,191,36,0.18)",
+    },
+    {
+      icon: <Shield className="w-7 h-7" />,
+      title: "DevSecOps",
+      desc: "Security-first pipelines with automated vulnerability scanning and compliance.",
+      benefit: "Pass security audits and protect user data with automated vulnerability scanning.",
+      accent: "#f87171",
+      glow: "rgba(248,113,113,0.18)",
+    },
+    {
+      icon: <Database className="w-7 h-7" />,
+      title: "Database Scaling",
+      desc: "Managed SQL/NoSQL databases with replication and performance tuning.",
+      benefit: "Handle millions of queries without slowdowns or downtime.",
+      accent: "#60a5fa",
+      glow: "rgba(96,165,250,0.18)",
+    },
+    {
+      icon: <Zap className="w-7 h-7" />,
+      title: "Serverless Deployments",
+      desc: "Lambda & edge functions for ultra-fast and cost-efficient backend systems.",
+      benefit: "Pay only for what you use — reduce costs by 40–60% compared to traditional servers.",
+      accent: "#f472b6",
+      glow: "rgba(244,114,182,0.18)",
+    },
+  ];
+
+  const pricing = [
+    { service: "AWS Cloud Setup", price: "₹12,000", time: "2–5 Days" },
+    { service: "DevOps Services", price: "₹20,000", time: "3–10 Days" },
+    { service: "CI/CD Pipeline Setup", price: "₹15,000", time: "3–7 Days" },
+    { service: "Kubernetes Setup", price: "₹25,000", time: "5–12 Days" },
+    { service: "Infrastructure as Code", price: "₹18,000", time: "4–8 Days" },
+    { service: "Monitoring Setup", price: "₹12,000", time: "2–5 Days" },
+    { service: "Cloud Migration", price: "₹30,000", time: "7–15 Days" },
+    { service: "Serverless Deployment", price: "₹15,000", time: "3–7 Days" },
+    { service: "Ongoing DevOps Support", price: "₹15,000/mo", time: "Ongoing" },
+  ];
+
+  const stack = [
+    "AWS", "Azure", "Google Cloud", "Docker", "Kubernetes", "Terraform",
+    "Jenkins", "GitHub Actions", "Ansible", "Prometheus", "Grafana", "ArgoCD",
+    "Nginx", "Linux", "Helm", "Datadog",
+  ];
+
+  const process = [
+    { step: "01", title: "Assessment", desc: "Analyze infrastructure, workloads and scaling requirements." },
+    { step: "02", title: "Architecture", desc: "Design cloud-native, secure and highly available systems." },
+    { step: "03", title: "Implementation", desc: "Set up CI/CD, containers, monitoring and automation pipelines." },
+    { step: "04", title: "Optimization", desc: "Improve performance, cost efficiency and reliability continuously." },
+  ];
+
+  const reasons = [
+    "Highly scalable cloud-native architectures",
+    "Automated CI/CD pipelines for faster delivery",
+    "Strong security and DevSecOps practices",
+    "Cost-optimized infrastructure design",
+    "Real-time monitoring and alerting systems",
+    "Zero-downtime deployment strategies",
+  ];
+
+  const metrics = [
+    { label: "Deployment Time", before: "2 hours", after: "10 minutes", icon: <Clock className="w-5 h-5" /> },
+    { label: "Manual Work", before: "15h/week", after: "1h/week", icon: <Activity className="w-5 h-5" /> },
+    { label: "Downtime", before: "5 hrs/month", after: "0 hrs/month", icon: <Monitor className="w-5 h-5" /> },
+    { label: "Infrastructure Cost", before: "₹50k/month", after: "₹25k/month", icon: <DollarSign className="w-5 h-5" /> },
+    { label: "Bug Fix Time", before: "3 days", after: "30 minutes", icon: <Terminal className="w-5 h-5" /> },
+    { label: "Traffic Capacity", before: "1,000 users", after: "100,000 users", icon: <Users className="w-5 h-5" /> },
+  ];
+
+  const useCases = [
+    {
+      title: "Startups & SaaS",
+      accent: "#7951e5",
+      glow: "rgba(34,211,238,0.15)",
+      points: [
+        "MVP infrastructure that scales with growth",
+        "Automated deployments from day one",
+        "Cost-optimized cloud architecture",
+      ],
+    },
+    {
+      title: "Ecommerce & High-Traffic Sites",
+      accent: "#636be6",
+      glow: "rgba(52,211,153,0.15)",
+      points: [
+        "Auto-scaling during flash sales and promotions",
+        "Zero-downtime deployments during peak traffic",
+        "CDN and caching for fast load times",
+      ],
+    },
+    {
+      title: "Enterprise & FinTech",
+      accent: "#a78bfa",
+      glow: "rgba(167,139,250,0.15)",
+      points: [
+        "Secure, compliant infrastructure (GDPR, SOC2)",
+        "Multi-region failover and disaster recovery",
+        "Audit trails and security monitoring",
+      ],
+    },
+    {
+      title: "Agencies & Dev Teams",
+      accent: "#fbbf24",
+      glow: "rgba(251,191,36,0.15)",
+      points: [
+        "Shared CI/CD pipelines for multiple projects",
+        "Standardized environments across teams",
+        "Faster client delivery and fewer bugs",
+      ],
+    },
+    {
+      title: "Healthcare & Data-Sensitive Apps",
+      accent: "#f87171",
+      glow: "rgba(248,113,113,0.15)",
+      points: [
+        "HIPAA-friendly cloud architecture",
+        "Encrypted data storage and transit",
+        "Regular security audits and backups",
+      ],
+    },
+  ];
+
+  const techStrengths = [
+    {
+      title: "High Availability & Reliability",
+      accent: "#7951e5",
+      points: [
+        "99.9%+ uptime with multi-region failover",
+        "Automatic recovery from failures",
+        "Load balancing and health checks",
+      ],
+    },
+    {
+      title: "Cost Optimization",
+      accent: "#636be6",
+      points: [
+        "Right-sized instances and auto-shutdown policies",
+        "Spot instances and reserved capacity savings",
+        "30–60% reduction in cloud bills",
+      ],
+    },
+    {
+      title: "Security & Compliance",
+      accent: "#f87171",
+      points: [
+        "IAM roles, VPC isolation, and encrypted storage",
+        "Automated vulnerability scanning",
+        "Compliance with GDPR, SOC2, HIPAA standards",
+      ],
+    },
+    {
+      title: "Scalability by Design",
+      accent: "#a78bfa",
+      points: [
+        "Auto-scaling groups and horizontal scaling",
+        "Database read replicas and sharding",
+        "CDN and caching layers for global performance",
+      ],
+    },
+  ];
+
+  const migrationPaths = [
+    {
+      from: "On-Premises",
+      to: "Cloud",
+      accent: "#38bdf8",
+      points: [
+        "Migrate servers, databases, and apps to AWS/Azure/GCP",
+        "Zero-downtime migration with phased rollout",
+        "Post-migration optimization and cost tuning",
+      ],
+    },
+    {
+      from: "Legacy Apps",
+      to: "Modern Architecture",
+      accent: "#636be6",
+      points: [
+        "Containerize monolithic applications",
+        "Break into microservices if needed",
+        "Add CI/CD and monitoring",
+      ],
+    },
+    {
+      from: "Cloud",
+      to: "Multi-Cloud",
+      accent: "#a78bfa",
+      points: [
+        "Migrate between cloud providers",
+        "Avoid vendor lock-in with multi-cloud setup",
+        "Optimize costs and redundancy",
+      ],
+    },
+  ];
+
+  const faqs = [
+    {
+      q: "How much does AWS setup cost?",
+      a: "AWS Cloud Setup starts from ₹12,000 with delivery in 2–5 days.",
+    },
+    {
+      q: "Can you reduce our current cloud bill?",
+      a: "Yes, we optimize infrastructure and typically save clients 30–60% on cloud costs.",
+    },
+    {
+      q: "Do you provide ongoing DevOps support?",
+      a: "Yes, ongoing support starts from ₹15,000/month with monitoring and maintenance.",
+    },
+    {
+      q: "Can you migrate our existing infrastructure without downtime?",
+      a: "Yes, we use phased migration strategies to ensure zero-downtime deployments.",
+    },
+    {
+      q: "What cloud platforms do you support?",
+      a: "AWS, Azure, Google Cloud, plus Vercel, DigitalOcean, and Heroku for smaller projects.",
+    },
+    {
+      q: "How quickly can you set up CI/CD pipelines?",
+      a: "CI/CD Pipeline Setup starts from ₹15,000 with delivery in 3–7 days.",
+    },
+  ];
+
+  const [openFaq, setOpenFaq] = useState<number | null>(null);
+
+  const primaryBtn: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "14px 28px",
+    borderRadius: 16,
+    background: "linear-gradient(135deg,#7951e5,#636be6)",
+    color: "#ffffff",
+    fontWeight: 800,
+    border: "none",
+    cursor: "pointer",
+    fontSize: "0.9rem",
+    textDecoration: "none",
+  };
+
+  const secondaryBtn: React.CSSProperties = {
+    display: "inline-flex",
+    alignItems: "center",
+    gap: 8,
+    padding: "14px 28px",
+    borderRadius: 16,
+    fontWeight: 700,
+    border: `1px solid ${tk.border}`,
+    background: tk.bgCard,
+    color: tk.textMuted,
+    cursor: "pointer",
+    fontSize: "0.9rem",
+    textDecoration: "none",
+  };
 
   return (
     <main
       className="font-['Space_Grotesk',ui-sans-serif,sans-serif]"
-      style={{ minHeight: "100vh", backgroundColor: "var(--bg)", color: "var(--text)", transition: "background-color 0.3s, color 0.3s", overflow: "hidden" }}
+      style={{
+        minHeight: "100vh",
+        overflow: "hidden",
+        backgroundColor: tk.bg,
+        color: tk.text,
+        transition: "background-color 0.2s ease, color 0.2s ease",
+      }}
     >
       {/* ── HERO ── */}
-      <section style={{ position: "relative", padding: "10rem 4rem 8rem", textAlign: "center", borderBottom: "1px solid var(--border)", overflow: "hidden" }}>
-        <div style={{ position: "absolute", top: -120, right: -120, width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(34,211,238,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", bottom: -120, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle,rgba(52,211,153,0.12) 0%,transparent 70%)", pointerEvents: "none" }} />
-        <div style={{ position: "absolute", inset: 0, opacity: 0.04, pointerEvents: "none", backgroundImage: "radial-gradient(circle,rgba(34,211,238,1) 1px,transparent 1px)", backgroundSize: "42px 42px" }} />
+      <section
+        style={{
+          position: "relative",
+          padding: "10rem 4rem 8rem",
+          textAlign: "center",
+          borderBottom: `1px solid ${tk.border}`,
+          overflow: "hidden",
+        }}
+      >
+        <div style={{ position: "absolute", top: -120, right: -120, width: 560, height: 560, borderRadius: "50%", background: "radial-gradient(circle,rgba(56,189,248,0.12) 0%,transparent 70%)" }} />
+        <div style={{ position: "absolute", bottom: -120, left: -120, width: 520, height: 520, borderRadius: "50%", background: "radial-gradient(circle,rgba(52,211,153,0.12) 0%,transparent 70%)" }} />
+        <div style={{ position: "absolute", inset: 0, opacity: isDark ? 0.04 : 0.06, backgroundImage: "radial-gradient(circle,rgba(56,189,248,1) 1px,transparent 1px)", backgroundSize: "42px 42px" }} />
 
-        <div style={{ position: "relative", zIndex: 1, maxWidth: 900, margin: "0 auto" }}>
-          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(34,211,238,0.35)", background: "rgba(34,211,238,0.1)", marginBottom: 36 }}>
-            <TrendingUp style={{ width: 14, height: 14, color: "#7951e5" }} />
-            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#7951e5" }}>CASE STUDIES</span>
+        <div style={{ position: "relative", zIndex: 1, maxWidth: 860, margin: "0 auto" }}>
+          <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(121,81,229,0.35)", background: isDark ? "rgba(121,81,229,0.12)" : "rgba(121,81,229,0.08)", marginBottom: 36 }}>
+            <Cloud style={{ width: 14, height: 14, color: "#7951e5" }} />
+            <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#7951e5" }}>CLOUD & DEVOPS</span>
           </div>
 
-          <h1 style={{ fontSize: "clamp(2.4rem,7vw,5.2rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24 }}>
-            Real Results for{" "}
-            <span style={{ background: "linear-gradient(135deg,#7951e5 0%,#38bdf8 50%,#636be6 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              Real Businesses
-            </span>
+          <h1 style={{ fontSize: "clamp(1.4rem,7vw,5.2rem)", fontWeight: 900, lineHeight: 1.05, marginBottom: 24, fontFamily: '"Space Grotesk", ui-sans-serif' }}>
+            Cloud & DevOps That{" "}
+            <span
+              style={{
+                background: "linear-gradient(135deg,#7c3aed 0%,#a855f7 40%,#60a5fa 75%,#2dd4bf 100%)",
+                WebkitBackgroundClip: "text",
+                WebkitTextFillColor: "transparent",
+                backgroundClip: "text",
+                color: "transparent",
+                fontFamily: '"Space Grotesk", ui-sans-serif',
+              }}
+            >
+              Save Time, Cut Costs
+            </span>{" "}
+            and Scale Automatically
           </h1>
 
-          <div style={{ maxWidth: 580, margin: "0 auto 24px", textAlign: "left", display: "inline-block" }}>
+          <div style={{ maxWidth: 560, margin: "0 auto 20px", textAlign: "left", display: "inline-block" }}>
             {[
-              "Cut support costs by 70% with AI chatbots",
-              "Handle 1M+ monthly visitors with fast web platforms",
-              "Migrate to cloud with 99.99% uptime and zero downtime",
-            ].map((p, i) => (
+              "Reduces cloud bills by 30–60%",
+              "Deploys code in minutes, not hours",
+              "Handles traffic spikes without downtime",
+              "Stays secure and compliant out of the box",
+            ].map((point, i) => (
               <div key={i} style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 10 }}>
                 <CheckCircle2 style={{ color: "#636be6", width: 18, flexShrink: 0 }} />
-                <span style={{ color: "var(--text-muted)", fontSize: "1rem" }}>{p}</span>
+                <span style={{ color: tk.textMuted, fontSize: "1rem" }}>{point}</span>
               </div>
             ))}
           </div>
 
-          <p style={{ color: "var(--text-muted)", fontSize: "0.875rem", marginBottom: 36 }}>Verified results from real projects.</p>
+          <p style={{ color: tk.textMuted, marginBottom: 12, fontSize: "0.9rem" }}>
+            From startups to enterprise — we scale with you.
+          </p>
 
-          <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center" }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "14px 28px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.9rem" }}>
-              Start Your Project <ArrowRight className="w-4 h-4" />
-            </button>
-            <button style={{ padding: "14px 28px", borderRadius: 16, fontWeight: 700, border: "1px solid var(--border)", background: "var(--bg-card)", color: "var(--text-muted)", cursor: "pointer", fontSize: "0.9rem" }}>
-              See All Case Studies ↓
-            </button>
+          <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center", marginTop: 32 }}>
+            <a href="#consultation" style={primaryBtn}>
+              Get a Free Infrastructure Audit <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="#pricing" style={secondaryBtn}>
+              See Pricing →
+            </a>
           </div>
         </div>
       </section>
 
-      {/* ── GLOBAL STATS ── */}
-      <section style={{ padding: "4rem", borderBottom: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
-        <div style={{ maxWidth: 1100, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(160px,1fr))", gap: 20 }}>
-          {GLOBAL_STATS.map((s, i) => (
-            <div key={i} style={{ textAlign: "center", padding: "20px 12px", borderRadius: 16, border: "1px solid var(--border)", background: "var(--bg-card)" }}>
-              <div style={{ color: "#7951e5", display: "flex", justifyContent: "center", marginBottom: 10 }}>{s.icon}</div>
-              <div style={{ fontSize: "1.6rem", fontWeight: 900, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{s.value}</div>
-              <div style={{ fontSize: "0.78rem", color: "var(--text-muted)", fontWeight: 600, marginTop: 4 }}>{s.label}</div>
-            </div>
-          ))}
+      {/* ── SERVICES ── */}
+      <section style={{ padding: "6rem 4rem" }}>
+        <div style={{ maxWidth: 1280, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud Services</h2>
+            <p style={{ color: tk.textMuted }}>End-to-end DevOps and cloud engineering solutions.</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 20 }}>
+            {services.map((s, i) => (
+              <Card key={i} accent={s.accent} glow={s.glow} tk={tk} isDark={isDark}>
+                <div style={{ width: 52, height: 52, borderRadius: 14, display: "flex", alignItems: "center", justifyContent: "center", background: `${s.accent}1a`, color: s.accent, marginBottom: 20 }}>
+                  {s.icon}
+                </div>
+                <h3 style={{ fontWeight: 800, marginBottom: 8 }}>{s.title}</h3>
+                <p style={{ fontSize: "0.875rem", color: tk.textMuted, marginBottom: 12 }}>{s.desc}</p>
+                <p style={{ fontSize: "0.8rem", color: s.accent, fontWeight: 600, borderTop: `1px solid ${tk.border}`, paddingTop: 12 }}>
+                  ✦ {s.benefit}
+                </p>
+              </Card>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 40 }}>
+            <a href="#consultation" style={primaryBtn}>
+              Book a Cloud Consultation <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* ── FILTERS ── */}
-      <section style={{ padding: "3rem 4rem 0" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexWrap: "wrap", gap: 10, justifyContent: "center" }}>
-          {FILTERS.map((f) => (
-            <button
-              key={f}
-              onClick={() => setActiveFilter(f)}
-              style={{
-                padding: "10px 22px",
-                borderRadius: 999,
-                fontWeight: 700,
-                fontSize: "0.85rem",
-                border: "1px solid",
-                cursor: "pointer",
-                transition: "all 0.2s",
-                borderColor: activeFilter === f ? "#7951e5" : "var(--border)",
-                background: activeFilter === f ? "rgba(34,211,238,0.12)" : "var(--bg-card)",
-                color: activeFilter === f ? "#7951e5" : "var(--text-muted)",
-              }}
-            >
-              {f}
-            </button>
-          ))}
+      {/* ── PRICING ── */}
+      <section id="pricing" style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle, scrollMarginTop: "2rem" }}>
+        <div style={{ maxWidth: 900, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud & DevOps Pricing</h2>
+            <p style={{ color: tk.textMuted }}>Transparent starting rates — no hidden fees.</p>
+          </div>
+
+          <div style={{ borderRadius: 24, border: `1px solid ${tk.border}`, background: tk.bgCard, overflow: "hidden", boxShadow: isDark ? "none" : "0 2px 12px rgba(0,0,0,0.06)" }}>
+            {pricing.map((item, i) => (
+              <div
+                key={i}
+                style={{
+                  display: "flex",
+                  alignItems: "center",
+                  justifyContent: "space-between",
+                  padding: "20px 28px",
+                  borderBottom: i < pricing.length - 1 ? `1px solid ${tk.border}` : "none",
+                  gap: 16,
+                  flexWrap: "wrap",
+                }}
+              >
+                <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{item.service}</span>
+                <div style={{ display: "flex", gap: 24, alignItems: "center" }}>
+                  <span style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1.05rem" }}>
+                    {item.price}
+                  </span>
+                  <span style={{ padding: "4px 12px", borderRadius: 999, background: isDark ? "rgba(121,81,229,0.12)" : "rgba(121,81,229,0.08)", border: "1px solid rgba(121,81,229,0.25)", color: "#7951e5", fontSize: "0.78rem", fontWeight: 600 }}>
+                    {item.time}
+                  </span>
+                </div>
+              </div>
+            ))}
+          </div>
+          <p style={{ textAlign: "center", color: tk.textMuted, marginTop: 16, fontSize: "0.85rem" }}>
+            All prices are starting rates. Complex migrations and enterprise setups may cost extra.
+          </p>
+
+          <div style={{ textAlign: "center", marginTop: 32 }}>
+            <a href="#consultation" style={primaryBtn}>
+              Get Custom Quote <ArrowRight className="w-4 h-4" />
+            </a>
+          </div>
         </div>
       </section>
 
-      {/* ── CASE STUDY CARDS ── */}
-      <section style={{ padding: "3rem 4rem 6rem" }}>
-        <div style={{ maxWidth: 1280, margin: "0 auto", display: "flex", flexDirection: "column", gap: 32 }}>
-          {filtered.map((cs) => (
-            <div key={cs.id}>
-              <CaseStudyCard cs={cs} expanded={expandedId === cs.id} onToggle={() => setExpandedId(expandedId === cs.id ? null : cs.id)} />
+      {/* ── MARQUEE STACK ── */}
+      <section style={{ padding: "4rem", borderTop: `1px solid ${tk.border}`, borderBottom: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ overflow: "hidden", whiteSpace: "nowrap" }}>
+          <div style={{ display: "inline-flex", gap: 14, animation: "scroll 30s linear infinite" }}>
+            {[...stack, ...stack].map((t, i) => (
+              <span key={i} style={{ padding: "10px 18px", borderRadius: 12, border: `1px solid ${tk.border}`, background: tk.bgCard, fontWeight: 600, fontSize: "0.85rem" }}>
+                {t}
+              </span>
+            ))}
+          </div>
+        </div>
+        <style>{`@keyframes scroll { 0% { transform: translateX(0); } 100% { transform: translateX(-50%); } }`}</style>
+      </section>
 
-              {/* ── INLINE CTA after each card ── */}
-              {expandedId === cs.id && (
-                <div style={{ marginTop: 16, borderRadius: 20, border: "1px solid var(--border)", background: "var(--bg-subtle)", padding: "28px 32px", display: "flex", flexWrap: "wrap", alignItems: "center", justifyContent: "space-between", gap: 20 }}>
-                  <div>
-                    <p style={{ fontWeight: 800, fontSize: "1rem", marginBottom: 4 }}>Want similar results for your business?</p>
-                    <p style={{ color: "var(--text-muted)", fontSize: "0.875rem" }}>We can build the same solutions tailored to your needs.</p>
+      {/* ── RESULTS / METRICS ── */}
+      <section style={{ padding: "6rem 4rem" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Real Results We Deliver</h2>
+            <p style={{ color: tk.textMuted }}>Measurable improvements across every engagement.</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(280px,1fr))", gap: 20 }}>
+            {metrics.map((m, i) => (
+              <div key={i} style={{ borderRadius: 20, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: 28, boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)" }}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 16, color: "#7951e5" }}>
+                  {m.icon}
+                  <span style={{ fontWeight: 700, fontSize: "0.95rem" }}>{m.label}</span>
+                </div>
+                <div style={{ display: "flex", alignItems: "center", gap: 12 }}>
+                  <div style={{ flex: 1, textAlign: "center" }}>
+                    <div style={{ color: "#f87171", fontWeight: 700, fontSize: "1rem", textDecoration: "line-through", opacity: 0.7 }}>{m.before}</div>
+                    <div style={{ color: tk.textMuted, fontSize: "0.75rem", marginTop: 4 }}>Before</div>
                   </div>
-                  <div style={{ display: "flex", gap: 12, flexWrap: "wrap" }}>
-                    <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "12px 24px", borderRadius: 14, background: `linear-gradient(135deg,${cs.accent},#636be6)`, color: "#0f172a", fontWeight: 800, border: "none", cursor: "pointer", fontSize: "0.85rem" }}>
-                      Start Your Project <ArrowRight className="w-4 h-4" />
-                    </button>
-                    <button style={{ padding: "12px 24px", borderRadius: 14, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-muted)", cursor: "pointer", fontSize: "0.85rem", display: "inline-flex", alignItems: "center", gap: 8 }}>
-                      <MessageCircle className="w-4 h-4" /> Chat with Us
-                    </button>
+                  <ArrowRight style={{ color: "#636be6", width: 18, flexShrink: 0 }} />
+                  <div style={{ flex: 1, textAlign: "center" }}>
+                    <div style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent", fontWeight: 900, fontSize: "1rem" }}>{m.after}</div>
+                    <div style={{ color: tk.textMuted, fontSize: "0.75rem", marginTop: 4 }}>After</div>
                   </div>
                 </div>
-              )}
-            </div>
-          ))}
+              </div>
+            ))}
+          </div>
         </div>
       </section>
 
-      {/* ── FINAL CTA ── */}
-      <section style={{ padding: "7rem 4rem", borderTop: "1px solid var(--border)", background: "var(--bg-subtle)" }}>
-        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", borderRadius: 32, border: "1px solid var(--border)", background: "var(--bg-card)", padding: "5rem 3rem" }}>
-          <TrendingUp style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#7951e5" }} />
-          <h2 style={{ fontSize: "clamp(1.8rem,4vw,2.6rem)", fontWeight: 900, marginBottom: 16 }}>
-            Ready to be our next{" "}
+      {/* ── USE CASES ── */}
+      <section style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ maxWidth: 1200, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>DevOps Solutions by Use Case</h2>
+            <p style={{ color: tk.textMuted }}>Built for your industry and scale.</p>
+          </div>
+
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fill,minmax(260px,1fr))", gap: 20 }}>
+            {useCases.map((u, i) => (
+              <Card key={i} accent={u.accent} glow={u.glow} tk={tk} isDark={isDark}>
+                <h3 style={{ fontWeight: 800, marginBottom: 16, color: u.accent }}>{u.title}</h3>
+                {u.points.map((p, j) => (
+                  <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
+                    <CheckCircle2 style={{ color: u.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
+                  </div>
+                ))}
+              </Card>
+            ))}
+          </div>
+
+          <div style={{ textAlign: "center", marginTop: 40 }}>
+            <a
+              href={`https://wa.me/${CONSULT_WHATSAPP}`}
+              target="_blank"
+              rel="noreferrer"
+              style={primaryBtn}
+            >
+              Chat with Us Now <MessageCircle className="w-4 h-4" />
+            </a>
+          </div>
+        </div>
+      </section>
+
+      {/* ── TECHNICAL STRENGTHS ── */}
+      <section style={{ padding: "6rem 4rem" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Technical Strengths</h2>
+            <p style={{ color: tk.textMuted }}>Production-grade practices at every layer.</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(240px,1fr))", gap: 20 }}>
+            {techStrengths.map((t, i) => (
+              <Card key={i} accent={t.accent} glow={`${t.accent}22`} tk={tk} isDark={isDark}>
+                <h3 style={{ fontWeight: 800, marginBottom: 16, color: t.accent }}>{t.title}</h3>
+                {t.points.map((p, j) => (
+                  <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
+                    <CheckCircle2 style={{ color: t.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
+                  </div>
+                ))}
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── PROCESS ── */}
+      <section style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>DevOps Workflow</h2>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+            {process.map((p, i) => (
+              <div key={i} style={{ borderRadius: 20, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: 28, boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)" }}>
+                <div style={{ fontSize: "3rem", fontWeight: 900, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{p.step}</div>
+                <h3 style={{ fontWeight: 800 }}>{p.title}</h3>
+                <p style={{ color: tk.textMuted }}>{p.desc}</p>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CLOUD MIGRATION ── */}
+      <section style={{ padding: "6rem 4rem" }}>
+        <div style={{ maxWidth: 1100, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>Cloud Migration Services</h2>
+            <p style={{ color: tk.textMuted }}>We handle every migration path — safely and without downtime.</p>
+          </div>
+          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 20 }}>
+            {migrationPaths.map((m, i) => (
+              <Card key={i} accent={m.accent} glow={`${m.accent}22`} tk={tk} isDark={isDark}>
+                <div style={{ display: "flex", alignItems: "center", gap: 10, marginBottom: 20 }}>
+                  <span style={{ fontWeight: 800, color: tk.textMuted, fontSize: "0.9rem" }}>{m.from}</span>
+                  <ArrowRight style={{ color: m.accent, width: 18 }} />
+                  <span style={{ fontWeight: 800, color: m.accent, fontSize: "0.9rem" }}>{m.to}</span>
+                </div>
+                {m.points.map((p, j) => (
+                  <div key={j} style={{ display: "flex", gap: 8, alignItems: "flex-start", marginBottom: 10 }}>
+                    <CheckCircle2 style={{ color: m.accent, width: 16, flexShrink: 0, marginTop: 2 }} />
+                    <span style={{ fontSize: "0.875rem", color: tk.textMuted }}>{p}</span>
+                  </div>
+                ))}
+              </Card>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── WHY US ── */}
+      <section style={{ padding: "5rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ maxWidth: 1000, margin: "0 auto", display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(300px,1fr))", gap: 56 }}>
+          <div>
+            <h2 style={{ fontSize: "2.4rem", fontWeight: 900 }}>Why Choose DevOps Automation</h2>
+            <p style={{ color: tk.textMuted, lineHeight: 1.7 }}>We help teams ship faster with stable, secure and automated cloud systems.</p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 14 }}>
+            {reasons.map((r, i) => (
+              <div key={i} style={{ display: "flex", gap: 10, alignItems: "center" }}>
+                <CheckCircle2 style={{ color: "#636be6", width: 20 }} />
+                <span style={{ color: tk.textMuted, fontWeight: 600 }}>{r}</span>
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CONSULTATION FORM ── */}
+      <section id="consultation" style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, position: "relative", overflow: "hidden", scrollMarginTop: "2rem" }}>
+        <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse,rgba(236,72,153,0.10) 0%,rgba(121,81,229,0.10) 45%,transparent 75%)", pointerEvents: "none" }} />
+        <div style={{ maxWidth: 820, margin: "0 auto", position: "relative", zIndex: 1 }}>
+          <div style={{ textAlign: "center", marginBottom: 48 }}>
+            <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(236,72,153,0.30)", background: "rgba(236,72,153,0.08)", marginBottom: 20 }}>
+              <Terminal style={{ width: 14, height: 14, color: "#db2777" }} />
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#db2777" }}>FREE CONSULTATION</span>
+            </div>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>
+              Get Your{" "}
+              <span style={{ background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
+                Free Infrastructure Audit
+              </span>
+            </h2>
+            <p style={{ color: tk.textMuted, marginTop: 8 }}>
+              Tell us about your stack — we'll reply on WhatsApp with recommendations and a clear quote.
+            </p>
+          </div>
+
+          <ConsultationForm />
+        </div>
+      </section>
+
+      {/* ── FAQ ── */}
+      <section style={{ padding: "6rem 4rem" }}>
+        <div style={{ maxWidth: 780, margin: "0 auto" }}>
+          <div style={{ textAlign: "center", marginBottom: 56 }}>
+            <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>FAQ</h2>
+            <p style={{ color: tk.textMuted }}>Common questions about our Cloud & DevOps services.</p>
+          </div>
+          <div style={{ display: "flex", flexDirection: "column", gap: 12 }}>
+            {faqs.map((faq, i) => (
+              <div
+                key={i}
+                style={{ borderRadius: 16, border: `1px solid ${tk.border}`, background: tk.bgCard, overflow: "hidden", boxShadow: isDark ? "none" : "0 1px 3px rgba(0,0,0,0.04)" }}
+              >
+                <button
+                  onClick={() => setOpenFaq(openFaq === i ? null : i)}
+                  style={{ width: "100%", display: "flex", justifyContent: "space-between", alignItems: "center", padding: "20px 24px", background: "none", border: "none", cursor: "pointer", color: tk.text, fontWeight: 700, fontSize: "0.95rem", textAlign: "left", gap: 12 }}
+                >
+                  {faq.q}
+                  <ChevronDown style={{ width: 18, flexShrink: 0, transform: openFaq === i ? "rotate(180deg)" : "rotate(0deg)", transition: "transform 0.2s", color: "#7951e5" }} />
+                </button>
+                {openFaq === i && (
+                  <div style={{ padding: "0 24px 20px", color: tk.textMuted, fontSize: "0.9rem", lineHeight: 1.7 }}>
+                    {faq.a}
+                  </div>
+                )}
+              </div>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ── CTA ── */}
+      <section style={{ padding: "7rem 4rem", borderTop: `1px solid ${tk.border}`, background: tk.bgSubtle }}>
+        <div style={{ maxWidth: 800, margin: "0 auto", textAlign: "center", borderRadius: 32, border: `1px solid ${tk.border}`, background: tk.bgCard, padding: "5rem 3rem", boxShadow: isDark ? "none" : "0 2px 16px rgba(0,0,0,0.06)" }}>
+          <Terminal style={{ width: 32, height: 32, margin: "0 auto 24px", color: "#7951e5" }} />
+          <h2 style={{ fontSize: "2.5rem", fontWeight: 900 }}>
+            Automate your{" "}
             <span style={{ background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-              success story?
+              cloud infrastructure
             </span>
           </h2>
-          <p style={{ color: "var(--text-muted)", maxWidth: 500, margin: "0 auto 36px", lineHeight: 1.7 }}>
-            From AI automation to web platforms and cloud infrastructure — we deliver results that matter to your business.
+          <p style={{ color: tk.textMuted, margin: "20px auto 36px" }}>
+            Build reliable, scalable and secure systems with modern DevOps practices.
           </p>
           <div style={{ display: "flex", flexWrap: "wrap", gap: 14, justifyContent: "center" }}>
-            <button style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", border: "none", fontWeight: 800, color: "#0f172a", cursor: "pointer" }}>
-              Start Your Project <ArrowRight className="w-4 h-4" />
-            </button>
-            <button style={{ padding: "16px 32px", borderRadius: 16, border: "1px solid var(--border)", background: "transparent", fontWeight: 700, color: "var(--text-muted)", cursor: "pointer", display: "inline-flex", alignItems: "center", gap: 8 }}>
-              <MessageCircle className="w-4 h-4" /> Get a Free Consultation
-            </button>
+            <a href="#consultation" style={{ padding: "16px 32px", borderRadius: 16, background: "linear-gradient(135deg,#7951e5,#636be6)", border: "none", fontWeight: 800, color: "#ffffff", cursor: "pointer", textDecoration: "none", display: "inline-flex", alignItems: "center", gap: 8 }}>
+              Get Started <ArrowRight className="w-4 h-4" />
+            </a>
+            <a href="#consultation" style={{ padding: "16px 32px", borderRadius: 16, border: `1px solid ${tk.border}`, background: "transparent", fontWeight: 700, color: tk.textMuted, cursor: "pointer", textDecoration: "none" }}>
+              Book a Free Audit
+            </a>
           </div>
         </div>
       </section>
@@ -430,98 +808,256 @@ export default function CaseStudiesPage() {
   );
 }
 
-function CaseStudyCard({ cs, expanded, onToggle }: { cs: typeof CASE_STUDIES[0]; expanded: boolean; onToggle: () => void }) {
+function Card({
+  children,
+  accent,
+  glow,
+  tk,
+  isDark,
+}: {
+  children: React.ReactNode;
+  accent: string;
+  glow: string;
+  tk: typeof T["dark"];
+  isDark: boolean;
+}) {
   return (
-    <div style={{ borderRadius: 24, border: `1px solid ${expanded ? cs.accent + "55" : "var(--border)"}`, background: "var(--bg-card)", overflow: "hidden", transition: "border-color 0.3s, box-shadow 0.3s", boxShadow: expanded ? `0 0 48px ${cs.glow}` : "none" }}>
-
-      {/* Card Header (always visible) */}
-      <div style={{ padding: "28px 32px", display: "flex", flexWrap: "wrap", gap: 20, alignItems: "flex-start", justifyContent: "space-between" }}>
-        <div style={{ display: "flex", gap: 16, alignItems: "flex-start", flex: 1, minWidth: 260 }}>
-          <div style={{ width: 48, height: 48, borderRadius: 14, background: `${cs.accent}1a`, color: cs.accent, display: "flex", alignItems: "center", justifyContent: "center", flexShrink: 0 }}>{cs.icon}</div>
-          <div>
-            <div style={{ display: "flex", gap: 8, flexWrap: "wrap", marginBottom: 8 }}>
-              <span style={{ fontSize: "0.72rem", padding: "3px 10px", borderRadius: 999, background: `${cs.accent}18`, color: cs.accent, fontWeight: 700 }}>{cs.category}</span>
-              <span style={{ fontSize: "0.72rem", padding: "3px 10px", borderRadius: 999, border: "1px solid var(--border)", color: "var(--text-muted)", fontWeight: 600 }}>{cs.industry}</span>
-            </div>
-            <h3 style={{ fontWeight: 900, fontSize: "1.15rem", color: "var(--text)", marginBottom: 6 }}>{cs.title}</h3>
-            <p style={{ fontSize: "0.875rem", color: "var(--text-muted)" }}>{cs.tagline}</p>
-          </div>
-        </div>
-
-        {/* Quick stats row */}
-        <div style={{ display: "flex", gap: 24, alignItems: "center", flexWrap: "wrap" }}>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600 }}>Timeline</div>
-            <div style={{ fontWeight: 800, color: cs.accent, fontSize: "0.9rem" }}>{cs.timeline}</div>
-          </div>
-          <div style={{ textAlign: "center" }}>
-            <div style={{ fontSize: "0.72rem", color: "var(--text-muted)", fontWeight: 600 }}>Budget</div>
-            <div style={{ fontWeight: 800, color: cs.accent, fontSize: "0.9rem" }}>{cs.budget}</div>
-          </div>
-          <button
-            onClick={onToggle}
-            style={{ display: "inline-flex", alignItems: "center", gap: 6, padding: "10px 20px", borderRadius: 12, border: `1px solid ${cs.accent}55`, background: `${cs.accent}10`, color: cs.accent, fontWeight: 700, fontSize: "0.82rem", cursor: "pointer" }}
-          >
-            {expanded ? "Hide Details" : "View Full Case Study"}
-            <ChevronDown style={{ width: 15, transform: expanded ? "rotate(180deg)" : "rotate(0)", transition: "transform 0.2s" }} />
-          </button>
-        </div>
-      </div>
-
-      {/* Expanded Content */}
-      {expanded && (
-        <div style={{ borderTop: "1px solid var(--border)", padding: "32px" }}>
-          <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(280px,1fr))", gap: 28, marginBottom: 32 }}>
-
-            {/* Challenge + Solution */}
-            <div>
-              <h4 style={{ fontWeight: 800, color: "#f87171", marginBottom: 10, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Challenge</h4>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 24 }}>{cs.challenge}</p>
-
-              <h4 style={{ fontWeight: 800, color: cs.accent, marginBottom: 10, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Solution</h4>
-              <p style={{ color: "var(--text-muted)", fontSize: "0.9rem", lineHeight: 1.7, marginBottom: 24 }}>{cs.solution}</p>
-
-              <h4 style={{ fontWeight: 800, color: "var(--text-muted)", marginBottom: 10, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Tech Stack</h4>
-              <div style={{ display: "flex", flexWrap: "wrap", gap: 8 }}>
-                {cs.stack.map((t, i) => (
-                  <span key={i} style={{ fontSize: "0.78rem", padding: "4px 12px", borderRadius: 999, border: "1px solid var(--border)", color: "var(--text-muted)", fontWeight: 600 }}>{t}</span>
-                ))}
-              </div>
-            </div>
-
-            {/* Metrics */}
-            <div>
-              <h4 style={{ fontWeight: 800, color: "#636be6", marginBottom: 14, fontSize: "0.85rem", letterSpacing: "0.05em", textTransform: "uppercase" }}>Before → After Results</h4>
-              <div style={{ display: "flex", flexDirection: "column", gap: 10 }}>
-                {cs.metrics.map((m, i) => (
-                  <div key={i} style={{ display: "flex", alignItems: "center", justifyContent: "space-between", padding: "10px 16px", borderRadius: 12, background: "var(--bg-subtle)", border: "1px solid var(--border)", gap: 12, flexWrap: "wrap" }}>
-                    <span style={{ fontSize: "0.82rem", fontWeight: 700, color: "var(--text)" }}>{m.label}</span>
-                    <div style={{ display: "flex", alignItems: "center", gap: 8 }}>
-                      <span style={{ fontSize: "0.82rem", color: "#f87171", textDecoration: "line-through", opacity: 0.8 }}>{m.before}</span>
-                      <ArrowRight style={{ width: 14, color: "#636be6" }} />
-                      <span style={{ fontSize: "0.85rem", fontWeight: 800, background: "linear-gradient(135deg,#7951e5,#636be6)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>{m.after}</span>
-                    </div>
-                  </div>
-                ))}
-              </div>
-            </div>
-          </div>
-
-          {/* Testimonial */}
-          <div style={{ borderRadius: 16, border: `1px solid ${cs.accent}33`, background: `${cs.accent}08`, padding: "24px 28px" }}>
-            <div style={{ display: "flex", gap: 6, marginBottom: 12 }}>
-              {[...Array(5)].map((_, i) => <Star key={i} style={{ width: 16, color: "#fbbf24", fill: "#fbbf24" }} />)}
-            </div>
-            <p style={{ color: "var(--text-muted)", fontStyle: "italic", lineHeight: 1.7, marginBottom: 16, fontSize: "0.92rem" }}>
-              "{cs.testimonial.quote}"
-            </p>
-            <div>
-              <div style={{ fontWeight: 800, fontSize: "0.875rem", color: "var(--text)" }}>{cs.testimonial.name}</div>
-              <div style={{ fontSize: "0.78rem", color: "var(--text-muted)" }}>{cs.testimonial.role}</div>
-            </div>
-          </div>
-        </div>
-      )}
+    <div
+      style={{
+        borderRadius: 20,
+        border: `1px solid ${tk.border}`,
+        background: tk.bgCard,
+        padding: 28,
+        transition: "transform 0.25s, box-shadow 0.25s, border-color 0.25s",
+        boxShadow: isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)",
+      }}
+      onMouseEnter={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(-6px)";
+        el.style.boxShadow = `0 0 40px ${glow}`;
+        el.style.borderColor = `${accent}55`;
+      }}
+      onMouseLeave={(e) => {
+        const el = e.currentTarget as HTMLDivElement;
+        el.style.transform = "translateY(0)";
+        el.style.boxShadow = isDark ? "none" : "0 1px 4px rgba(0,0,0,0.05)";
+        el.style.borderColor = tk.border;
+      }}
+    >
+      {children}
     </div>
+  );
+}
+
+// ─── CONSULTATION FORM — fixed light, pink/violet gradient panel ──────────────
+// Always renders with a light background regardless of the site-wide theme
+// toggle, so it reads as a dedicated "spotlight" panel on the page.
+
+function ConsultationForm() {
+  const [name, setName] = useState("");
+  const [company, setCompany] = useState("");
+  const [email, setEmail] = useState("");
+  const [phone, setPhone] = useState("");
+  const [service, setService] = useState(serviceOptions[0]);
+  const [details, setDetails] = useState("");
+  const [submitted, setSubmitted] = useState(false);
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: 11,
+    fontWeight: 800,
+    textTransform: "uppercase",
+    letterSpacing: "0.15em",
+    color: FORM.label,
+    marginBottom: 8,
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    background: FORM.inputBg,
+    border: `1px solid ${FORM.inputBorder}`,
+    borderRadius: 12,
+    padding: "12px 16px 12px 40px",
+    fontSize: "0.875rem",
+    color: FORM.text,
+    outline: "none",
+    fontFamily: "'Space Grotesk', ui-sans-serif",
+  };
+
+  const iconStyle: React.CSSProperties = {
+    position: "absolute",
+    left: 14,
+    top: "50%",
+    transform: "translateY(-50%)",
+    width: 15,
+    height: 15,
+    color: "#a855f7",
+    pointerEvents: "none",
+  };
+
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    const message = [
+      `Hi, I'd like a free cloud/DevOps consultation.`,
+      `Name: ${name}`,
+      company ? `Company: ${company}` : null,
+      email ? `Email: ${email}` : null,
+      `Phone: ${phone}`,
+      `Interested in: ${service}`,
+      details ? `Details: ${details}` : null,
+    ]
+      .filter(Boolean)
+      .join("\n");
+
+    const whatsappUrl = `https://wa.me/${CONSULT_WHATSAPP}?text=${encodeURIComponent(message)}`;
+    window.open(whatsappUrl, "_blank", "noreferrer");
+    setSubmitted(true);
+  };
+
+  return (
+    <form
+      onSubmit={handleSubmit}
+      style={{
+        position: "relative",
+        borderRadius: 28,
+        padding: 2,
+        background: "linear-gradient(135deg,#a855f7 0%,#ec4899 55%,#7951e5 100%)",
+        boxShadow: "0 20px 60px rgba(168,85,247,0.25)",
+      }}
+    >
+      <div
+        style={{
+          borderRadius: 26,
+          background: FORM.panelBg,
+          padding: "2.5rem",
+          display: "flex",
+          flexDirection: "column",
+          gap: 20,
+        }}
+      >
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          <div>
+            <label style={labelStyle}>Your Name</label>
+            <div style={{ position: "relative" }}>
+              <User style={iconStyle} />
+              <input
+                type="text"
+                required
+                value={name}
+                onChange={(e) => setName(e.target.value)}
+                placeholder="Jane Doe"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Company (optional)</label>
+            <div style={{ position: "relative" }}>
+              <Building2 style={iconStyle} />
+              <input
+                type="text"
+                value={company}
+                onChange={(e) => setCompany(e.target.value)}
+                placeholder="Acme Inc."
+                style={inputStyle}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div style={{ display: "grid", gridTemplateColumns: "repeat(auto-fit,minmax(220px,1fr))", gap: 20 }}>
+          <div>
+            <label style={labelStyle}>Email (optional)</label>
+            <div style={{ position: "relative" }}>
+              <Mail style={iconStyle} />
+              <input
+                type="email"
+                value={email}
+                onChange={(e) => setEmail(e.target.value)}
+                placeholder="jane@company.com"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+
+          <div>
+            <label style={labelStyle}>Phone / WhatsApp</label>
+            <div style={{ position: "relative" }}>
+              <Phone style={iconStyle} />
+              <input
+                type="tel"
+                required
+                value={phone}
+                onChange={(e) => setPhone(e.target.value)}
+                placeholder="+91 98778 73188"
+                style={inputStyle}
+              />
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Area of Interest</label>
+          <div style={{ position: "relative" }}>
+            <Cloud style={iconStyle} />
+            <select
+              value={service}
+              onChange={(e) => setService(e.target.value)}
+              style={{ ...inputStyle, paddingRight: 38, appearance: "none", cursor: "pointer" }}
+            >
+              {serviceOptions.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+            <ChevronDown style={{ position: "absolute", right: 14, top: "50%", transform: "translateY(-50%)", width: 15, height: 15, color: "#a855f7", pointerEvents: "none" }} />
+          </div>
+        </div>
+
+        <div>
+          <label style={labelStyle}>Project Details</label>
+          <textarea
+            rows={5}
+            value={details}
+            onChange={(e) => setDetails(e.target.value)}
+            placeholder="Tell us about your current infrastructure, traffic, pain points, and what you'd like to achieve."
+            style={{ ...inputStyle, paddingLeft: 16, resize: "none" }}
+          />
+        </div>
+
+        <button
+          type="submit"
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)",
+            color: "#fff",
+            fontWeight: 800,
+            padding: "16px 0",
+            borderRadius: 14,
+            border: "none",
+            cursor: "pointer",
+            fontFamily: "'Space Grotesk', ui-sans-serif",
+            boxShadow: "0 8px 24px rgba(236,72,153,0.35)",
+          }}
+        >
+          Get My Free Audit
+          <ArrowRight style={{ width: 16, height: 16 }} />
+        </button>
+
+        {submitted && (
+          <p style={{ textAlign: "center", fontSize: "0.8rem", color: "#a855f7", fontWeight: 600 }}>
+            Opening WhatsApp with your details — we usually reply within a few hours.
+          </p>
+        )}
+      </div>
+    </form>
   );
 }
