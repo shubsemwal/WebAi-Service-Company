@@ -25,6 +25,7 @@ import {
   Mail,
   Phone,
   Building2,
+  PhoneCall,
 } from "lucide-react";
 import { useEffect, useState } from "react";
 
@@ -68,8 +69,20 @@ const FORM = {
   label:     "#7c3aed",
 };
 
-const CONSULT_WHATSAPP = "9877873188";
+// ─── CONTACT CONSTANTS ─────────────────────────────────────────────────────────
+// Single source of truth for how leads reach you — update once here.
+const CONSULT_WHATSAPP = "9877873188";       // WhatsApp / call number (no + or spaces)
+const CONSULT_PHONE_DISPLAY = "+91 98778 73188";
+const CONSULT_EMAIL = "shubsem34@gmail.com";
+
 const serviceOptions = [
+  "Website Development",
+  "Frontend Development",
+  "Backend Development",
+  "Full Stack Development",
+  "E-commerce Development",
+  "AI Integration",
+  "AI Agents",
   "Cloud Infrastructure",
   "Containerization",
   "Kubernetes Orchestration",
@@ -473,7 +486,7 @@ export default function CloudDevOpsPage() {
 
           <div style={{ display: "flex", flexWrap: "wrap", gap: 16, justifyContent: "center", marginTop: 32 }}>
             <a href="#consultation" style={primaryBtn}>
-              Get a Free Infrastructure Audit <ArrowRight className="w-4 h-4" />
+              Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
             </a>
             <a href="#pricing" style={secondaryBtn}>
               See Pricing →
@@ -507,7 +520,7 @@ export default function CloudDevOpsPage() {
 
           <div style={{ textAlign: "center", marginTop: 40 }}>
             <a href="#consultation" style={primaryBtn}>
-              Book a Cloud Consultation <ArrowRight className="w-4 h-4" />
+              Book a Free Strategy Call <ArrowRight className="w-4 h-4" />
             </a>
           </div>
         </div>
@@ -726,24 +739,67 @@ export default function CloudDevOpsPage() {
         </div>
       </section>
 
-      {/* ── CONSULTATION FORM ── */}
+      {/* ── CONSULTATION / STRATEGY CALL ── */}
       <section id="consultation" style={{ padding: "6rem 4rem", borderTop: `1px solid ${tk.border}`, position: "relative", overflow: "hidden", scrollMarginTop: "2rem" }}>
         <div style={{ position: "absolute", top: -140, left: "50%", transform: "translateX(-50%)", width: 700, height: 400, background: "radial-gradient(ellipse,rgba(236,72,153,0.10) 0%,rgba(121,81,229,0.10) 45%,transparent 75%)", pointerEvents: "none" }} />
         <div style={{ maxWidth: 820, margin: "0 auto", position: "relative", zIndex: 1 }}>
-          <div style={{ textAlign: "center", marginBottom: 48 }}>
+          <div style={{ textAlign: "center", marginBottom: 40 }}>
             <div style={{ display: "inline-flex", alignItems: "center", gap: 8, padding: "6px 18px", borderRadius: 999, border: "1px solid rgba(236,72,153,0.30)", background: "rgba(236,72,153,0.08)", marginBottom: 20 }}>
               <Terminal style={{ width: 14, height: 14, color: "#db2777" }} />
-              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#db2777" }}>FREE CONSULTATION</span>
+              <span style={{ fontSize: 11, fontWeight: 700, letterSpacing: "0.25em", color: "#db2777" }}>FREE STRATEGY CALL</span>
             </div>
             <h2 style={{ fontSize: "3rem", fontWeight: 900 }}>
-              Get Your{" "}
+              Book Your{" "}
               <span style={{ background: "linear-gradient(135deg,#a855f7 0%,#ec4899 100%)", WebkitBackgroundClip: "text", WebkitTextFillColor: "transparent" }}>
-                Free Infrastructure Audit
+                Free Strategy Call
               </span>
             </h2>
             <p style={{ color: tk.textMuted, marginTop: 8 }}>
-              Tell us about your stack — we'll reply on WhatsApp with recommendations and a clear quote.
+              Reach us instantly on WhatsApp or by phone, or fill in the form and we'll get back to you within a few hours.
             </p>
+          </div>
+
+          {/* Quick-contact row: WhatsApp / Call / Email — no form required */}
+          <div
+            style={{
+              display: "grid",
+              gridTemplateColumns: "repeat(auto-fit,minmax(200px,1fr))",
+              gap: 14,
+              marginBottom: 36,
+            }}
+          >
+            <a
+              href={`https://wa.me/${CONSULT_WHATSAPP}?text=${encodeURIComponent(
+                "Hi, I'd like to book a free strategy call."
+              )}`}
+              target="_blank"
+              rel="noreferrer"
+              style={quickContactBtn("#25D366")}
+            >
+              <MessageCircle style={{ width: 18, height: 18 }} />
+              <span>WhatsApp Us</span>
+            </a>
+            <a href={`tel:+91${CONSULT_WHATSAPP}`} style={quickContactBtn("#7951e5")}>
+              <PhoneCall style={{ width: 18, height: 18 }} />
+              <span>Call {CONSULT_PHONE_DISPLAY}</span>
+            </a>
+            <a
+              href={`mailto:${CONSULT_EMAIL}?subject=${encodeURIComponent(
+                "Free Strategy Call Request"
+              )}&body=${encodeURIComponent(
+                "Hi, I'd like to book a free strategy call.\n\nName:\nCompany:\nPhone:\nService interested in:\nProject details:"
+              )}`}
+              style={quickContactBtn("#ec4899")}
+            >
+              <Mail style={{ width: 18, height: 18 }} />
+              <span>Email Us</span>
+            </a>
+          </div>
+
+          <div style={{ display: "flex", alignItems: "center", gap: 14, marginBottom: 32 }}>
+            <div style={{ flex: 1, height: 1, background: tk.border }} />
+            <span style={{ fontSize: "0.75rem", fontWeight: 700, letterSpacing: "0.15em", color: tk.textSub }}>OR FILL THE FORM</span>
+            <div style={{ flex: 1, height: 1, background: tk.border }} />
           </div>
 
           <ConsultationForm />
@@ -799,13 +855,33 @@ export default function CloudDevOpsPage() {
               Get Started <ArrowRight className="w-4 h-4" />
             </a>
             <a href="#consultation" style={{ padding: "16px 32px", borderRadius: 16, border: `1px solid ${tk.border}`, background: "transparent", fontWeight: 700, color: tk.textMuted, cursor: "pointer", textDecoration: "none" }}>
-              Book a Free Audit
+              Book a Free Strategy Call
             </a>
           </div>
         </div>
       </section>
     </main>
   );
+}
+
+// Small pill-style button used in the quick-contact row (WhatsApp / Call / Email)
+function quickContactBtn(accent: string): React.CSSProperties {
+  return {
+    display: "flex",
+    alignItems: "center",
+    justifyContent: "center",
+    gap: 8,
+    padding: "14px 20px",
+    borderRadius: 14,
+    border: `1px solid ${accent}40`,
+    background: `${accent}14`,
+    color: accent,
+    fontWeight: 700,
+    fontSize: "0.85rem",
+    textDecoration: "none",
+    cursor: "pointer",
+    transition: "transform 0.2s, box-shadow 0.2s",
+  };
 }
 
 function Card({
@@ -852,6 +928,8 @@ function Card({
 // ─── CONSULTATION FORM — fixed light, pink/violet gradient panel ──────────────
 // Always renders with a light background regardless of the site-wide theme
 // toggle, so it reads as a dedicated "spotlight" panel on the page.
+// Submitting opens WhatsApp pre-filled with all details; an "Email instead"
+// link right below sends the same details to CONSULT_EMAIL via mailto.
 
 function ConsultationForm() {
   const [name, setName] = useState("");
@@ -895,12 +973,9 @@ function ConsultationForm() {
     pointerEvents: "none",
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    if (!name || !phone) return;
-
-    const message = [
-      `Hi, I'd like a free cloud/DevOps consultation.`,
+  const buildMessage = () =>
+    [
+      `Hi, I'd like a free strategy call.`,
       `Name: ${name}`,
       company ? `Company: ${company}` : null,
       email ? `Email: ${email}` : null,
@@ -911,9 +986,22 @@ function ConsultationForm() {
       .filter(Boolean)
       .join("\n");
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (!name || !phone) return;
+
+    const message = buildMessage();
     const whatsappUrl = `https://wa.me/${CONSULT_WHATSAPP}?text=${encodeURIComponent(message)}`;
     window.open(whatsappUrl, "_blank", "noreferrer");
     setSubmitted(true);
+  };
+
+  const handleEmailInstead = () => {
+    const message = buildMessage();
+    const mailUrl = `mailto:${CONSULT_EMAIL}?subject=${encodeURIComponent(
+      "Free Strategy Call Request"
+    )}&body=${encodeURIComponent(message)}`;
+    window.location.href = mailUrl;
   };
 
   return (
@@ -1048,8 +1136,32 @@ function ConsultationForm() {
             boxShadow: "0 8px 24px rgba(236,72,153,0.35)",
           }}
         >
-          Get My Free Audit
+          Submit via WhatsApp
           <ArrowRight style={{ width: 16, height: 16 }} />
+        </button>
+
+        <button
+          type="button"
+          onClick={handleEmailInstead}
+          style={{
+            width: "100%",
+            display: "flex",
+            alignItems: "center",
+            justifyContent: "center",
+            gap: 8,
+            background: "transparent",
+            color: FORM.label,
+            fontWeight: 700,
+            padding: "12px 0",
+            borderRadius: 14,
+            border: `1px solid ${FORM.inputBorder}`,
+            cursor: "pointer",
+            fontFamily: "'Space Grotesk', ui-sans-serif",
+            fontSize: "0.85rem",
+          }}
+        >
+          <Mail style={{ width: 15, height: 15 }} />
+          Or email us instead ({CONSULT_EMAIL})
         </button>
 
         {submitted && (
