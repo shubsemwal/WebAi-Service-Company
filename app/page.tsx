@@ -24,6 +24,25 @@ const V = {
 };
 
 // ============================================================
+//  CONTACT CONFIG — edit these if your number/email change
+// ============================================================
+const WHATSAPP_NUMBER = "919877873188"; // country code + number, no +/spaces
+const CONTACT_EMAIL = "shubsem34@gmail.com";
+const WHATSAPP_MESSAGE = "Hi! I'd like to book a free strategy call.";
+
+const SERVICE_OPTIONS = [
+  "AI Solutions",
+  "Web Development",
+  "Frontend Development",
+  "Backend Development",
+  "Full Stack Development",
+  "E-commerce",
+  "AI Agents",
+  "Cloud & DevOps",
+  "Other",
+];
+
+// ============================================================
 //  DATA
 // ============================================================
 const SERVICES = [
@@ -358,12 +377,395 @@ function StepCard({
 }
 
 // ============================================================
+//  CONTACT MODAL — WhatsApp / Call / Form
+// ============================================================
+type ContactModalProps = {
+  isOpen: boolean;
+  onClose: () => void;
+};
+
+function ContactModal({ isOpen, onClose }: ContactModalProps) {
+  const [form, setForm] = useState({
+    name: "",
+    email: "",
+    phone: "",
+    service: SERVICE_OPTIONS[0],
+    message: "",
+  });
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "error">(
+    "idle"
+  );
+
+  // Lock background scroll while modal is open
+  useEffect(() => {
+    if (isOpen) {
+      const prev = document.body.style.overflow;
+      document.body.style.overflow = "hidden";
+      return () => {
+        document.body.style.overflow = prev;
+      };
+    }
+  }, [isOpen]);
+
+  // Reset status/form whenever the modal is reopened
+  useEffect(() => {
+    if (isOpen) {
+      setStatus("idle");
+    }
+  }, [isOpen]);
+
+  if (!isOpen) return null;
+
+  const handleChange = (
+    e: React.ChangeEvent<HTMLInputElement | HTMLTextAreaElement | HTMLSelectElement>
+  ) => {
+    const { name, value } = e.target;
+    setForm((f) => ({ ...f, [name]: value }));
+  };
+
+  const handleSubmit = async (e: React.FormEvent) => {
+    e.preventDefault();
+    setStatus("sending");
+    try {
+      // FormSubmit.co relays the form straight to CONTACT_EMAIL — no backend needed.
+      // NOTE: the very first submission triggers a one-time "activate your form"
+      // email to CONTACT_EMAIL — that link must be clicked once before submissions
+      // start arriving normally.
+      const res = await fetch(
+        `https://formsubmit.co/ajax/${CONTACT_EMAIL}`,
+        {
+          method: "POST",
+          headers: {
+            "Content-Type": "application/json",
+            Accept: "application/json",
+          },
+          body: JSON.stringify({
+            name: form.name,
+            email: form.email,
+            phone: form.phone,
+            service: form.service,
+            message: form.message,
+            _subject: `New Strategy Call Request — ${form.name}`,
+          }),
+        }
+      );
+
+      if (res.ok) {
+        setStatus("sent");
+        setForm({
+          name: "",
+          email: "",
+          phone: "",
+          service: SERVICE_OPTIONS[0],
+          message: "",
+        });
+      } else {
+        setStatus("error");
+      }
+    } catch {
+      setStatus("error");
+    }
+  };
+
+  const inputStyle: React.CSSProperties = {
+    width: "100%",
+    padding: "12px 14px",
+    borderRadius: "10px",
+    border: `1px solid ${V.border}`,
+    background: V.bgSection,
+    color: V.textHigh,
+    fontSize: "14px",
+    fontFamily: "'Plus Jakarta Sans', sans-serif",
+    outline: "none",
+  };
+
+  const labelStyle: React.CSSProperties = {
+    display: "block",
+    fontSize: "12px",
+    fontWeight: 600,
+    color: V.textMid,
+    marginBottom: "6px",
+  };
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      onClick={onClose}
+      style={{
+        position: "fixed",
+        inset: 0,
+        zIndex: 1000,
+        background: "rgba(5,8,15,0.72)",
+        backdropFilter: "blur(6px)",
+        display: "flex",
+        alignItems: "center",
+        justifyContent: "center",
+        padding: "24px",
+      }}
+    >
+      <motion.div
+        initial={{ opacity: 0, y: 24, scale: 0.97 }}
+        animate={{ opacity: 1, y: 0, scale: 1 }}
+        transition={{ duration: 0.3, ease: "easeOut" }}
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          width: "100%",
+          maxWidth: "520px",
+          maxHeight: "88vh",
+          overflowY: "auto",
+          background: V.bgCard,
+          border: `1px solid ${V.border}`,
+          borderRadius: "22px",
+          padding: "32px",
+          boxShadow: V.shadowLg,
+          position: "relative",
+        }}
+      >
+        {/* Close button */}
+        <button
+          onClick={onClose}
+          aria-label="Close"
+          style={{
+            position: "absolute",
+            top: "18px",
+            right: "18px",
+            width: "34px",
+            height: "34px",
+            borderRadius: "10px",
+            border: `1px solid ${V.border}`,
+            background: V.bgSection,
+            color: V.textMid,
+            fontSize: "18px",
+            lineHeight: 1,
+            cursor: "pointer",
+          }}
+        >
+          ×
+        </button>
+
+        <p
+          style={{
+            fontSize: "11px",
+            letterSpacing: "3px",
+            textTransform: "uppercase",
+            color: V.indigo,
+            fontWeight: 700,
+            marginBottom: "8px",
+          }}
+        >
+          Let's Talk
+        </p>
+        <h3
+          style={{
+            fontFamily: "'Space Grotesk', ui-sans-serif",
+            fontSize: "26px",
+            fontWeight: 800,
+            color: V.textHigh,
+            marginBottom: "8px",
+            letterSpacing: "-0.5px",
+          }}
+        >
+          Book Your Free Strategy Call
+        </h3>
+        <p style={{ color: V.textMid, fontSize: "14px", marginBottom: "24px" }}>
+          Reach us instantly, or send your details and we'll get back to you.
+        </p>
+
+        {/* Quick actions: WhatsApp + Call */}
+        <div style={{ display: "flex", gap: "12px", marginBottom: "26px", flexWrap: "wrap" }}>
+          <a
+            href={`https://wa.me/${WHATSAPP_NUMBER}?text=${encodeURIComponent(
+              WHATSAPP_MESSAGE
+            )}`}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{
+              flex: "1 1 180px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              padding: "13px 16px",
+              borderRadius: "12px",
+              background: "#25D366",
+              color: "#06210f",
+              fontWeight: 700,
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
+          >
+            💬 WhatsApp Us
+          </a>
+          <a
+            href={`tel:+${WHATSAPP_NUMBER}`}
+            style={{
+              flex: "1 1 180px",
+              display: "flex",
+              alignItems: "center",
+              justifyContent: "center",
+              gap: "8px",
+              padding: "13px 16px",
+              borderRadius: "12px",
+              border: `1.5px solid ${V.border}`,
+              background: V.bgSection,
+              color: V.textHigh,
+              fontWeight: 700,
+              fontSize: "14px",
+              textDecoration: "none",
+            }}
+          >
+            📞 Call Now
+          </a>
+        </div>
+
+        <div
+          style={{
+            display: "flex",
+            alignItems: "center",
+            gap: "12px",
+            margin: "20px 0",
+            color: V.textLow,
+            fontSize: "12px",
+          }}
+        >
+          <div style={{ flex: 1, height: "1px", background: V.border }} />
+          OR SEND YOUR DETAILS
+          <div style={{ flex: 1, height: "1px", background: V.border }} />
+        </div>
+
+        {/* Form */}
+        {status === "sent" ? (
+          <div
+            style={{
+              padding: "24px",
+              borderRadius: "14px",
+              background: V.bgSection,
+              textAlign: "center",
+              color: V.textHigh,
+            }}
+          >
+            <div style={{ fontSize: "30px", marginBottom: "10px" }}>✅</div>
+            <p style={{ fontWeight: 700, marginBottom: "4px" }}>Message sent!</p>
+            <p style={{ color: V.textMid, fontSize: "13px" }}>
+              We'll get back to you shortly. You can also WhatsApp or call us
+              directly above.
+            </p>
+          </div>
+        ) : (
+          <form onSubmit={handleSubmit} style={{ display: "grid", gap: "16px" }}>
+            <div>
+              <label style={labelStyle} htmlFor="name">Full Name</label>
+              <input
+                id="name"
+                name="name"
+                required
+                value={form.name}
+                onChange={handleChange}
+                placeholder="Your name"
+                style={inputStyle}
+              />
+            </div>
+
+            <div style={{ display: "grid", gridTemplateColumns: "1fr 1fr", gap: "14px" }}>
+              <div>
+                <label style={labelStyle} htmlFor="email">Email</label>
+                <input
+                  id="email"
+                  name="email"
+                  type="email"
+                  required
+                  value={form.email}
+                  onChange={handleChange}
+                  placeholder="you@company.com"
+                  style={inputStyle}
+                />
+              </div>
+              <div>
+                <label style={labelStyle} htmlFor="phone">Phone</label>
+                <input
+                  id="phone"
+                  name="phone"
+                  type="tel"
+                  required
+                  value={form.phone}
+                  onChange={handleChange}
+                  placeholder="+91 ..."
+                  style={inputStyle}
+                />
+              </div>
+            </div>
+
+            <div>
+              <label style={labelStyle} htmlFor="service">Service Needed</label>
+              <select
+                id="service"
+                name="service"
+                value={form.service}
+                onChange={handleChange}
+                style={inputStyle}
+              >
+                {SERVICE_OPTIONS.map((s) => (
+                  <option key={s} value={s}>{s}</option>
+                ))}
+              </select>
+            </div>
+
+            <div>
+              <label style={labelStyle} htmlFor="message">Message</label>
+              <textarea
+                id="message"
+                name="message"
+                rows={4}
+                value={form.message}
+                onChange={handleChange}
+                placeholder="Tell us a bit about your project..."
+                style={{ ...inputStyle, resize: "vertical" }}
+              />
+            </div>
+
+            {status === "error" && (
+              <p style={{ color: "#f87171", fontSize: "13px" }}>
+                Something went wrong sending your message. Please try
+                WhatsApp or Call above instead.
+              </p>
+            )}
+
+            <button
+              type="submit"
+              disabled={status === "sending"}
+              style={{
+                padding: "14px 20px",
+                borderRadius: "12px",
+                border: "none",
+                background: V.indigo,
+                color: "#fff",
+                fontWeight: 700,
+                fontSize: "14px",
+                cursor: status === "sending" ? "wait" : "pointer",
+                opacity: status === "sending" ? 0.7 : 1,
+              }}
+            >
+              {status === "sending" ? "Sending..." : "Submit & Request Call"}
+            </button>
+          </form>
+        )}
+      </motion.div>
+    </div>
+  );
+}
+
+// ============================================================
 //  HOME PAGE  (no <Navbar /> here — it lives in layout.tsx)
 // ============================================================
 export default function HomePage() {
   const heroRef = useRef<HTMLElement>(null);
   const { scrollYProgress } = useScroll({ target: heroRef });
   const orbY = useTransform(scrollYProgress, [0, 1], ["0%", "35%"]);
+
+  // Controls the WhatsApp / Call / Form contact modal
+  const [contactOpen, setContactOpen] = useState(false);
+  const openContact = () => setContactOpen(true);
 
   return (
     <>
@@ -668,33 +1070,32 @@ export default function HomePage() {
                 flexWrap: "wrap",
               }}
             >
-              <Link href="/contact" style={{ textDecoration: "none" }}>
-                <button
-                  style={{
-                    padding: "15px 38px",
-                    background: V.indigo,
-                    border: "none",
-                    borderRadius: "12px",
-                    color: "#fff",
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "transform 0.25s, box-shadow 0.25s",
-                    letterSpacing: "0.2px",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform =
-                      "translateY(-3px) scale(1.02)";
-                    e.currentTarget.style.boxShadow = `0 16px 50px ${V.glowIndigo}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0) scale(1)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  Start Your Project →
-                </button>
-              </Link>
+              <button
+                onClick={openContact}
+                style={{
+                  padding: "15px 38px",
+                  background: V.indigo,
+                  border: "none",
+                  borderRadius: "12px",
+                  color: "#fff",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  transition: "transform 0.25s, box-shadow 0.25s",
+                  letterSpacing: "0.2px",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform =
+                    "translateY(-3px) scale(1.02)";
+                  e.currentTarget.style.boxShadow = `0 16px 50px ${V.glowIndigo}`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0) scale(1)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                Start Your Project →
+              </button>
 
               <Link href="/case-studies" style={{ textDecoration: "none" }}>
                 <button
@@ -1134,31 +1535,30 @@ export default function HomePage() {
                 flexWrap: "wrap",
               }}
             >
-              <Link href="/contact" style={{ textDecoration: "none" }}>
-                <button
-                  style={{
-                    padding: "16px 44px",
-                    background: V.indigo,
-                    border: "none",
-                    borderRadius: "12px",
-                    color: "#fff",
-                    fontSize: "15px",
-                    fontWeight: "600",
-                    cursor: "pointer",
-                    transition: "transform 0.25s, box-shadow 0.25s",
-                  }}
-                  onMouseEnter={(e) => {
-                    e.currentTarget.style.transform = "translateY(-3px)";
-                    e.currentTarget.style.boxShadow = `0 16px 50px ${V.glowIndigo}`;
-                  }}
-                  onMouseLeave={(e) => {
-                    e.currentTarget.style.transform = "translateY(0)";
-                    e.currentTarget.style.boxShadow = "none";
-                  }}
-                >
-                  Book a Free Strategy Call →
-                </button>
-              </Link>
+              <button
+                onClick={openContact}
+                style={{
+                  padding: "16px 44px",
+                  background: V.indigo,
+                  border: "none",
+                  borderRadius: "12px",
+                  color: "#fff",
+                  fontSize: "15px",
+                  fontWeight: "600",
+                  cursor: "pointer",
+                  transition: "transform 0.25s, box-shadow 0.25s",
+                }}
+                onMouseEnter={(e) => {
+                  e.currentTarget.style.transform = "translateY(-3px)";
+                  e.currentTarget.style.boxShadow = `0 16px 50px ${V.glowIndigo}`;
+                }}
+                onMouseLeave={(e) => {
+                  e.currentTarget.style.transform = "translateY(0)";
+                  e.currentTarget.style.boxShadow = "none";
+                }}
+              >
+                Book a Free Strategy Call →
+              </button>
 
               <Link href="/case-studies" style={{ textDecoration: "none" }}>
                 <button
@@ -1222,15 +1622,17 @@ export default function HomePage() {
 
           <div style={{ display: "flex", gap: "6px", flexWrap: "wrap" }}>
             {["Privacy", "Terms", "Careers", "Contact"].map((label) => (
-              <Link
+              <button
                 key={label}
-                href={`/${label.toLowerCase()}`}
+                onClick={openContact}
                 style={{
                   padding: "6px 12px",
                   fontSize: "13px",
                   color: V.textMid,
-                  textDecoration: "none",
+                  background: "transparent",
+                  border: "none",
                   borderRadius: "8px",
+                  cursor: "pointer",
                   transition: "color 0.25s, background 0.25s",
                 }}
                 onMouseEnter={(e) => {
@@ -1243,7 +1645,7 @@ export default function HomePage() {
                 }}
               >
                 {label}
-              </Link>
+              </button>
             ))}
           </div>
 
@@ -1252,6 +1654,9 @@ export default function HomePage() {
           </p>
         </footer>
       </main>
+
+      {/* Contact modal — WhatsApp / Call / Form, mounted once at page level */}
+      <ContactModal isOpen={contactOpen} onClose={() => setContactOpen(false)} />
     </>
   );
 }
